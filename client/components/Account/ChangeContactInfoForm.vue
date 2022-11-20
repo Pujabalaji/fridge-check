@@ -13,9 +13,9 @@ export default {
       hasBody: true,
       setUsername: true,
       fields: [
-        {id: 'contactInfo', label: 'Contact Info', value: ''}
+        { id: 'contactInfo', label: 'Email', value: this.$store.state.user?.contactInfo ?? '' }
       ],
-      title: 'Change contact info',
+      title: 'Change email',
       callback: () => {
         const message = 'Successfully changed contact info!';
         this.$set(this.alerts, message, 'success');
