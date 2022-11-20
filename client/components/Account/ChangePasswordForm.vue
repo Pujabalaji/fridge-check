@@ -6,6 +6,19 @@ import BlockForm from '@/components/common/BlockForm.vue';
 export default {
   name: 'ChangePasswordForm',
   mixins: [BlockForm],
+  methods: {
+    enableSubmit() {
+      let status = "ok";
+      let errorToDisplay = "";
+      const content = this.fields[0].value;
+      const passwordRegex = /^\S+$/;
+      if (!passwordRegex.test(content)) {
+        errorToDisplay = "Password must be a nonempty string.";
+        status = "error";
+      }
+      return { status: status, errorToDisplay: errorToDisplay };
+    },
+  },
   data() {
     return {
       url: '/api/users',

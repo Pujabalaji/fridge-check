@@ -4,43 +4,26 @@
 <template>
   <form @submit.prevent="submit">
     <h3>{{ title }}</h3>
-    <article
-      v-if="fields.length"
-    >
-      <div
-        v-for="field in fields"
-        :key="field.id"
-      >
+    <article v-if="fields.length">
+      <div v-for="field in fields" :key="field.id">
         <label :for="field.id">{{ field.label }}:</label>
-        <textarea
-          v-if="field.id === 'content'"
-          :name="field.id"
-          :value="field.value"
-          @input="field.value = $event.target.value"
-        />
-        <input
-          v-else
-          :type="field.id === 'password' ? 'password' : 'text'"
-          :name="field.id"
-          :value="field.value"
-          @input="field.value = $event.target.value"
-        >
+        <textarea v-if="field.id === 'content'" :name="field.id" :value="field.value"
+          @input="field.value = $event.target.value" />
+        <input v-else :type="field.id === 'password' ? 'password' : 'text'" :name="field.id" :value="field.value"
+          @input="field.value = $event.target.value">
       </div>
     </article>
     <article v-else>
       <p>{{ content }}</p>
     </article>
-    <button
-      type="submit"
-    >
+    <button type="submit" :disabled="!(enableSubmit().status == 'ok')">
       {{ title }}
     </button>
+    <div class="disabledsubmit" v-if="!(enableSubmit().status == 'ok')">
+      {{ enableSubmit().errorToDisplay }}
+    </div>
     <section class="alerts">
-      <article
-        v-for="(status, alert, index) in alerts"
-        :key="index"
-        :class="status"
-      >
+      <article v-for="(status, alert, index) in alerts" :key="index" :class="status">
         <p>{{ alert }}</p>
       </article>
     </section>
@@ -67,19 +50,30 @@ export default {
     };
   },
   methods: {
+    enableSubmit() {
+      return { status: "ok", errorToDisplay: "" };
+    },
     async submit() {
       /**
         * Submits a form with the specified options from data().
         */
+      if (!(this.enableSubmit().status == "ok")) {
+        this.$set(this.alerts, this.enableSubmit().errorToDisplay, "error");
+        setTimeout(
+          () => this.$delete(this.alerts, this.enableSubmit().errorToDisplay),
+          3000
+        );
+        return;
+      }
       const options = {
         method: this.method,
-        headers: {'Content-Type': 'application/json'},
+        headers: { 'Content-Type': 'application/json' },
         credentials: 'same-origin' // Sends express-session credentials with request
       };
       if (this.hasBody) {
         options.body = JSON.stringify(Object.fromEntries(
           this.fields.map(field => {
-            const {id, value} = field;
+            const { id, value } = field;
             field.value = '';
             return [id, value];
           })
@@ -96,7 +90,7 @@ export default {
 
         if (this.setUsername) {
           const text = await r.text();
-          const res = text ? JSON.parse(text) : {user: null};
+          const res = text ? JSON.parse(text) : { user: null };
           this.$store.commit('setUsername', res.user ? res.user.username : null);
           this.$store.commit('setUser', res.user ? res.user : null);
         }
@@ -125,17 +119,17 @@ form {
   box-shadow: 0 12px 12px rgba(0, 0, 0, 0.2);
 }
 
-article > div {
+article>div {
   display: flex;
   flex-direction: column;
 }
 
-form > article p {
+form>article p {
   margin: 0;
 }
 
 form h3,
-form > * {
+form>* {
   margin: 0.3em 0;
 }
 
@@ -144,7 +138,7 @@ form h3 {
 }
 
 textarea {
-   font-family: inherit;
-   font-size: inherit;
+  font-family: inherit;
+  font-size: inherit;
 }
 </style>

@@ -59,9 +59,12 @@
         </select>
       </div>
     </article>
-    <button type="submit">
+    <button type="submit" :disabled="!(enableSubmit().status == 'ok')">
       Create account
     </button>
+    <div class="disabledsubmit" v-if="!(enableSubmit().status == 'ok')">
+      {{ enableSubmit().errorToDisplay }}
+    </div>
     <section class="alerts">
       <article v-for="(status, alert, index) in alerts" :key="index" :class="status">
         <p>{{ alert }}</p>
@@ -90,6 +93,24 @@ export default {
     }
   },
   methods: {
+    enableSubmit() {
+      let status = "ok";
+      let errorToDisplay = "";
+      const usernameRegex = /^\w+$/i;
+      const emailRegex = /^\S+$/;
+      const passwordRegex = /^\S+$/;
+      if (!usernameRegex.test(this.username)) {
+        errorToDisplay = "Username must be a nonempty alphanumeric string.";
+        status = "error";
+      } else if (!passwordRegex.test(this.password)) {
+        errorToDisplay = "Password must be a nonempty string.";
+        status = "error";
+      } else if (!emailRegex.test(this.contactInfo)) {
+        errorToDisplay = "Email must be a nonempty alphanumeric string.";
+        status = "error";
+      }
+      return { status: status, errorToDisplay: errorToDisplay };
+    },
     async submit() {
       /**
        * Submits a form with the specified options from data().

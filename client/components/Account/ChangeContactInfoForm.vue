@@ -6,6 +6,19 @@ import BlockForm from '@/components/common/BlockForm.vue';
 export default {
   name: 'ChangeContactInfoForm',
   mixins: [BlockForm],
+  methods: {
+    enableSubmit() {
+      let status = "ok";
+      let errorToDisplay = "";
+      const content = this.fields[0].value;
+      const emailRegex = /^\S+$/;
+      if (!emailRegex.test(content)) {
+        errorToDisplay = "Email must be a nonempty string.";
+        status = "error";
+      }
+      return { status: status, errorToDisplay: errorToDisplay };
+    },
+  },
   data() {
     return {
       url: '/api/users',
