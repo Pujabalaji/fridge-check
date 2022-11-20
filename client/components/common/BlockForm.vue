@@ -60,9 +60,10 @@ export default {
       method: 'GET', // Form request method
       hasBody: false, // Whether or not form request has a body
       setUsername: false, // Whether or not stored username should be updated after form submission
-      refreshFreets: false, // Whether or not stored freets should be updated after form submission
       alerts: {}, // Displays success/error messages encountered during form submission
-      callback: null // Function to run after successful form submission
+      callback: null, // Function to run after successful form submission
+      fields: [],
+      title: ''
     };
   },
   methods: {
@@ -97,10 +98,7 @@ export default {
           const text = await r.text();
           const res = text ? JSON.parse(text) : {user: null};
           this.$store.commit('setUsername', res.user ? res.user.username : null);
-        }
-
-        if (this.refreshFreets) {
-          this.$store.commit('refreshFreets');
+          this.$store.commit('setUser', res.user ? res.user : null);
         }
 
         if (this.callback) {

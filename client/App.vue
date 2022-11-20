@@ -20,6 +20,7 @@ export default {
     }).then(res => res.json()).then(res => {
       const user = res.user;
       this.$store.commit('setUsername', user ? user.username : null);
+      this.$store.commit('setUser', user ? user : null);
     });
 
     // Clear alerts on page refresh
@@ -40,6 +41,7 @@ body {
   padding: 0;
   margin: 0;
   font-size: 1.2em;
+  font-family: "Lato", sans-serif;
 }
 
 main {

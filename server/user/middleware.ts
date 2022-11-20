@@ -3,7 +3,7 @@ import UserCollection from '../user/collection';
 
 /**
  * Checks if the current session user (if any) still exists in the database, for instance,
- * a user may try to post a freet in some browser while the account has been deleted in another or
+ * a user may try to post something in some browser while the account has been deleted in another or
  * when a user tries to modify an account in some browser while it has been deleted in another
  */
 const isCurrentSessionUserExists = async (req: Request, res: Response, next: NextFunction) => {
@@ -49,6 +49,60 @@ const isValidPassword = (req: Request, res: Response, next: NextFunction) => {
     return;
   }
 
+  next();
+};
+
+
+/**
+ * Checks if proposed home community is valid
+ */
+ const isValidHomeCommunity = (req: Request, res: Response, next: NextFunction) => {
+  const validCommunities = ["Baker", "Burton Connor", "East Campus", "MacGregor", "Maseeh", "McCormick", "New House", "New Vassar", "Next House", "Random", "Simmons", "Off-campus Cambridge", "Off-campus Boston"];
+  if (!validCommunities.includes(req.body.homeCommunity)) {
+    res.status(400).json({
+      error: 'Home Community must be a valid living community at or near MIT.'
+    });
+    return;
+  }
+  next();
+};
+
+/**
+ * Checks if proposed contact info is valid
+ */
+ const isValidContactInfo = (req: Request, res: Response, next: NextFunction) => {
+  if (!(req.body.contactInfo?.length && req.body.contactInfo.length >= 1)) {
+    res.status(400).json({
+      error: 'You must provide contact info.'
+    });
+    return;
+  }
+  next();
+};
+
+/**
+ * Checks if proposed allergies are valid
+ */
+ const isValidAllergies = (req: Request, res: Response, next: NextFunction) => {
+  if (req.body.allergies === undefined) {
+    res.status(400).json({
+      error: 'Allergies must not be undefined. Allergies should be an empty string if the user does not have allergies.'
+    });
+    return;
+  }
+  next();
+};
+
+/**
+ * Checks if proposed dietary restrictions are valid
+ */
+ const isValidDietaryRestrictions = (req: Request, res: Response, next: NextFunction) => {
+  if (req.body.otherDietaryRestrictions === undefined) {
+    res.status(400).json({
+      error: 'Dietary restrictions must not be undefined. Dietary restrictions should be an empty string if the user does not have dietary restrictions.'
+    });
+    return;
+  }
   next();
 };
 
@@ -152,5 +206,9 @@ export {
   isAccountExists,
   isAuthorExists,
   isValidUsername,
-  isValidPassword
+  isValidPassword,
+  isValidContactInfo,
+  isValidAllergies,
+  isValidDietaryRestrictions,
+  isValidHomeCommunity
 };

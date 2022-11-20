@@ -11,7 +11,10 @@ export type User = {
   _id: Types.ObjectId; // MongoDB assigns each object this ID on creation
   username: string;
   password: string;
-  dateJoined: Date;
+  contactInfo: string;
+  allergies: string;
+  otherDietaryRestrictions: string;
+  homeCommunity: string;
 };
 
 // Mongoose schema definition for interfacing with a MongoDB table
@@ -28,11 +31,24 @@ const UserSchema = new Schema({
     type: String,
     required: true
   },
-  // The date the user joined
-  dateJoined: {
-    type: Date,
+  // the user's contact info
+  contactInfo: {
+    type: String,
+    required: true
+  },
+  // the user's allergies as a comma-separated list
+  allergies: {
+    type: String,
+  },
+  // the user's other dietary restrictions as a comma-separated list
+  otherDietaryRestrictions: {
+    type: String,
+  },
+  homeCommunity: {
+    type: String,
     required: true
   }
+
 });
 
 const UserModel = model<User>('User', UserSchema);

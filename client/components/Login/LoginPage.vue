@@ -5,15 +5,15 @@
   <main>
     <section>
       <header>
-        <h2>New to Fritter?</h2>
+        <h2>Have an account? Log in: </h2>
       </header>
-      <RegisterForm />
+      <LoginForm />
     </section>
     <section>
       <header>
-        <h2>Have an account?</h2>
+        <h2>New to FridgeCheck? Create an account: </h2>
       </header>
-      <LoginForm />
+      <RegisterForm />
     </section>
   </main>
 </template>

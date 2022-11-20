@@ -1,29 +1,178 @@
 <!-- Form for registering an account (block style) -->
+<template>
+  <form @submit.prevent="submit">
+    <h3>Create an account:</h3>
+    <article>
+      <div><label>Username: </label> <input v-model="username" /></div>
+      <br>
+      <div><label>Password: </label> <input type="password" v-model="password" /></div>
+      <br>
+      <div><label>Contact info: </label> <input v-model="contactInfo" />
+      <p>Your contact info will be visible to users who follow your home community. </p></div>
+      <br>
+      <div>
+        Allergies:
+        <span>
+        <input type="checkbox" id="peanut" v-model="peanutChecked" />
+        <label for="peanut">Peanuts </label>
+      </span><span>
+        <input type="checkbox" id="treenut" v-model="treenutChecked" />
+        <label for="treenut">Tree Nuts </label>
+      </span>
+      <span>
+        <input type="checkbox" id="seafood" v-model="seafoodChecked" />
+        <label for="seafood">Seafood </label>
+      </span>
+      </div>
+      <br>
+      <div>
+        Other dietary restrictions:
+        <span>
+        <input type="checkbox" id="vegetarian" v-model="vegetarianChecked" />
+        <label for="vegetarian">Vegetarian </label>
+      </span><span>
+        <input type="checkbox" id="vegan" v-model="veganChecked" />
+        <label for="vegan">Vegan </label>
+      </span>
+      <span>
+        <input type="checkbox" id="pescetarian" v-model="pescetarianChecked" />
+        <label for="pescetarian">Pescatarian </label>
+      </span>
+      </div>
+      <br>
+      <div>
+      Home community:
+      <select name="homeCommunity" id="homeCommunity" v-model="homeCommunity">
+        <option value="Baker">Baker </option>
+        <option value="Burton Connor">Burton Connor </option>
+        <option value="East Campus">East Campus </option>
+        <option value="MacGregor">MacGregor </option>
+        <option value="Maseeh">Maseeh </option>
+        <option value="McCormick">McCormick </option>
+        <option value="New House">New House </option>
+        <option value="New Vassar">New Vassar </option>
+        <option value="Next House">Next House </option>
+        <option value="Random">Random </option>
+        <option value="Simmons">Simmons </option>
+        <option value="Off-campus Cambridge">Off-campus Cambridge </option>
+        <option value="Off-campus Boston">Off-campus Boston </option>
+        </select>
+      </div>
+    </article>
+    <button type="submit">
+      Create account
+    </button>
+    <section class="alerts">
+      <article v-for="(status, alert, index) in alerts" :key="index" :class="status">
+        <p>{{ alert }}</p>
+      </article>
+    </section>
+  </form>
+</template>
 
 <script>
-import BlockForm from '@/components/common/BlockForm.vue';
-
 export default {
-  name: 'RegisterForm',
-  mixins: [BlockForm],
-  data() {
+  name: "RegisterForm",
+  data () {
     return {
-      url: '/api/users',
-      method: 'POST',
-      hasBody: true,
-      setUsername: true,
-      fields: [
-        {id: 'username', label: 'Username', value: ''},
-        {id: 'password', label: 'Password', value: ''}
-      ],
-      title: 'Create account',
-      callback: () => {
-        const message = 'Successfully created an account!';
-        this.$router.push({name: 'Home'});
-        this.$set(this.alerts, message, 'success');
-        setTimeout(() => this.$delete(this.alerts, message), 3000);
+      username: "",
+      password: "",
+      contactInfo: "",
+      peanutChecked: false,
+      treenutChecked: false,
+      seafoodChecked: false,
+      vegetarianChecked: false,
+      veganChecked: false,
+      pescetarianChecked: false,
+      homeCommunity: "",
+      alerts: {},
+      callback: null
+    }
+  },
+  methods: {
+    async submit() {
+      /**
+       * Submits a form with the specified options from data().
+       */
+      let allergiesString = '';
+      if (this.peanutChecked) {
+        allergiesString += 'Peanut, '
+      } if (this.treenutChecked) {
+        allergiesString += 'Tree nut, '
+      } if (this.seafoodChecked) {
+        allergiesString += 'Seafood, '
       }
-    };
-  }
+      let dietaryRestrictionsString = '';
+      if (this.vegetarianChecked) {
+        dietaryRestrictionsString += 'Vegetarian, '
+      } if (this.veganChecked) {
+        dietaryRestrictionsString += 'Vegan, '
+      } if (this.pescetarianChecked) {
+        dietaryRestrictionsString += 'Pescatarian, '
+      }
+      const options = {
+        method: 'POST',
+        headers: { "Content-Type": "application/json" },
+        credentials: "same-origin", // Sends express-session credentials with request
+        body: JSON.stringify({ username: this.username, password: this.password, contactInfo: this.contactInfo, allergies: allergiesString, otherDietaryRestrictions: dietaryRestrictionsString, homeCommunity: this.homeCommunity }),
+        message: "Successfully created user",
+        callback: () => {
+          this.$set(this.alerts, "Successfully created user", "success");
+          setTimeout(() => this.$delete(this.alerts, "Successfully created user"), 3000);
+        },
+      };
+
+      try {
+        const r = await fetch('/api/users', options);
+        if (!r.ok) {
+          const res = await r.json();
+          throw new Error(res.error);
+        }
+        const res = await r.json();
+        this.$store.commit("setUsername", res.user ? res.user.username : null);
+        this.$store.commit("setUser", res.user ? res.user : null);
+        options.callback();
+        this.$router.push({name: 'Home'});
+      } catch (e) {
+        this.$set(this.alerts, e, "error");
+        setTimeout(() => this.$delete(this.alerts, e), 3000);
+      }
+    },
+  },
 };
 </script>
+
+<style scoped>
+form {
+  border: 1px solid #111;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  position: relative;
+}
+
+article > div {
+  display: flex;
+  flex-direction: column;
+}
+
+form > article p {
+  margin: 0;
+}
+
+form h3,
+form > * {
+  margin: 0.3em 0;
+}
+
+form h3 {
+  margin-top: 0;
+}
+
+textarea {
+  font-family: inherit;
+  font-size: inherit;
+}
+</style>

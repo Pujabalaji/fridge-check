@@ -5,9 +5,9 @@
 <template>
   <nav>
     <div class="left">
-      <img src="../../public/logo.svg">
+      <!-- <img src="../../public/logo.svg"> -->
       <h1 class="title">
-        Fritter
+        FridgeCheck
       </h1>
     </div>
     <div class="right">

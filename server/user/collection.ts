@@ -16,12 +16,14 @@ class UserCollection {
    *
    * @param {string} username - The username of the user
    * @param {string} password - The password of the user
+   * @param {string} contactInfo - the user's contact information
+   * @param {string} allergies - the user's allergies, or an empty string if the user does not have allergies
+   * @param {string} otherDietaryRestrictions - the user's other dietary restrictions, or an empty string if the user does not have any
+   * @param {string} homeCommunity - the user's home community
    * @return {Promise<HydratedDocument<User>>} - The newly created user
    */
-  static async addOne(username: string, password: string): Promise<HydratedDocument<User>> {
-    const dateJoined = new Date();
-
-    const user = new UserModel({username, password, dateJoined});
+  static async addOne(username: string, password: string, contactInfo: string, allergies: string, otherDietaryRestrictions: string, homeCommunity: string): Promise<HydratedDocument<User>> {
+    const user = new UserModel({username, password, contactInfo, allergies, otherDietaryRestrictions, homeCommunity});
     await user.save(); // Saves user to MongoDB
     return user;
   }
@@ -67,7 +69,7 @@ class UserCollection {
    * @param {Object} userDetails - An object with the user's updated credentials
    * @return {Promise<HydratedDocument<User>>} - The updated user
    */
-  static async updateOne(userId: Types.ObjectId | string, userDetails: {password?: string; username?: string}): Promise<HydratedDocument<User>> {
+  static async updateOne(userId: Types.ObjectId | string, userDetails: {password?: string; username?: string, contactInfo?: string, allergies?: string, otherDietaryRestrictions?: string, homeCommunity?: string}): Promise<HydratedDocument<User>> {
     const user = await UserModel.findOne({_id: userId});
     if (userDetails.password) {
       user.password = userDetails.password;
@@ -75,6 +77,22 @@ class UserCollection {
 
     if (userDetails.username) {
       user.username = userDetails.username;
+    }
+
+    if (userDetails.contactInfo) {
+      user.contactInfo = userDetails.contactInfo;
+    }
+
+    if (userDetails.allergies) {
+      user.allergies = userDetails.allergies;
+    }
+
+    if (userDetails.otherDietaryRestrictions) {
+      user.otherDietaryRestrictions = userDetails.otherDietaryRestrictions;
+    }
+
+    if (userDetails.homeCommunity) {
+      user.homeCommunity = userDetails.homeCommunity;
     }
 
     await user.save();
