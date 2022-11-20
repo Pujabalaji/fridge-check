@@ -115,13 +115,14 @@ export default {
 
 <style scoped>
 form {
-  border: 1px solid #111;
   padding: 0.5rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   margin-bottom: 14px;
   position: relative;
+  background-color: rgb(238, 238, 238);
+  box-shadow: 0 12px 12px rgba(0, 0, 0, 0.2);
 }
 
 article > div {

@@ -42,6 +42,7 @@ body {
   margin: 0;
   font-size: 1.2em;
   font-family: "Lato", sans-serif;
+  background-color: rgb(234, 186, 255),
 }
 
 main {
