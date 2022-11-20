@@ -94,27 +94,27 @@ export default {
       /**
        * Submits a form with the specified options from data().
        */
-      let allergiesString = '';
+      let allergiesArray = [];
       if (this.peanutChecked) {
-        allergiesString += 'Peanut, '
+        allergiesArray.push("Peanut");
       } if (this.treenutChecked) {
-        allergiesString += 'Tree nut, '
+        allergiesArray.push("Tree Nut");
       } if (this.seafoodChecked) {
-        allergiesString += 'Seafood, '
+        allergiesArray.push("Seafood");
       }
-      let dietaryRestrictionsString = '';
+      let dietaryRestrictionsArray = [];
       if (this.vegetarianChecked) {
-        dietaryRestrictionsString += 'Vegetarian, '
+        dietaryRestrictionsArray.push("Vegetarian");
       } if (this.veganChecked) {
-        dietaryRestrictionsString += 'Vegan, '
+        dietaryRestrictionsArray.push("Vegan");
       } if (this.pescetarianChecked) {
-        dietaryRestrictionsString += 'Pescatarian, '
+        dietaryRestrictionsArray.push("Pescatarian");
       }
       const options = {
         method: 'POST',
         headers: { "Content-Type": "application/json" },
         credentials: "same-origin", // Sends express-session credentials with request
-        body: JSON.stringify({ username: this.username, password: this.password, contactInfo: this.contactInfo, allergies: allergiesString, otherDietaryRestrictions: dietaryRestrictionsString, homeCommunity: this.homeCommunity }),
+        body: JSON.stringify({ username: this.username, password: this.password, contactInfo: this.contactInfo, allergies: allergiesArray, otherDietaryRestrictions: dietaryRestrictionsArray, homeCommunity: this.homeCommunity }),
         message: "Successfully created user",
         callback: () => {
           this.$set(this.alerts, "Successfully created user", "success");

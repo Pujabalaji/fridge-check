@@ -1,15 +1,15 @@
 import type {HydratedDocument} from 'mongoose';
 import moment from 'moment';
-import type {User} from './model';
+import type {User, Allergy, OtherRestriction, Community} from './model';
 
 // Update this if you add a property to the User type!
 type UserResponse = {
   _id: string;
   username: string;
   contactInfo: string;
-  allergies: string;
-  otherDietaryRestrictions: string;
-  homeCommunity: string;
+  allergies: Array<Allergy>;
+  otherDietaryRestrictions: Array<OtherRestriction>;
+  homeCommunity: Community;
 };
 
 /**

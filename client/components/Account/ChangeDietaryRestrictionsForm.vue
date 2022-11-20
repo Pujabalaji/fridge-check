@@ -26,8 +26,8 @@
           <p>{{ alert }}</p>
         </article>
       </section>
-    </form>
-  </template>
+  </form>
+</template>
   
   <script>
   export default {
@@ -43,19 +43,19 @@
     },
     methods: {
       async submit() {
-        let dietaryRestrictionsString = '';
+        let dietaryRestrictionsArray = [];
         if (this.vegetarianChecked) {
-          dietaryRestrictionsString += 'Vegetarian, '
+          dietaryRestrictionsArray.push('Vegetarian');
         } if (this.veganChecked) {
-          dietaryRestrictionsString += 'Vegan, '
+          dietaryRestrictionsArray.push("Vegan");
         } if (this.pescetarianChecked) {
-          dietaryRestrictionsString += 'Pescatarian, '
+          dietaryRestrictionsArray.push("Pescatarian");
         }
         const options = {
           method: 'PATCH',
           headers: { "Content-Type": "application/json" },
           credentials: "same-origin", // Sends express-session credentials with request
-          body: JSON.stringify({ otherDietaryRestrictions: dietaryRestrictionsString }),
+          body: JSON.stringify({ otherDietaryRestrictions: dietaryRestrictionsArray }),
           callback: () => {
             this.$set(this.alerts, "Successfully updated dietary restrictions", "success");
             setTimeout(() => this.$delete(this.alerts, "Successfully updated dietary restrictions"), 3000);

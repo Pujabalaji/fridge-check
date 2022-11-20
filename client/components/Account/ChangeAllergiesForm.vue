@@ -1,6 +1,6 @@
 <!-- Form for changing allergies (block style) -->
 <template>
-    <form @submit.prevent="submit">
+  <form @submit.prevent="submit">
     <h3>Change allergies</h3>
       <article>
         <div>
@@ -26,10 +26,10 @@
           <p>{{ alert }}</p>
         </article>
       </section>
-    </form>
-  </template>
+  </form>
+</template>
   
-  <script>
+<script>
   export default {
     name: "ChangeAllergiesForm",
     data () {
@@ -39,23 +39,23 @@
         seafoodChecked: false,
         alerts: {},
         callback: null
-      }
+      };
     },
     methods: {
       async submit() {
-        let allergiesString = '';
+        let allergiesArray = [];
         if (this.peanutChecked) {
-            allergiesString += 'Peanut, '
+          allergiesArray.push("Peanut");
         } if (this.treenutChecked) {
-            allergiesString += 'Tree nut, '
+            allergiesArray.push("Tree Nut");
         } if (this.seafoodChecked) {
-            allergiesString += 'Seafood, '
+            allergiesArray.push("Seafood");
         }
         const options = {
           method: 'PATCH',
           headers: { "Content-Type": "application/json" },
           credentials: "same-origin", // Sends express-session credentials with request
-          body: JSON.stringify({ allergies: allergiesString }),
+          body: JSON.stringify({ allergies: allergiesArray }),
           callback: () => {
             this.$set(this.alerts, "Successfully updated allergies", "success");
             setTimeout(() => this.$delete(this.alerts, "Successfully updated allergies"), 3000);
@@ -78,9 +78,9 @@
       },
     },
   };
-  </script>
+</script>
   
-  <style scoped>
+<style scoped>
   form {
     padding: 0.5rem;
     display: flex;
@@ -114,4 +114,4 @@
     font-family: inherit;
     font-size: inherit;
   }
-  </style>
+</style>

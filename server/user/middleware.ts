@@ -1,5 +1,6 @@
 import type {Request, Response, NextFunction} from 'express';
 import UserCollection from '../user/collection';
+import { communities, allergies, Allergy, otherRestrictions, OtherRestriction } from '../user/model';
 
 /**
  * Checks if the current session user (if any) still exists in the database, for instance,
@@ -57,8 +58,7 @@ const isValidPassword = (req: Request, res: Response, next: NextFunction) => {
  * Checks if proposed home community is valid
  */
  const isValidHomeCommunity = (req: Request, res: Response, next: NextFunction) => {
-  const validCommunities = ["Baker", "Burton Connor", "East Campus", "MacGregor", "Maseeh", "McCormick", "New House", "New Vassar", "Next House", "Random", "Simmons", "Off-campus Cambridge", "Off-campus Boston"];
-  if ("homeCommunity" in req.body && !validCommunities.includes(req.body.homeCommunity)) {
+  if ("homeCommunity" in req.body && !communities.includes(req.body.homeCommunity)) {
     res.status(400).json({
       error: 'Home Community must be a valid living community at or near MIT.'
     });
@@ -71,7 +71,7 @@ const isValidPassword = (req: Request, res: Response, next: NextFunction) => {
  * Checks if proposed contact info is valid
  */
  const isValidContactInfo = (req: Request, res: Response, next: NextFunction) => {
-  if ("contactInfo" in req.body && !(req.body.contactInfo?.length && req.body.contactInfo.length >= 1)) {
+  if ("contactInfo" in req.body && !(req.body.contactInfo.length >= 1)) {
     res.status(400).json({
       error: 'You must provide contact info.'
     });
@@ -84,9 +84,11 @@ const isValidPassword = (req: Request, res: Response, next: NextFunction) => {
  * Checks if proposed allergies are valid
  */
  const isValidAllergies = (req: Request, res: Response, next: NextFunction) => {
-  if ("allergies" in req.body && req.body.allergies === undefined) {
+  if ("allergies" in req.body && !req.body.allergies.every((element: String) => {
+    return allergies.includes(element as Allergy);
+  })) {
     res.status(400).json({
-      error: 'Allergies must not be undefined. Allergies should be an empty string if the user does not have allergies.'
+      error: 'All allergies must be valid allergies.'
     });
     return;
   }
@@ -97,9 +99,11 @@ const isValidPassword = (req: Request, res: Response, next: NextFunction) => {
  * Checks if proposed dietary restrictions are valid
  */
  const isValidDietaryRestrictions = (req: Request, res: Response, next: NextFunction) => {
-  if ("otherDietaryRestrictions" in req.body && req.body.otherDietaryRestrictions === undefined) {
+  if ("otherDietaryRestrictions" in req.body && !req.body.otherDietaryRestrictions.every((element: String) => {
+    return otherRestrictions.includes(element as OtherRestriction);
+  })) {
     res.status(400).json({
-      error: 'Dietary restrictions must not be undefined. Dietary restrictions should be an empty string if the user does not have dietary restrictions.'
+      error: 'All dietery restrictions must be valid restrictions.'
     });
     return;
   }
@@ -176,35 +180,12 @@ const isUserLoggedOut = (req: Request, res: Response, next: NextFunction) => {
   next();
 };
 
-/**
- * Checks if a user with userId as author id in req.query exists
- */
-const isAuthorExists = async (req: Request, res: Response, next: NextFunction) => {
-  if (!req.query.author) {
-    res.status(400).json({
-      error: 'Provided author username must be nonempty.'
-    });
-    return;
-  }
-
-  const user = await UserCollection.findOneByUsername(req.query.author as string);
-  if (!user) {
-    res.status(404).json({
-      error: `A user with username ${req.query.author as string} does not exist.`
-    });
-    return;
-  }
-
-  next();
-};
-
 export {
   isCurrentSessionUserExists,
   isUserLoggedIn,
   isUserLoggedOut,
   isUsernameNotAlreadyInUse,
   isAccountExists,
-  isAuthorExists,
   isValidUsername,
   isValidPassword,
   isValidContactInfo,
