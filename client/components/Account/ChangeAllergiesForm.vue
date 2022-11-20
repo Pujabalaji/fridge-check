@@ -34,9 +34,9 @@
     name: "ChangeAllergiesForm",
     data () {
       return {
-        peanutChecked: false,
-        treenutChecked: false,
-        seafoodChecked: false,
+        peanutChecked: this.$store.state.user?.allergies.includes("Peanut") ?? false,
+        treenutChecked: this.$store.state.user?.allergies.includes("Tree Nut")  ?? false,
+        seafoodChecked: this.$store.state.user?.allergies.includes("Seafood") ?? false,
         alerts: {},
         callback: null
       };

@@ -34,9 +34,9 @@
     name: "ChangeDietaryRestrictionsForm",
     data () {
       return {
-        vegetarianChecked: false,
-        veganChecked: false,
-        pescetarianChecked: false,
+        vegetarianChecked: this.$store.state.user?.otherDietaryRestrictions.includes("Vegetarian") ?? false,
+        veganChecked: this.$store.state.user?.otherDietaryRestrictions.includes("Vegan") ?? false,
+        pescetarianChecked: this.$store.state.user?.otherDietaryRestrictions.includes("Pescatarian") ?? false,
         alerts: {},
         callback: null
       }
