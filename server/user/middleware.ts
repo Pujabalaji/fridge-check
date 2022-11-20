@@ -58,7 +58,7 @@ const isValidPassword = (req: Request, res: Response, next: NextFunction) => {
  */
  const isValidHomeCommunity = (req: Request, res: Response, next: NextFunction) => {
   const validCommunities = ["Baker", "Burton Connor", "East Campus", "MacGregor", "Maseeh", "McCormick", "New House", "New Vassar", "Next House", "Random", "Simmons", "Off-campus Cambridge", "Off-campus Boston"];
-  if (req.body.homeCommunity && !validCommunities.includes(req.body.homeCommunity)) {
+  if ("homeCommunity" in req.body && !validCommunities.includes(req.body.homeCommunity)) {
     res.status(400).json({
       error: 'Home Community must be a valid living community at or near MIT.'
     });
@@ -71,7 +71,7 @@ const isValidPassword = (req: Request, res: Response, next: NextFunction) => {
  * Checks if proposed contact info is valid
  */
  const isValidContactInfo = (req: Request, res: Response, next: NextFunction) => {
-  if (req.body.contactInfo && !(req.body.contactInfo.length && req.body.contactInfo.length >= 1)) {
+  if ("contactInfo" in req.body && !(req.body.contactInfo?.length && req.body.contactInfo.length >= 1)) {
     res.status(400).json({
       error: 'You must provide contact info.'
     });
@@ -84,7 +84,7 @@ const isValidPassword = (req: Request, res: Response, next: NextFunction) => {
  * Checks if proposed allergies are valid
  */
  const isValidAllergies = (req: Request, res: Response, next: NextFunction) => {
-  if (req.body.allergies && req.body.allergies === undefined) {
+  if ("allergies" in req.body && req.body.allergies === undefined) {
     res.status(400).json({
       error: 'Allergies must not be undefined. Allergies should be an empty string if the user does not have allergies.'
     });
@@ -97,7 +97,7 @@ const isValidPassword = (req: Request, res: Response, next: NextFunction) => {
  * Checks if proposed dietary restrictions are valid
  */
  const isValidDietaryRestrictions = (req: Request, res: Response, next: NextFunction) => {
-  if (req.body.otherDietaryRestrictions && req.body.otherDietaryRestrictions === undefined) {
+  if ("otherDietaryRestrictions" in req.body && req.body.otherDietaryRestrictions === undefined) {
     res.status(400).json({
       error: 'Dietary restrictions must not be undefined. Dietary restrictions should be an empty string if the user does not have dietary restrictions.'
     });
