@@ -1,9 +1,10 @@
 import type {Request, Response, NextFunction} from 'express';
 import UserCollection from '../user/collection';
+import { communities, allergies, Allergy, otherRestrictions, OtherRestriction } from '../user/model';
 
 /**
  * Checks if the current session user (if any) still exists in the database, for instance,
- * a user may try to post a freet in some browser while the account has been deleted in another or
+ * a user may try to post something in some browser while the account has been deleted in another or
  * when a user tries to modify an account in some browser while it has been deleted in another
  */
 const isCurrentSessionUserExists = async (req: Request, res: Response, next: NextFunction) => {
@@ -49,6 +50,63 @@ const isValidPassword = (req: Request, res: Response, next: NextFunction) => {
     return;
   }
 
+  next();
+};
+
+
+/**
+ * Checks if proposed home community is valid
+ */
+ const isValidHomeCommunity = (req: Request, res: Response, next: NextFunction) => {
+  if ("homeCommunity" in req.body && !communities.includes(req.body.homeCommunity)) {
+    res.status(400).json({
+      error: 'Home Community must be a valid living community at or near MIT.'
+    });
+    return;
+  }
+  next();
+};
+
+/**
+ * Checks if proposed contact info is valid
+ */
+ const isValidContactInfo = (req: Request, res: Response, next: NextFunction) => {
+  if ("contactInfo" in req.body && !(req.body.contactInfo.length >= 1)) {
+    res.status(400).json({
+      error: 'You must provide contact info.'
+    });
+    return;
+  }
+  next();
+};
+
+/**
+ * Checks if proposed allergies are valid
+ */
+ const isValidAllergies = (req: Request, res: Response, next: NextFunction) => {
+  if ("allergies" in req.body && !req.body.allergies.every((element: String) => {
+    return allergies.includes(element as Allergy);
+  })) {
+    res.status(400).json({
+      error: 'All allergies must be valid allergies.'
+    });
+    return;
+  }
+  next();
+};
+
+/**
+ * Checks if proposed dietary restrictions are valid
+ */
+ const isValidDietaryRestrictions = (req: Request, res: Response, next: NextFunction) => {
+  if ("otherDietaryRestrictions" in req.body && !req.body.otherDietaryRestrictions.every((element: String) => {
+    return otherRestrictions.includes(element as OtherRestriction);
+  })) {
+    res.status(400).json({
+      error: 'All dietery restrictions must be valid restrictions.'
+    });
+    return;
+  }
   next();
 };
 
@@ -122,35 +180,16 @@ const isUserLoggedOut = (req: Request, res: Response, next: NextFunction) => {
   next();
 };
 
-/**
- * Checks if a user with userId as author id in req.query exists
- */
-const isAuthorExists = async (req: Request, res: Response, next: NextFunction) => {
-  if (!req.query.author) {
-    res.status(400).json({
-      error: 'Provided author username must be nonempty.'
-    });
-    return;
-  }
-
-  const user = await UserCollection.findOneByUsername(req.query.author as string);
-  if (!user) {
-    res.status(404).json({
-      error: `A user with username ${req.query.author as string} does not exist.`
-    });
-    return;
-  }
-
-  next();
-};
-
 export {
   isCurrentSessionUserExists,
   isUserLoggedIn,
   isUserLoggedOut,
   isUsernameNotAlreadyInUse,
   isAccountExists,
-  isAuthorExists,
   isValidUsername,
-  isValidPassword
+  isValidPassword,
+  isValidContactInfo,
+  isValidAllergies,
+  isValidDietaryRestrictions,
+  isValidHomeCommunity
 };

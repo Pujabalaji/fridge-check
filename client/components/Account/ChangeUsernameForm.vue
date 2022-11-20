@@ -6,6 +6,22 @@ import BlockForm from '@/components/common/BlockForm.vue';
 export default {
   name: 'ChangeUsernameForm',
   mixins: [BlockForm],
+  methods: {
+    enableSubmit() {
+      let status = "ok";
+      let errorToDisplay = "";
+      const content = this.fields[0].value;
+      const usernameRegex = /^\w+$/i;
+      if (!usernameRegex.test(content)) {
+        errorToDisplay = "Username must be a nonempty alphanumeric string.";
+        status = "error";
+      } else if (content == this.$store.state.username) {
+        errorToDisplay = "New username must be different from your current username.";
+        status = "error";
+      }
+      return { status: status, errorToDisplay: errorToDisplay };
+    },
+  },
   data() {
     return {
       url: '/api/users',
@@ -13,7 +29,7 @@ export default {
       hasBody: true,
       setUsername: true,
       fields: [
-        {id: 'username', label: 'Username', value: ''}
+        { id: 'username', label: 'Username', value: '' }
       ],
       title: 'Change username',
       callback: () => {

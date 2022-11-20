@@ -9,6 +9,10 @@
       </header>
       <ChangeUsernameForm />
       <ChangePasswordForm />
+      <ChangeContactInfoForm />
+      <ChangeAllergiesForm />
+      <ChangeDietaryRestrictionsForm />
+      <ChangeHomeCommunityForm />
     </section>
     <section>
       <header>
@@ -23,6 +27,10 @@
 <script>
 import ChangeUsernameForm from '@/components/Account/ChangeUsernameForm.vue';
 import ChangePasswordForm from '@/components/Account/ChangePasswordForm.vue';
+import ChangeContactInfoForm from '@/components/Account/ChangeContactInfoForm.vue';
+import ChangeAllergiesForm from '@/components/Account/ChangeAllergiesForm.vue';
+import ChangeDietaryRestrictionsForm from '@/components/Account/ChangeDietaryRestrictionsForm.vue';
+import ChangeHomeCommunityForm from '@/components/Account/ChangeHomeCommunityForm.vue';
 import DeleteAccountForm from '@/components/Account/DeleteAccountForm.vue';
 import LogoutForm from '@/components/Account/LogoutForm.vue';
 
@@ -31,6 +39,10 @@ export default {
   components: {
     ChangeUsernameForm,
     ChangePasswordForm,
+    ChangeContactInfoForm,
+    ChangeAllergiesForm,
+    ChangeDietaryRestrictionsForm,
+    ChangeHomeCommunityForm,
     DeleteAccountForm,
     LogoutForm
   }
