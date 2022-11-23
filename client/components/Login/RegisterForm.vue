@@ -7,8 +7,8 @@
       <br>
       <div><label>Password: </label> <input type="password" v-model="password" /></div>
       <br>
-      <div><label>Contact info: </label> <input v-model="contactInfo" />
-      <p>Your contact info will be visible to users who follow your home community. </p></div>
+      <div><label>Email: </label> <input v-model="contactInfo" />
+      <p>Your email will be visible to users who follow your home community. </p></div>
       <br>
       <div>
         Allergies:
