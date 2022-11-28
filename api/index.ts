@@ -1,5 +1,5 @@
 // This file must be in the /api folder for Vercel to detect it as a serverless function
-import type {Request, Response} from 'express';
+import type { Request, Response } from 'express';
 import express from 'express';
 import session from 'express-session';
 import logger from 'morgan';
@@ -7,8 +7,8 @@ import http from 'http';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import * as userValidator from '../server/user/middleware';
-import {userRouter} from '../server/user/router';
-import {foodRouter} from '../server/food/router';
+import { userRouter } from '../server/user/router';
+import { foodRouter } from '../server/food/router';
 import MongoStore from 'connect-mongo';
 
 // Load environmental variables
@@ -48,7 +48,7 @@ app.use(logger('dev'));
 app.use(express.json());
 
 // Parse incoming requests with urlencoded payloads ('content-type: application/x-www-form-urlencoded' in header)
-app.use(express.urlencoded({extended: false}));
+app.use(express.urlencoded({ extended: false }));
 
 // Initialize cookie session
 // https://www.npmjs.com/package/express-session#options

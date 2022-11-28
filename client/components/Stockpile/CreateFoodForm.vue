@@ -34,7 +34,7 @@ export default {
             quantity: "",
             alerts: {},
             callback: null,
-            refreshFoods:true
+            refreshFoods: true
         }
     },
     methods: {
@@ -42,12 +42,16 @@ export default {
             let status = "ok";
             let errorToDisplay = "";
             const nameRegex = /^\w+$/i;
-            const dateRegex = /^\d{2}\/\d{2}\/\d{4}$/;;
+            const dateRegex = /^\d{2}\/\d{2}\/\d{4}$/;
+            const quantityRegex = /^[1-9][0-9]*$/;
             if (!nameRegex.test(this.name)) {
                 errorToDisplay = "Food name must be a nonempty alphanumeric string.";;
                 status = "error";
             } else if (!dateRegex.test(this.expiration)) {
                 errorToDisplay = "Date must be a MM/DD/YYYY format.";
+                status = "error";
+            } else if (!quantityRegex.test(this.quantity)) {
+                errorToDisplay = "Quantity must be a number greater than 0.";
                 status = "error";
             }
             return { status: status, errorToDisplay: errorToDisplay };
@@ -77,16 +81,16 @@ export default {
                 const res = await r.json();
                 this.$store.dispatch("refreshStockpile");
                 options.callback();
-                this.name="";
-                this.quantity="";
-                this.expiration="";
-                this.$router.push({name: 'Stockpile'});
+                this.name = "";
+                this.quantity = "";
+                this.expiration = "";
+                this.$router.push({ name: 'Stockpile' });
             } catch (e) {
                 console.log(e);
                 this.$set(this.alerts, e, "error");
                 setTimeout(() => this.$delete(this.alerts, e), 3000);
             }
-            
+
         },
     },
 };

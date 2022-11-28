@@ -7,8 +7,8 @@
                 <h2>My Stockpile</h2>
             </header>
             <div class="row">
-  <div class="column">
-  <h2>Expired</h2>
+                <div class="column">
+                    <h2>Expired</h2>
                     <section v-if="$store.state.expired.length">
                         <FoodComponent v-for="food in $store.state.expired" :key="food._id" :food="food" />
                     </section>
@@ -30,8 +30,10 @@
                         <h3>There is no food in your stockpile.</h3>
                     </article>
                 </div>
-  <div class="column"><CreateFoodForm /></div>
-</div>
+                <div class="column">
+                    <CreateFoodForm />
+                </div>
+            </div>
         </section>
     </main>
     <main v-else>

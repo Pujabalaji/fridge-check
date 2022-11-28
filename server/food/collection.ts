@@ -1,5 +1,5 @@
-import type {HydratedDocument, Types} from 'mongoose';
-import type {Food} from './model';
+import type { HydratedDocument, Types } from 'mongoose';
+import type { Food } from './model';
 import FoodModel from './model';
 import UserCollection from '../user/collection';
 
@@ -28,35 +28,35 @@ class FoodCollection {
     return food.populate('userId');
   }
 
-  /**
-   * Find a food by foodId
-   *
-   * @param {string} foodId - The id of the food to find
-   * @return {Promise<HydratedDocument<Food>> | Promise<null> } - The food with the given foodId, if any
-   */
-  static async findOne(foodId: Types.ObjectId | string): Promise<HydratedDocument<Food>> {
-    return FoodModel.findOne({_id: foodId}).populate('userId');
-  }
+    /**
+     * Find a food by foodId
+     *
+     * @param {string} foodId - The id of the food to find
+     * @return {Promise<HydratedDocument<Food>> | Promise<null> } - The food with the given foodId, if any
+     */
+    static async findOne(foodId: Types.ObjectId | string): Promise<HydratedDocument<Food>> {
+        return FoodModel.findOne({ _id: foodId }).populate('userId');
+    }
 
-  /**
-   * Get all the foods in the database
-   *
-   * @return {Promise<HydratedDocument<Food>[]>} - An array of all of the foods
-   */
-  static async findAll(): Promise<Array<HydratedDocument<Food>>> {
-    return FoodModel.find({}, {"sort" : [['expiration', 'asc']]}).populate('userId');
-  }
+    /**
+     * Get all the foods in the database
+     *
+     * @return {Promise<HydratedDocument<Food>[]>} - An array of all of the foods
+     */
+    static async findAll(): Promise<Array<HydratedDocument<Food>>> {
+        return FoodModel.find({}, { "sort": [['expiration', 'asc']] }).populate('userId');
+    }
 
-  /**
-   * Get all the foods in by given author
-   *
-   * @param {string} userId - The userId of the author of the foods
-   * @return {Promise<HydratedDocument<Food>[]>} - An array of all of the foods
-   */
-  static async findAllByUser(userId: string): Promise<Array<HydratedDocument<Food>>> {
-    const user = await UserCollection.findOneByUserId(userId);
-    return FoodModel.find({userId: user._id}).sort({expiration: 1}).populate('userId');
-  }
+    /**
+     * Get all the foods in by given author
+     *
+     * @param {string} userId - The userId of the author of the foods
+     * @return {Promise<HydratedDocument<Food>[]>} - An array of all of the foods
+     */
+    static async findAllByUser(userId: string): Promise<Array<HydratedDocument<Food>>> {
+        const user = await UserCollection.findOneByUserId(userId);
+        return FoodModel.find({ userId: user._id }).sort({ expiration: 1 }).populate('userId');
+    }
 
   /**
    * Update a food with the new quantity
@@ -72,25 +72,25 @@ class FoodCollection {
     return food.populate('userId');
   }
 
-  /**
-   * Delete a food with given foodId.
-   *
-   * @param {string} foodId - The foodId of food to delete
-   * @return {Promise<Boolean>} - true if the food has been deleted, false otherwise
-   */
-  static async deleteOne(foodId: Types.ObjectId | string): Promise<boolean> {
-    const food = await FoodModel.deleteOne({_id: foodId});
-    return food !== null;
-  }
+    /**
+     * Delete a food with given foodId.
+     *
+     * @param {string} foodId - The foodId of food to delete
+     * @return {Promise<Boolean>} - true if the food has been deleted, false otherwise
+     */
+    static async deleteOne(foodId: Types.ObjectId | string): Promise<boolean> {
+        const food = await FoodModel.deleteOne({ _id: foodId });
+        return food !== null;
+    }
 
-  /**
-   * Delete all the foods by the given author
-   *
-   * @param {string} userId - The id of author of foods
-   */
-  static async deleteMany(userId: Types.ObjectId | string): Promise<void> {
-    await FoodModel.deleteMany({userId});
-  }
+    /**
+     * Delete all the foods by the given author
+     *
+     * @param {string} userId - The id of author of foods
+     */
+    static async deleteMany(userId: Types.ObjectId | string): Promise<void> {
+        await FoodModel.deleteMany({ userId });
+    }
 }
 
 export default FoodCollection;
