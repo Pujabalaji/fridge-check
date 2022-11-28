@@ -5,8 +5,8 @@
         <section>
             <h2>My Stockpile</h2>
             <div class="row">
-  <div class="column">
-  <h2>Expired</h2>
+                <div class="column">
+                    <h2>Expired</h2>
                     <section v-if="$store.state.expired.length">
                         <FoodComponent v-for="food in $store.state.expired" :key="food._id" :food="food" />
                     </section>
@@ -28,8 +28,10 @@
                         <h3>There is no food in your stockpille.</h3>
                     </article>
                 </div>
-  <div class="column"><CreateFoodForm /></div>
-</div>
+                <div class="column">
+                    <CreateFoodForm />
+                </div>
+            </div>
         </section>
     </main>
     <main v-else>
@@ -53,7 +55,7 @@ import CreateFoodForm from '@/components/Stockpile/CreateFoodForm.vue';
 export default {
     name: 'StockpilePage',
     components: { FoodComponent, CreateFoodForm },
-    created(){
+    created() {
         if (this.state.username) {
             this.$store.dispatch("refreshStockpile");
         }
@@ -91,11 +93,12 @@ section .createfreetform {
     background-color: #eee;
 
 }
+
 .row {
-  display: flex;
+    display: flex;
 }
 
 .column {
-  flex: 50%;
+    flex: 50%;
 }
 </style>

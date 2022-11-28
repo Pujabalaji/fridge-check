@@ -3,11 +3,11 @@
     <form @submit.prevent="submit">
         <h3>Create a Food:</h3>
         <article>
-            <div><label>Name: </label> <input v-model="name" placeholder=""/></div>
+            <div><label>Name: </label> <input v-model="name" placeholder="" /></div>
             <br>
-            <div><label>Expiration (MM/DD/YYYY): </label> <input v-model="expiration"  placeholder=""/></div>
+            <div><label>Expiration (MM/DD/YYYY): </label> <input v-model="expiration" placeholder="" /></div>
             <br>
-            <div><label>Quantity: </label> <input v-model="quantity" placeholder=""/></div>
+            <div><label>Quantity: </label> <input v-model="quantity" placeholder="" /></div>
             <br>
         </article>
         <button type="submit" :disabled="!(enableSubmit().status == 'ok')">
@@ -34,7 +34,7 @@ export default {
             quantity: "",
             alerts: {},
             callback: null,
-            refreshFoods:true
+            refreshFoods: true
         }
     },
     methods: {
@@ -81,16 +81,16 @@ export default {
                 const res = await r.json();
                 this.$store.dispatch("refreshStockpile");
                 options.callback();
-                this.name="";
-                this.quantity="";
-                this.expiration="";
-                this.$router.push({name: 'Stockpile'});
+                this.name = "";
+                this.quantity = "";
+                this.expiration = "";
+                this.$router.push({ name: 'Stockpile' });
             } catch (e) {
                 console.log(e);
                 this.$set(this.alerts, e, "error");
                 setTimeout(() => this.$delete(this.alerts, e), 3000);
             }
-            
+
         },
     },
 };

@@ -1,22 +1,22 @@
-import type {Types} from 'mongoose';
-import {Schema, model} from 'mongoose';
-import type {User} from '../user/model';
+import type { Types } from 'mongoose';
+import { Schema, model } from 'mongoose';
+import type { User } from '../user/model';
 
 export type Food = {
-  _id: Types.ObjectId; 
+  _id: Types.ObjectId;
   userId: User;
   dateCreated: Date;
-  quantity:number;
+  quantity: number;
   name: string;
   expiration: Date;
 };
 
 export type PopulatedFood = {
-  _id: Types.ObjectId; 
+  _id: Types.ObjectId;
   userId: User;
   dateCreated: Date;
   content: string;
-  quantity:number;
+  quantity: number;
   expiration: Date;
 };
 
@@ -39,7 +39,7 @@ const FoodSchema = new Schema<Food>({
     required: true
   },
   quantity: {
-    type:Number,
+    type: Number,
     required: true
   }
 });

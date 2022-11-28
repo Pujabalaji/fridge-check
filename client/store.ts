@@ -50,7 +50,7 @@ const store = new Vuex.Store({
       state.expiring = [];
       state.remainingFoods = [];
       state.foods = stockpile;
-      
+
       const date = new Date();
       var week = new Date();
       week.setDate(date.getDate() + 7);
@@ -65,7 +65,6 @@ const store = new Vuex.Store({
           state.remainingFoods.push(food);
         }
       }
-
     }
   },
   actions: {
