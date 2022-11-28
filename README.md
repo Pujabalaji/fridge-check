@@ -142,7 +142,15 @@ Vercel will automatically deploy the latest version of your code whenever a push
 
 - `name` _{string}_ - The food's name
 - `quantity` _{number}_ - The food's quantity
-- `expirationDate` _{date}_ - The food's expiration date (TODO: how do you handle foods with no expiration date)
+- `expiration` _{date}_ - The food's expiration date
+
+**Throws**
+
+- `403` if the user is not logged in
+- `400` if the food name is empty or a stream of empty spaces
+- `400` if the food quantity is less than 1
+- `400` if the expiration date is not the proper MM/DD/YYYY format
+- `413` if the expiration date is prior to today's date
 
 ### `PATCH /api/foods/:foodId` - Change quantity of a item or remove item
 
@@ -150,7 +158,22 @@ Vercel will automatically deploy the latest version of your code whenever a push
 
 - `quantity` _{number}_ - The food's updated quantity
 
+**Throws**
+
+- `403` if the user is not logged in
+- `404` if the foodId is not valid
+- `400` if the food quantity is less than 1
+
 ### `DELETE /api/foods/:foodId` - Remove food item from stockpile
+
+**Returns**
+
+- A success message
+
+**Throws**
+
+- `403` if the user is not logged in
+- `404` if the foodId is not valid
 
 ### `GET /api/listings` - Get all listings created by the current user
 
