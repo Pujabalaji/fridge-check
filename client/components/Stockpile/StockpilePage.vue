@@ -11,7 +11,7 @@
                         <FoodComponent v-for="food in $store.state.expired" :key="food._id" :food="food" />
                     </section>
                     <article v-else>
-                        <h3>No expired food in you fridge :)</h3>
+                        <h3>No expired food in your fridge :)</h3>
                     </article>
                     <h2>Expiring</h2>
                     <section v-if="$store.state.expiring.length">
@@ -54,7 +54,9 @@ export default {
     name: 'StockpilePage',
     components: { FoodComponent, CreateFoodForm },
     created(){
-        this.$store.dispatch("refreshStockpile");
+        if (this.state.username) {
+            this.$store.dispatch("refreshStockpile");
+        }
     }
 };
 </script>
