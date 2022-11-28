@@ -1,9 +1,11 @@
-<!-- Default page that also displays freets -->
+<!-- Default page that also displays stockpile -->
 
 <template>
     <main v-if="$store.state.username">
         <section>
-            <h2>My Stockpile</h2>
+            <header>
+                <h2>My Stockpile</h2>
+            </header>
             <div class="row">
   <div class="column">
   <h2>Expired</h2>
@@ -25,7 +27,7 @@
                         <FoodComponent v-for="food in $store.state.remainingFoods" :key="food._id" :food="food" />
                     </section>
                     <article v-else>
-                        <h3>There is no food in your stockpille.</h3>
+                        <h3>There is no food in your stockpile.</h3>
                     </article>
                 </div>
   <div class="column"><CreateFoodForm /></div>
@@ -54,7 +56,7 @@ export default {
     name: 'StockpilePage',
     components: { FoodComponent, CreateFoodForm },
     created(){
-        if (this.state.username) {
+        if (this.$store.state.username) {
             this.$store.dispatch("refreshStockpile");
         }
     }
@@ -65,37 +67,14 @@ export default {
 section {
     display: flex;
     flex-direction: column;
-
 }
 
-header,
-header>* {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-}
-
-button {
-    margin-right: 10px;
-}
-
-section .scrollbox {
-    flex: 1 0 50vh;
-    padding: 3%;
-    overflow-y: scroll;
-
-}
-
-section .createfreetform {
-    background-color: #eee;
-
-}
 .row {
   display: flex;
+  gap: 1em;
 }
 
 .column {
-  flex: 50%;
+  flex: 1;
 }
 </style>

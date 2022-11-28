@@ -12,10 +12,10 @@ const store = new Vuex.Store({
     username: null, // Username of the logged in user
     alerts: {}, // global success/error messages encountered during submissions to non-visible forms
     user: null,
-    expired: [],
-    expiring: [],
-    remainingFoods: [],
-    foods: [],
+    expired: [],  // foods that have expired for current user
+    expiring: [], // foods that will expire within a week for current user
+    remainingFoods: [], // foods that have not expired and will not expire in a week for current user
+    foods: [],  // all foods of current user
   },
   mutations: {
     alert(state, payload) {
@@ -71,7 +71,7 @@ const store = new Vuex.Store({
   actions: {
     async refreshStockpile({ commit, state }) {
       /**
-       * Request the server for the currently available freets.
+       * Request the server for the currently available foods of current user.
        */
       const url = '/api/foods';
       const res = await fetch(url).then(async r => r.json());

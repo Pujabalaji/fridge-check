@@ -1,5 +1,4 @@
-<!-- Reusable component representing a single freet and its actions -->
-<!-- We've tagged some elements with classes; consider writing CSS using those classes to style them... -->
+<!-- Reusable component representing a single food and its actions -->
 
 <template>
     <article class="food">
@@ -64,29 +63,29 @@ export default {
     },
     data() {
         return {
-            editing: false, // Whether or not this freet is in edit mode
-            alerts: {}, // Displays success/error messages encountered during freet modification
+            editing: false, // Whether or not this object is in edit mode
+            alerts: {}, // Displays success/error messages encountered during object modification
             draft: this.food.quantity,
         };
     },
     methods: {
         startEditing() {
             /**
-             * Enables edit mode on this freet.
+             * Enables edit mode on this object.
              */
-            this.editing = true; // Keeps track of if a freet is being edited
+            this.editing = true; // Keeps track of if a object is being edited
             this.draft = this.food.quantity; // The content of our current "draft" while being edited
         },
         stopEditing() {
             /**
-             * Disables edit mode on this freet.
+             * Disables edit mode on this object.
              */
             this.editing = false;
             this.draft = this.food.quantity;
         },
         deleteFood() {
             /**
-             * Deletes this freet.
+             * Deletes this object.
              */
             const params = {
                 method: 'DELETE',
@@ -105,7 +104,7 @@ export default {
         },
         submitEdit() {
             /**
-             * Updates freet to have the submitted draft content.
+             * Updates object to have the submitted draft content.
              */
             if (this.food.quantity === this.draft) {
                 const error = 'Error: Edited food quantity should be different than current food quantity.';
@@ -127,7 +126,7 @@ export default {
         },
         async request(params) {
             /**
-             * Submits a request to the freet's endpoint
+             * Submits a request to the object's endpoint
              * @param params - Options for the request
              * @param params.body - Body for the request, if it exists
              * @param params.callback - Function to run if the the request succeeds
