@@ -30,7 +30,7 @@ export default {
       ],
       title: 'Change email',
       callback: () => {
-        const message = 'Successfully changed contact info!';
+        const message = 'Successfully changed email!';
         this.$set(this.alerts, message, 'success');
         setTimeout(() => this.$delete(this.alerts, message), 3000);
       }

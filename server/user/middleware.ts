@@ -73,7 +73,7 @@ const isValidPassword = (req: Request, res: Response, next: NextFunction) => {
  const isValidContactInfo = (req: Request, res: Response, next: NextFunction) => {
   if ("contactInfo" in req.body && !(req.body.contactInfo.length >= 1)) {
     res.status(400).json({
-      error: 'You must provide contact info.'
+      error: 'You must provide an email address.'
     });
     return;
   }
