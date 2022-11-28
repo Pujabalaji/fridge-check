@@ -17,9 +17,8 @@ class FoodCollection {
     const date = new Date();
     const [month, day, year] = expiration.split('/');
     const expirationDate = new Date(+year, +month - 1, +day);
-    const user = await UserCollection.findOneByUserId(userId);
     const food = new FoodModel({
-      userId: user,
+      userId,
       dateCreated: date,
       quantity,
       name,
@@ -66,8 +65,8 @@ class FoodCollection {
    * @param {number} quantity - The new quantity of the food
    * @return {Promise<HydratedDocument<Food>>} - The newly updated food
    */
-  static async updateOne(freetId: Types.ObjectId | string, quantity: number): Promise<HydratedDocument<Food>> {
-    const food = await FoodModel.findOne({_id: freetId});
+  static async updateOne(foodId: Types.ObjectId | string, quantity: number): Promise<HydratedDocument<Food>> {
+    const food = await FoodModel.findOne({_id: foodId});
     food.quantity = quantity;
     await food.save();
     return food.populate('userId');

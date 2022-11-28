@@ -20,7 +20,7 @@ const router = express.Router();
 router.get(
     '/',
     [
-        userValidator.isCurrentSessionUserExists
+      userValidator.isUserLoggedIn
     ],
     async (req: Request, res: Response) => {
         const userId = (req.session.userId as string) ?? '';
@@ -41,7 +41,7 @@ router.get(
  * @return {FoodResponse} - The created food
  * @throws {403} - If the user is not logged in
  * @throws {400} - If the food name is empty or a stream of empty spaces
- * @throws {400} - If the food quantity is less than 1
+ * @throws {400} - If the food quantity is less than 1 or invalid
  * @throws {400} - If the expiration date is not the proper MM/DD/YYYY format
  * @throws {413} - If the expiration date is prior to today's date
  */

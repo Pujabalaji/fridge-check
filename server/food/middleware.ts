@@ -16,10 +16,11 @@ const isFoodExists = async (req: Request, res: Response, next: NextFunction) => 
 };
 
 const isValidFoodQuantity = (req: Request, res: Response, next: NextFunction) => {
-    const quantity = (req.body.quantity as number) ?? 0;
-    if (quantity <= 0) {
+    const quantity = Number(req.body.quantity);
+
+    if (!Number.isInteger(quantity) || quantity <= 0) {
         res.status(400).json({
-            error: 'Quantity must be a greater than 0.'
+            error: 'Quantity must be an integer greater than 0.'
         });
         return;
     }

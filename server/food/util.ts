@@ -4,7 +4,7 @@ import type { Food } from './model';
 
 type FoodResponse = {
     _id: string;
-    userId: string;
+    username: string;
     dateCreated: string;
     quantity: number;
     name: string;
@@ -34,13 +34,12 @@ const constructFoodResponse = (food: HydratedDocument<Food>): FoodResponse => {
         })
     };
     const { username } = foodCopy.userId;
+    delete foodCopy.userId;
     return {
         ...foodCopy,
         _id: foodCopy._id.toString(),
-        userId: username,
+        username,
         dateCreated: formatDate(food.dateCreated),
-        name: foodCopy.name,
-        quantity: foodCopy.quantity,
         expiration: formatDate(food.expiration),
         rawExpiration: foodCopy.expiration,
     };

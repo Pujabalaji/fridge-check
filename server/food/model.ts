@@ -11,15 +11,6 @@ export type Food = {
   expiration: Date;
 };
 
-export type PopulatedFood = {
-  _id: Types.ObjectId; 
-  userId: User;
-  dateCreated: Date;
-  content: string;
-  quantity:number;
-  expiration: Date;
-};
-
 const FoodSchema = new Schema<Food>({
   userId: {
     type: Schema.Types.ObjectId,
