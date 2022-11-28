@@ -16,6 +16,12 @@
       </router-link>
       <router-link
         v-if="$store.state.username"
+        to="/stockpile"
+      >
+        Stockpile
+      </router-link>
+      <router-link
+        v-if="$store.state.username"
         to="/account"
       >
         Account

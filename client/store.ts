@@ -12,6 +12,10 @@ const store = new Vuex.Store({
     username: null, // Username of the logged in user
     alerts: {}, // global success/error messages encountered during submissions to non-visible forms
     user: null,
+    expired: [],
+    expiring: [],
+    remainingFoods: [],
+    foods: [],
   },
   mutations: {
     alert(state, payload) {
@@ -36,6 +40,42 @@ const store = new Vuex.Store({
        * @param user - new user to set
        */
       state.user = user;
+    },
+    updateStockpile(state, stockpile) {
+      /**
+       * Update the stored stockpile for the user.
+       * @param stockpile - new stockpile to set
+       */
+      state.expired = [];
+      state.expiring = [];
+      state.remainingFoods = [];
+      state.foods = stockpile;
+      
+      const date = new Date();
+      var week = new Date();
+      week.setDate(date.getDate() + 7);
+
+      for (const food of stockpile) {
+        var foodDate = new Date(food.rawExpiration);
+        if (foodDate <= date) {
+          state.expired.push(food);
+        } else if (foodDate <= week) {
+          state.expiring.push(food);
+        } else {
+          state.remainingFoods.push(food);
+        }
+      }
+
+    }
+  },
+  actions: {
+    async refreshStockpile({ commit, state }) {
+      /**
+       * Request the server for the currently available freets.
+       */
+      const url = '/api/foods';
+      const res = await fetch(url).then(async r => r.json());
+      commit('updateStockpile', res);
     },
   },
   // Store data across page refreshes, only discard on browser close
