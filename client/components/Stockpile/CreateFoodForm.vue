@@ -51,7 +51,7 @@ export default {
                 errorToDisplay = "Date must be a MM/DD/YYYY format.";
                 status = "error";
             } else if (!quantityRegex.test(this.quantity)) {
-                errorToDisplay = "Quantity must be a number greater than 0.";
+                errorToDisplay = "Quantity must be an integer greater than 0.";
                 status = "error";
             }
             return { status: status, errorToDisplay: errorToDisplay };
