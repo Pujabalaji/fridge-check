@@ -41,11 +41,10 @@ export default {
         enableSubmit() {
             let status = "ok";
             let errorToDisplay = "";
-            const nameRegex = /^\w+$/i;
             const dateRegex = /^\d{2}\/\d{2}\/\d{4}$/;
             const quantityRegex = /^[1-9][0-9]*$/;
-            if (!nameRegex.test(this.name)) {
-                errorToDisplay = "Food name must be a nonempty alphanumeric string.";;
+            if (this.name.length==0) {
+                errorToDisplay = "Food name must be a nonempty string.";;
                 status = "error";
             } else if (!dateRegex.test(this.expiration)) {
                 errorToDisplay = "Date must be a MM/DD/YYYY format.";

@@ -22,7 +22,7 @@
                     <article v-else>
                         <h3>No food about to expire :)</h3>
                     </article>
-                    <h2>Stockpile</h2>
+                    <h2>Food not expiring soon</h2>
                     <section v-if="$store.state.remainingFoods.length">
                         <FoodComponent v-for="food in $store.state.remainingFoods" :key="food._id" :food="food" />
                     </section>
