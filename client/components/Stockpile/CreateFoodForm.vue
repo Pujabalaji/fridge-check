@@ -3,11 +3,11 @@
     <form @submit.prevent="submit">
         <h3>Create a Food:</h3>
         <article>
-            <div><label>Name: </label> <input v-model="name" placeholder="Milk"/></div>
+            <div><label>Name: </label> <input v-model="name" placeholder="Milk" /></div>
             <br>
-            <div><label>Expiration (MM/DD/YYYY): </label> <input v-model="expiration"  placeholder="01/20/2023"/></div>
+            <div><label>Expiration (MM/DD/YYYY): </label> <input v-model="expiration" placeholder="01/20/2023" /></div>
             <br>
-            <div><label>Quantity: </label> <input v-model="quantity" placeholder="2"/></div>
+            <div><label>Quantity: </label> <input v-model="quantity" placeholder="2" /></div>
             <br>
         </article>
         <button type="submit" :disabled="!(enableSubmit().status == 'ok')">
@@ -42,15 +42,15 @@ export default {
             let status = "ok";
             let errorToDisplay = "";
             const dateRegex = /^\d{2}\/\d{2}\/\d{4}$/;
-            const quantityRegex = /^[1-9][0-9]*$/;
-            if (this.name.length==0) {
+            const quantityRegex = /^(?=.*[1-9])\d*(?:\.\d{1,2})?$|^([1-9][0-9]*)\/[1-9][0-9]*|^[1-9][0-9]*$/;
+            if (this.name.length == 0) {
                 errorToDisplay = "Food name must be a nonempty string.";;
                 status = "error";
             } else if (!dateRegex.test(this.expiration)) {
                 errorToDisplay = "Date must be a MM/DD/YYYY format.";
                 status = "error";
             } else if (!quantityRegex.test(this.quantity)) {
-                errorToDisplay = "Quantity must be an integer greater than 0.";
+                errorToDisplay = "Quantity must be an number greater than 0.";
                 status = "error";
             }
             return { status: status, errorToDisplay: errorToDisplay };
@@ -83,7 +83,6 @@ export default {
                 this.name = "";
                 this.quantity = "";
                 this.expiration = "";
-                this.$router.push({ name: 'Stockpile' });
             } catch (e) {
                 console.log(e);
                 this.$set(this.alerts, e, "error");
