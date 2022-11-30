@@ -13,14 +13,15 @@
                 Units:
                 <select name="unit" id="unit" v-model="unit">
                     <option value=""> </option>
-                    <option value="Oz">Oz </option>
-                    <option value="g">g </option>
-                    <option value="Tsp">Tsp</option>
-                    <option value="Tbsp">Tbsp</option>
-                    <option value="Cups">Cups</option>
-                    <option value="Pints">Pints </option>
-                    <option value="Quarts">Quarts</option>
-                    <option value="Gallons">Gallons</option>
+                    <option value="sticks">Sitcks</option>
+                    <option value="oz">Oz</option>
+                    <option value="g">g</option>
+                    <option value="tsps">Tsp</option>
+                    <option value="tbsps">Tbsp</option>
+                    <option value="cups">Cups</option>
+                    <option value="pints">Pints </option>
+                    <option value="quarts">Quarts</option>
+                    <option value="gallons">Gallons</option>
                 </select>
             </div>
         </article>

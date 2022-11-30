@@ -2,7 +2,7 @@ import type { Types } from 'mongoose';
 import { Schema, model } from 'mongoose';
 import type { User } from '../user/model';
 
-export const standardUnits = ["Gallons", "Cups", "Quarts", "Pints", "Oz", "g", "Tsp", "Tbsp", ""] as const;
+export const standardUnits = ["gallons", "cups", "quarts", "pints", "oz", "g", "tsps", "tbsps", "", "sticks"] as const;
 export type Unit = typeof standardUnits[number];
 
 export type Food = {
