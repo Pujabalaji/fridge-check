@@ -4,7 +4,7 @@
     <article class="food">
         <header v-if="!editing">
             <h3 class="name">
-                {{ food.name }} ( x{{ food.quantity }}) Expires on: {{ food.expiration }}
+                {{ food.name }} ( x{{ food.quantity }} {{ food.unit }}) Expires on: {{ food.expiration }}
             </h3>
 
             <div class="actions">
@@ -22,7 +22,9 @@
         <header v-else>
             <h3 class="name">
                 {{ food.name }} ( x
-                <textarea v-if="editing" class="quantity" :value="draft" @input="draft = $event.target.value" />)
+                <textarea v-if="editing" class="quantity" :value="draft" @input="draft = $event.target.value" />{{
+                        food.unit
+                }})
                 Expires on: {{ food.expiration }}
             </h3>
 

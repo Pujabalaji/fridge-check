@@ -1,6 +1,8 @@
 import type { Request, Response, NextFunction } from 'express';
 import { Types } from 'mongoose';
 import FoodCollection from './collection';
+import { standardUnits } from './model';
+
 
 const isFoodExists = async (req: Request, res: Response, next: NextFunction) => {
     const validFormat = Types.ObjectId.isValid(req.params.foodId);
@@ -56,6 +58,16 @@ const isValidFoodName = async (req: Request, res: Response, next: NextFunction) 
     next();
 };
 
+const isValidFoodUnit = (req: Request, res: Response, next: NextFunction) => {
+    if ("unit" in req.body && !standardUnits.includes(req.body.unit)) {
+        res.status(400).json({
+            error: 'Units must be a valid unit of measurement used in a kitchen.'
+        });
+        return;
+    }
+    next();
+};
+
 const isValidFoodModifier = async (req: Request, res: Response, next: NextFunction) => {
     const food = await FoodCollection.findOne(req.params.foodId);
     const userId = food.userId._id;
@@ -74,4 +86,5 @@ export {
     isValidFoodExpiration,
     isValidFoodQuantity,
     isValidFoodName,
+    isValidFoodUnit,
 };

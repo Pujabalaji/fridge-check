@@ -51,12 +51,13 @@ router.post(
         userValidator.isUserLoggedIn,
         foodValidator.isValidFoodName,
         foodValidator.isValidFoodExpiration,
-        foodValidator.isValidFoodQuantity
+        foodValidator.isValidFoodQuantity,
+        foodValidator.isValidFoodUnit
     ],
     async (req: Request, res: Response) => {
         const userId = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
-        const quantity = (req.body.quantity as number) ?? 0;
-        const food = await FoodCollection.addOne(userId, req.body.name, quantity, req.body.expiration);
+        const quantity = eval(req.body.quantity);
+        const food = await FoodCollection.addOne(userId, req.body.name, quantity, req.body.expiration, req.body.unit);
         res.status(201).json({
             message: 'Your food was created successfully.',
             food: util.constructFoodResponse(food)

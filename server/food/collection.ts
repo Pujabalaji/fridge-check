@@ -1,5 +1,5 @@
 import type { HydratedDocument, Types } from 'mongoose';
-import type { Food } from './model';
+import type { Food, Unit } from './model';
 import FoodModel from './model';
 import UserCollection from '../user/collection';
 
@@ -13,7 +13,7 @@ class FoodCollection {
    * @param {string} name - The name of the food
    * @return {Promise<HydratedDocument<Food>>} - The newly created food
    */
-  static async addOne(userId: Types.ObjectId | string, name: string, quantity:Number, expiration:string): Promise<HydratedDocument<Food>> {
+  static async addOne(userId: Types.ObjectId | string, name: string, quantity:Number, expiration:string, unit:Unit): Promise<HydratedDocument<Food>> {
     const date = new Date();
     const [month, day, year] = expiration.split('/');
     const expirationDate = new Date(+year, +month - 1, +day);
@@ -22,7 +22,8 @@ class FoodCollection {
       dateCreated: date,
       quantity,
       name,
-      expiration: expirationDate
+      expiration: expirationDate,
+      unit
     });
     await food.save();
     return food.populate('userId');

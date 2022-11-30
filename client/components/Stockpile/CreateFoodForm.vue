@@ -9,6 +9,20 @@
             <br>
             <div><label>Quantity: </label> <input v-model="quantity" placeholder="2" /></div>
             <br>
+            <div>
+                Units:
+                <select name="unit" id="unit" v-model="unit">
+                    <option value=""> </option>
+                    <option value="Oz">Oz </option>
+                    <option value="g">g </option>
+                    <option value="Tsp">Tsp</option>
+                    <option value="Tbsp">Tbsp</option>
+                    <option value="Cups">Cups</option>
+                    <option value="Pints">Pints </option>
+                    <option value="Quarts">Quarts</option>
+                    <option value="Gallons">Gallons</option>
+                </select>
+            </div>
         </article>
         <button type="submit" :disabled="!(enableSubmit().status == 'ok')">
             Create food
@@ -32,6 +46,7 @@ export default {
             name: "",
             expiration: "",
             quantity: "",
+            unit: "",
             alerts: {},
             callback: null,
             refreshFoods: true
@@ -63,7 +78,7 @@ export default {
                 method: 'POST',
                 headers: { "Content-Type": "application/json" },
                 credentials: "same-origin", // Sends express-session credentials with request
-                body: JSON.stringify({ name: this.name, quantity: this.quantity, expiration: this.expiration }),
+                body: JSON.stringify({ name: this.name, quantity: this.quantity, expiration: this.expiration, unit: this.unit }),
                 message: "Successfully created food",
                 callback: () => {
                     this.$set(this.alerts, "Successfully created food", "success");
@@ -83,6 +98,7 @@ export default {
                 this.name = "";
                 this.quantity = "";
                 this.expiration = "";
+                this.unit = "";
             } catch (e) {
                 console.log(e);
                 this.$set(this.alerts, e, "error");

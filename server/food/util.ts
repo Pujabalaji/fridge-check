@@ -1,6 +1,6 @@
 import type { HydratedDocument } from 'mongoose';
 import moment from 'moment';
-import type { Food } from './model';
+import type { Food, Unit } from './model';
 
 type FoodResponse = {
     _id: string;
@@ -10,6 +10,7 @@ type FoodResponse = {
     name: string;
     expiration: string;
     rawExpiration: Date;
+    unit: Unit;
 };
 
 /**
@@ -42,6 +43,7 @@ const constructFoodResponse = (food: HydratedDocument<Food>): FoodResponse => {
         dateCreated: formatDate(food.dateCreated),
         expiration: formatDate(food.expiration),
         rawExpiration: foodCopy.expiration,
+        unit: foodCopy.unit,
     };
 };
 
