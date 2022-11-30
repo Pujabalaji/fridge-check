@@ -3,6 +3,7 @@ import VueRouter from 'vue-router';
 import AccountPage from './components/Account/AccountPage.vue';
 import LoginPage from './components/Login/LoginPage.vue';
 import HomePage from './components/Home/HomePage.vue';
+import RecipePage from './components/Recipe/RecipePage.vue';
 import StockpilePage from './components/Stockpile/StockpilePage.vue';
 import NotFound from './NotFound.vue';
 
@@ -13,6 +14,7 @@ const routes = [
   { path: '/account', name: 'Account', component: AccountPage },
   { path: '/login', name: 'Login', component: LoginPage },
   { path: '/stockpile', name: 'Stockpile', component: StockpilePage },
+  { path: '/recipe', name: 'Recipe', component: RecipePage },
   { path: '*', name: 'Not Found', component: NotFound }
 ];
 
