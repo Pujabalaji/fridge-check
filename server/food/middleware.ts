@@ -1,6 +1,7 @@
 import type { Request, Response, NextFunction } from 'express';
 import { Types } from 'mongoose';
 import FoodCollection from './collection';
+import { standardUnits } from './model';
 
 
 const isFoodExists = async (req: Request, res: Response, next: NextFunction) => {
@@ -16,9 +17,8 @@ const isFoodExists = async (req: Request, res: Response, next: NextFunction) => 
 };
 
 const isValidFoodQuantity = (req: Request, res: Response, next: NextFunction) => {
-    const quantity = Number(req.body.quantity);
-
-    if (!Number.isInteger(quantity) || quantity <= 0) {
+    const quantityRegex = /^(?=.*[1-9])\d*(?:\.\d{1,2})?$|^([1-9][0-9]*)\/[1-9][0-9]*|^[1-9][0-9]*$/;
+    if (!quantityRegex.test(req.body.quantity) && eval(req.body.quantity) <= 0) {
         res.status(400).json({
             error: 'Quantity must be an integer greater than 0.'
         });
@@ -58,6 +58,16 @@ const isValidFoodName = async (req: Request, res: Response, next: NextFunction) 
     next();
 };
 
+const isValidFoodUnit = (req: Request, res: Response, next: NextFunction) => {
+    if ("unit" in req.body && !standardUnits.includes(req.body.unit)) {
+        res.status(400).json({
+            error: 'Units must be a valid unit of measurement used in a kitchen.'
+        });
+        return;
+    }
+    next();
+};
+
 const isValidFoodModifier = async (req: Request, res: Response, next: NextFunction) => {
     const food = await FoodCollection.findOne(req.params.foodId);
     const userId = food.userId._id;
@@ -75,5 +85,6 @@ export {
     isValidFoodModifier,
     isValidFoodExpiration,
     isValidFoodQuantity,
-    isValidFoodName
+    isValidFoodName,
+    isValidFoodUnit,
 };

@@ -4,7 +4,7 @@
     <article class="food">
         <header v-if="!editing">
             <h3 class="name">
-                {{ food.name }} (x{{ food.quantity }}) Expires on: {{ food.expiration }}
+                {{ food.name }} ( x{{ food.quantity }} {{ food.unit }}) Expires on: {{ food.expiration }}
             </h3>
 
             <div class="actions">
@@ -14,15 +14,17 @@
                 <button @click="deleteFood">
                     🗑️ Delete
                 </button>
-                <button @click="createListing">
+                <button v-if=!food.prepared @click="createListing">
                     Create Listing
                 </button>
             </div>
         </header>
         <header v-else>
             <h3 class="name">
-                {{ food.name }} (x
-                <textarea v-if="editing" class="quantity" :value="draft" @input="draft = $event.target.value" />)
+                {{ food.name }} ( x
+                <textarea v-if="editing" class="quantity" :value="draft" @input="draft = $event.target.value" />{{
+                        food.unit
+                }})
                 Expires on: {{ food.expiration }}
             </h3>
 
@@ -36,7 +38,7 @@
                 <button @click="deleteFood">
                     🗑️ Delete
                 </button>
-                <button @click="createListing">
+                <button v-if=!food.prepared @click="createListing">
                     Create Listing
                 </button>
             </div>
@@ -105,7 +107,7 @@ export default {
             /**
              * Updates object to have the submitted draft content.
              */
-            const quantityRegex = /^[1-9][0-9]*$/;
+            const quantityRegex = /^(?=.*[1-9])\d*(?:\.\d{1,2})?$|^([1-9][0-9]*)\/[1-9][0-9]*|^[1-9][0-9]*$/;
             if (this.food.quantity === this.draft) {
                 const error = 'Error: Edited food quantity should be different than current food quantity.';
                 this.$set(this.alerts, error, 'error'); // Set an alert to be the error text, timeout of 3000 ms
