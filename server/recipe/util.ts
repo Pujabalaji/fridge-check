@@ -1,4 +1,4 @@
-import { Dictionary } from "vue-router/types/router";
+import UserCollection from '../user/collection';
 
 type RecipeIngredient = {
   _id: number;
@@ -28,17 +28,17 @@ type RecipeResponse = {
  * @param {Object} recipe - a recipe response from the api
  * @returns {RecipeResponse} - The recipe object
  */
-const constructSuggestedRecipeResponse = (recipe: Dictionary<any>): RecipeResponse => {
+const constructSuggestedRecipeResponse = (recipe: Record<any, any>): RecipeResponse => {
   // Find all used ingredients, if any
   const usedIds = new Set<number>;
-  const usedNames:Array<string> = [];
+  const usedNames: Array<string> = [];
   for (const ingredient of recipe.usedIngredients) {
     usedIds.add(ingredient.id);
     usedNames.push(ingredient.name);
   }
-  
+
   // Create recipe ingredients
-  const ingredients = recipe.extendedIngredients.map((ingredient: Dictionary<any>) => {
+  const ingredients = recipe.extendedIngredients.map((ingredient: Record<any, any>) => {
     return {
       _id: ingredient.id,
       name: ingredient.name !== ingredient.nameClean ? [ingredient.name, ingredient.nameClean] : [ingredient.name],
@@ -67,9 +67,9 @@ const constructSuggestedRecipeResponse = (recipe: Dictionary<any>): RecipeRespon
  * @param {Object} recipe - a recipe response from the api
  * @returns {RecipeResponse} - The recipe object
  */
- const constructQueryRecipeResponse = (recipe: Dictionary<any>): RecipeResponse => {
+const constructQueryRecipeResponse = (recipe: Record<any, any>): RecipeResponse => {
   // Create recipe ingredients
-  const ingredients = recipe.extendedIngredients.map((ingredient: Dictionary<any>) => {
+  const ingredients = recipe.extendedIngredients.map((ingredient: Record<any, any>) => {
     return {
       _id: ingredient.id,
       name: ingredient.name !== ingredient.nameClean ? [ingredient.name, ingredient.nameClean] : [ingredient.name],
@@ -88,7 +88,50 @@ const constructSuggestedRecipeResponse = (recipe: Dictionary<any>): RecipeRespon
   };
 };
 
+const constructUrlWithParams = (params: Record<string, string>): string => {
+  let url = `https://api.spoonacular.com/recipes/complexSearch?apiKey=${process.env.API_KEY}`;
+
+  for (const [key, value] of Object.entries(params)) {
+    url += `&${key}=${value}`;
+  }
+
+  return url;
+}
+
+const addUserInformationToParams = async (params: Record<string, string>, userId: string): Promise<void> => {
+  // Add intolerances
+  const user = await UserCollection.findOneByUserId(userId);
+  if (user.allergies.length) {
+    let intoleranceStr = '';
+    user.allergies.forEach((value, index) => {
+      if (index == 0) {
+        intoleranceStr += value;
+      } else {
+        intoleranceStr += `, ${value}`;
+      }
+    });
+
+    params.intolerances = intoleranceStr;
+  }
+
+  // Add diets
+  if (user.otherDietaryRestrictions.length) {
+    let dietStr = '';
+    user.otherDietaryRestrictions.forEach((value, index) => {
+      if (index == 0) {
+        dietStr += value;
+      } else {
+        dietStr += `, ${value}`;
+      }
+    });
+
+    params.diet = dietStr;
+  }
+}
+
 export {
   constructSuggestedRecipeResponse,
-  constructQueryRecipeResponse
+  constructQueryRecipeResponse,
+  constructUrlWithParams,
+  addUserInformationToParams,
 };
