@@ -197,7 +197,7 @@ Vercel will automatically deploy the latest version of your code whenever a push
 
 ### `GET /api/follows/listings` - Get all listings in communities that the currently user follows
 
-### `POST /api/follows` - Follow a community
+### `PUT /api/follows` - Follow a community
 
 ### `DELETE /api/follows/:communityName` - Unfollow a community
 
