@@ -20,6 +20,7 @@ type RecipeResponse = {
   source: string;
   usedCount?: number;
   usedNames?: string[];
+  expiringCount?: number;
 };
 
 
@@ -35,27 +36,31 @@ const constructSuggestedRecipeResponse = (stockpile: Array<HydratedDocument<Food
   // Find all used ingredient name and ids
   const usedIds = new Set<number>;
   const usedNames: Array<string> = [];
-  console.log('here');
-  console.log(recipe);
   for (const ingredient of recipe.usedIngredients) {
     usedIds.add(ingredient.id);
     usedNames.push(ingredient.name);
   }
-  console.log('after');
 
   // Create recipe ingredients with match to stockpile
-  const ingredients: RecipeIngredient[] = recipe.extendedIngredients.map((ingredient: Record<any, any>) => {
+  let week = new Date();
+  week.setDate(week.getDate() + 7);
+  let expiringCount = 0;
+  const ingredients:RecipeIngredient[] = [];
+  
+  recipe.extendedIngredients.forEach((ingredient: Record<any, any>) => {
     // name contains both name and nameClean, if they differ
     const recipeIngredientNames = ingredient.name !== ingredient.nameClean ? [ingredient.name, ingredient.nameClean] : [ingredient.name];
-    const matches = stockpile.filter((stockpileIngredient) => recipeIngredientNames.some((recipeIngredientName) => recipeIngredientName.includes(stockpileIngredient.name.toLowerCase())));
-    return {
+    const stockpileMatches = stockpile.filter((stockpileIngredient) => recipeIngredientNames.some((recipeIngredientName) => recipeIngredientName.includes(stockpileIngredient.name.toLowerCase())));
+    expiringCount += stockpileMatches.reduce((prev, curr) => (curr.expiration <= week) ? prev + 1 : prev, 0);
+
+    ingredients.push({
       _id: ingredient.id,
       name: recipeIngredientNames,
       amount: ingredient.amount,
       unit: ingredient.unit,
       status: (usedIds.has(ingredient.id)) ? "used" : "missing",
-      matches,
-    };
+      stockpileMatches,
+    });
   });
 
   return {
@@ -66,7 +71,8 @@ const constructSuggestedRecipeResponse = (stockpile: Array<HydratedDocument<Food
     instructions: recipe.analyzedInstructions.length ? recipe.analyzedInstructions[0].steps.map((step: any) => { return step.step; }) : [],
     source: recipe.sourceUrl,
     usedCount: recipe.usedIngredientCount,
-    usedNames: usedNames
+    usedNames: usedNames,
+    expiringCount
   };
 };
 

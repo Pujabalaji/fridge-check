@@ -29,8 +29,9 @@ router.get(
     };
 
     // Add ingredients
-    const stockpile = await FoodCollection.findAllByUser(userId);
-    const names = stockpile.filter(food => !food.prepared && (food.expiration >= today)).map((food) => food.name);
+    const fullStockpile = await FoodCollection.findAllByUser(userId);
+    const filteredStockpile = fullStockpile.filter(food => !food.prepared && (food.expiration > today));
+    const names = filteredStockpile.map((food) => food.name);
     if (names.length) {
       const ingredients = names.reduce((prev: string, current: string) => prev + ',+' + current);
 
@@ -39,6 +40,7 @@ router.get(
     }
 
     await util.addUserInformationToParams(params, userId);
+    params.number = "1";
     const url = util.constructUrlWithParams(params)
 
     const r = await fetch(url);
@@ -49,7 +51,7 @@ router.get(
       return;
     }
 
-    const response = apiRes.results.map((recipe: Record<any, any>) => util.constructSuggestedRecipeResponse(stockpile, recipe));
+    const response = apiRes.results.map((recipe: Record<any, any>) => util.constructSuggestedRecipeResponse(filteredStockpile, recipe));
     res.status(200).json(response);
     return;
   }
