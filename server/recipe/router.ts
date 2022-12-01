@@ -49,7 +49,7 @@ router.get(
       return;
     }
 
-    const response = apiRes.results.map(util.constructSuggestedRecipeResponse);
+    const response = apiRes.results.map((recipe: Record<any, any>) => util.constructSuggestedRecipeResponse(stockpile, recipe));
     res.status(200).json(response);
     return;
   }

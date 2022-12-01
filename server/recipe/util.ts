@@ -1,3 +1,5 @@
+import type { HydratedDocument } from 'mongoose';
+import type { Food } from '../food/model';
 import UserCollection from '../user/collection';
 
 type RecipeIngredient = {
@@ -5,7 +7,8 @@ type RecipeIngredient = {
   name: string[];
   amount: number;
   unit: string;
-  status?: string;
+  status?: string; // either 'used' or 'missing'
+  stockpileMatches?: HydratedDocument<Food>[];
 }
 
 type RecipeResponse = {
@@ -28,23 +31,30 @@ type RecipeResponse = {
  * @param {Object} recipe - a recipe response from the api
  * @returns {RecipeResponse} - The recipe object
  */
-const constructSuggestedRecipeResponse = (recipe: Record<any, any>): RecipeResponse => {
-  // Find all used ingredients, if any
+const constructSuggestedRecipeResponse = (stockpile: Array<HydratedDocument<Food>>, recipe: Record<any, any>): RecipeResponse => {
+  // Find all used ingredient name and ids
   const usedIds = new Set<number>;
   const usedNames: Array<string> = [];
+  console.log('here');
+  console.log(recipe);
   for (const ingredient of recipe.usedIngredients) {
     usedIds.add(ingredient.id);
     usedNames.push(ingredient.name);
   }
+  console.log('after');
 
-  // Create recipe ingredients
-  const ingredients = recipe.extendedIngredients.map((ingredient: Record<any, any>) => {
+  // Create recipe ingredients with match to stockpile
+  const ingredients: RecipeIngredient[] = recipe.extendedIngredients.map((ingredient: Record<any, any>) => {
+    // name contains both name and nameClean, if they differ
+    const recipeIngredientNames = ingredient.name !== ingredient.nameClean ? [ingredient.name, ingredient.nameClean] : [ingredient.name];
+    const matches = stockpile.filter((stockpileIngredient) => recipeIngredientNames.some((recipeIngredientName) => recipeIngredientName.includes(stockpileIngredient.name.toLowerCase())));
     return {
       _id: ingredient.id,
-      name: ingredient.name !== ingredient.nameClean ? [ingredient.name, ingredient.nameClean] : [ingredient.name],
+      name: recipeIngredientNames,
       amount: ingredient.amount,
       unit: ingredient.unit,
       status: (usedIds.has(ingredient.id)) ? "used" : "missing",
+      matches,
     };
   });
 
