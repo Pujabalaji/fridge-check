@@ -30,7 +30,11 @@
                         <h3>There is no food in your stockpile.</h3>
                     </article>
                 </div>
-                <div class="column">
+                <div v-if="$store.state.currentFood" class="column">
+                    <CreateListingForm />
+                    <CreateFoodForm />
+                </div>
+                <div v-else class="column">
                     <CreateFoodForm />
                 </div>
             </div>
@@ -53,10 +57,11 @@
 <script>
 import FoodComponent from '@/components/Stockpile/FoodComponent.vue';
 import CreateFoodForm from '@/components/Stockpile/CreateFoodForm.vue';
+import CreateListingForm from '@/components/Listings/CreateListingForm.vue';
 
 export default {
     name: 'StockpilePage',
-    components: { FoodComponent, CreateFoodForm },
+    components: { FoodComponent, CreateFoodForm, CreateListingForm },
     created(){
         if (this.$store.state.username) {
             this.$store.dispatch("refreshStockpile");
