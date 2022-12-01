@@ -18,14 +18,27 @@
         </section>
       </div>
       <div class="recipes">
-        <section v-if="displaySuggested || displayByName">
-          <h3 v-if="displaySuggested">
-            Showing recipes using ingredients you have:
-          </h3>
-          <h3 v-else>Showing recipes for "{{ searchText }}":</h3>
-          <div v-if="displayRecipes.length">
+        <section v-if="selected">
+          <h3>Showing recipe details:</h3>
+          <RecipeDetailsComponent :recipe="selected" />
+        </section>
+        <section v-else-if="displaySuggested">
+          <h3>Showing recipes using ingredients you have:</h3>
+          <div v-if="suggestedRecipes.length">
             <RecipeComponent
-              v-for="recipe in displayRecipes"
+              v-for="recipe in suggestedRecipes"
+              :key="recipe._id"
+              :recipe="recipe"
+              v-model="selected"
+            />
+          </div>
+          <h4 v-else>No results found</h4>
+        </section>
+        <section v-else-if="displayByName">
+          <h3>Showing recipes for "{{ searchText }}":</h3>
+          <div v-if="nameRecipes.length">
+            <RecipeComponent
+              v-for="recipe in nameRecipes"
               :key="recipe._id"
               :recipe="recipe"
             />
@@ -39,10 +52,11 @@
 
 <script>
 import RecipeComponent from "@/components/Recipe/RecipeComponent.vue";
+import RecipeDetailsComponent from "@/components/Recipe/RecipeDetailsComponent.vue";
 
 export default {
   name: "RecipePage",
-  components: { RecipeComponent },
+  components: { RecipeComponent, RecipeDetailsComponent },
   data() {
     return {
       suggestedRecipes: [],
@@ -50,17 +64,8 @@ export default {
       searchText: "",
       displaySuggested: false,
       displayByName: false,
+      selected: undefined,
     };
-  },
-  computed: {
-    displayRecipes() {
-      if (this.displaySuggested) {
-        return this.suggestedRecipes;
-      } else if (this.displayByName) {
-        return this.nameRecipes;
-      }
-      return [];
-    },
   },
   created() {
     if (this.$store.state.username) {
