@@ -14,7 +14,7 @@
                 <button @click="deleteFood">
                     🗑️ Delete
                 </button>
-                <button @click="createListing">
+                <button v-if=!food.prepared @click="createListing">
                     Create Listing
                 </button>
             </div>
@@ -38,7 +38,7 @@
                 <button @click="deleteFood">
                     🗑️ Delete
                 </button>
-                <button @click="createListing">
+                <button v-if=!food.prepared @click="createListing">
                     Create Listing
                 </button>
             </div>

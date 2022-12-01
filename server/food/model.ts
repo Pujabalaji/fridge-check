@@ -13,6 +13,7 @@ export type Food = {
   name: string;
   expiration: Date;
   unit: Unit;
+  prepared: Boolean;
 };
 
 const FoodSchema = new Schema<Food>({
@@ -40,7 +41,11 @@ const FoodSchema = new Schema<Food>({
   unit: {
     type: String,
     enum: standardUnits,
-    required: false
+    required: true
+  },
+  prepared: {
+    type: Boolean,
+    required: true
   }
 });
 

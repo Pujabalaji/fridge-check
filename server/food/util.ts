@@ -11,6 +11,7 @@ type FoodResponse = {
     expiration: string;
     rawExpiration: Date;
     unit: Unit;
+    prepared: Boolean;
 };
 
 /**
@@ -44,6 +45,7 @@ const constructFoodResponse = (food: HydratedDocument<Food>): FoodResponse => {
         expiration: formatDate(food.expiration),
         rawExpiration: foodCopy.expiration,
         unit: foodCopy.unit,
+        prepared: foodCopy.prepared
     };
 };
 

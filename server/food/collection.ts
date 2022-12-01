@@ -13,7 +13,7 @@ class FoodCollection {
    * @param {string} name - The name of the food
    * @return {Promise<HydratedDocument<Food>>} - The newly created food
    */
-  static async addOne(userId: Types.ObjectId | string, name: string, quantity:Number, expiration:string, unit:Unit): Promise<HydratedDocument<Food>> {
+  static async addOne(userId: Types.ObjectId | string, name: string, quantity:Number, expiration:string, unit:Unit, prepared:Boolean): Promise<HydratedDocument<Food>> {
     const date = new Date();
     const [month, day, year] = expiration.split('/');
     const expirationDate = new Date(+year, +month - 1, +day);
@@ -23,7 +23,8 @@ class FoodCollection {
       quantity,
       name,
       expiration: expirationDate,
-      unit
+      unit,
+      prepared
     });
     await food.save();
     return food.populate('userId');

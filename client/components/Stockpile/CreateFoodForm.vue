@@ -24,6 +24,12 @@
                     <option value="gallons">Gallons</option>
                 </select>
             </div>
+            <div>
+                <span>
+                    <br>Is this leftovers of a food you made?
+                    <input type="checkbox" id="prepared" v-model="prepared"/>
+                </span>
+            </div>
         </article>
         <button type="submit" :disabled="!(enableSubmit().status == 'ok')">
             Create food
@@ -48,6 +54,7 @@ export default {
             expiration: "",
             quantity: "",
             unit: "",
+            prepared: false,
             alerts: {},
             callback: null,
             refreshFoods: true
@@ -79,7 +86,7 @@ export default {
                 method: 'POST',
                 headers: { "Content-Type": "application/json" },
                 credentials: "same-origin", // Sends express-session credentials with request
-                body: JSON.stringify({ name: this.name, quantity: this.quantity, expiration: this.expiration, unit: this.unit }),
+                body: JSON.stringify({ name: this.name, quantity: this.quantity, expiration: this.expiration, unit: this.unit, prepared: this.prepared }),
                 message: "Successfully created food",
                 callback: () => {
                     this.$set(this.alerts, "Successfully created food", "success");
