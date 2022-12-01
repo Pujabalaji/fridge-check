@@ -30,7 +30,7 @@ router.get(
 
     // Add ingredients
     const stockpile = await FoodCollection.findAllByUser(userId);
-    const names = stockpile.filter(food => food.expiration >= today).map((food) => food.name);
+    const names = stockpile.filter(food => !food.prepared && (food.expiration >= today)).map((food) => food.name);
     if (names.length) {
       const ingredients = names.reduce((prev: string, current: string) => prev + ',+' + current);
 
@@ -76,6 +76,7 @@ router.get(
     };
 
     await util.addUserInformationToParams(params, req.session.userId);
+    params.number = "1";
     const url = util.constructUrlWithParams(params);
 
     const r = await fetch(url);
