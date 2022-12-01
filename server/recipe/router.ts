@@ -61,7 +61,6 @@ router.get(
       url += `&diet=${dietStr}`;
     }
 
-    // fetch stuff
     const r = await fetch(url);
     const apiRes = await r.json();
 
@@ -70,7 +69,7 @@ router.get(
       return;
     }
 
-    const response = apiRes.results.map(util.constructRecipeResponse);
+    const response = apiRes.results.map(util.constructSuggestedRecipeResponse);
     res.status(200).json(response);
     return;
   }
@@ -97,7 +96,7 @@ router.get(
       return;
     }
 
-    const response = apiRes.results.map(util.constructRecipeResponse);
+    const response = apiRes.results.map(util.constructQueryRecipeResponse);
     res.status(200).json(response);
     return;
   }
