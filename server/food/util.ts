@@ -44,8 +44,6 @@ const constructFoodResponse = (food: HydratedDocument<Food>): FoodResponse => {
         dateCreated: formatDate(food.dateCreated),
         expiration: formatDate(food.expiration),
         rawExpiration: foodCopy.expiration,
-        unit: foodCopy.unit,
-        prepared: foodCopy.prepared
     };
 };
 

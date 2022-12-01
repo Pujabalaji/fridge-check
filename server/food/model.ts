@@ -41,7 +41,7 @@ const FoodSchema = new Schema<Food>({
   unit: {
     type: String,
     enum: standardUnits,
-    required: true
+    required: false
   },
   prepared: {
     type: Boolean,
