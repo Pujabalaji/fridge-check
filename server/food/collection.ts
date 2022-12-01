@@ -60,18 +60,6 @@ class FoodCollection {
   }
 
   /**
-   * Get all foods that contain the given substrings by the given user
-   * 
-   * @param {string} userId - The userId of the author of the foods
-   * @param {string[]} names - The substrings that must be matched
-   * @return {Promise<HydratedDocument<Food>[]>} - An array of all of the foods satisfying the conditions
-   */
-  static async findAllBySubstring(userId: string, names: string[]): Promise<Array<HydratedDocument<Food>>> {
-    const strFind = names.reduce((prev, curr) => `${prev}|${curr}`);
-    return FoodModel.find({ userId: userId, name: { $regex: strFind, $options: 'i' } }).sort({ expiration: 1 }).populate('userId');
-  }
-
-  /**
    * Update a food with the new quantity
    *
    * @param {string} foodId - The id of the food to be updated
