@@ -22,6 +22,12 @@
       </router-link>
       <router-link
         v-if="$store.state.username"
+        to="/listings"
+      >
+        My Listings
+      </router-link>
+      <router-link
+        v-if="$store.state.username"
         to="/account"
       >
         Account

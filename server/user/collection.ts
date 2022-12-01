@@ -16,14 +16,14 @@ class UserCollection {
    *
    * @param {string} username - The username of the user
    * @param {string} password - The password of the user
-   * @param {string} contactInfo - the user's contact information
+   * @param {string} email - the user's contact information
    * @param {Array<Allergy>} allergies - the user's allergies
    * @param {Array<OtherRestriction>} otherDietaryRestrictions - the user's other dietary restrictions
    * @param {Community} homeCommunity - the user's home community
    * @return {Promise<HydratedDocument<User>>} - The newly created user
    */
-  static async addOne(username: string, password: string, contactInfo: string, allergies: Array<Allergy>, otherDietaryRestrictions: Array<OtherRestriction>, homeCommunity: Community): Promise<HydratedDocument<User>> {
-    const user = new UserModel({username, password, contactInfo, allergies, otherDietaryRestrictions, homeCommunity});
+  static async addOne(username: string, password: string, email: string, allergies: Array<Allergy>, otherDietaryRestrictions: Array<OtherRestriction>, homeCommunity: Community): Promise<HydratedDocument<User>> {
+    const user = new UserModel({username, password, email, allergies, otherDietaryRestrictions, homeCommunity});
     await user.save(); // Saves user to MongoDB
     return user;
   }
@@ -69,7 +69,7 @@ class UserCollection {
    * @param {Object} userDetails - An object with the user's updated credentials
    * @return {Promise<HydratedDocument<User>>} - The updated user
    */
-  static async updateOne(userId: Types.ObjectId | string, userDetails: {password?: string; username?: string, contactInfo?: string, allergies?: Array<Allergy>, otherDietaryRestrictions?: Array<OtherRestriction>, homeCommunity?: Community}): Promise<HydratedDocument<User>> {
+  static async updateOne(userId: Types.ObjectId | string, userDetails: {password?: string; username?: string, email?: string, allergies?: Array<Allergy>, otherDietaryRestrictions?: Array<OtherRestriction>, homeCommunity?: Community}): Promise<HydratedDocument<User>> {
     const user = await UserModel.findOne({_id: userId});
     if (userDetails.password) {
       user.password = userDetails.password;
@@ -79,8 +79,8 @@ class UserCollection {
       user.username = userDetails.username;
     }
 
-    if (userDetails.contactInfo) {
-      user.contactInfo = userDetails.contactInfo;
+    if (userDetails.email) {
+      user.email = userDetails.email;
     }
 
     if (userDetails.allergies) {
