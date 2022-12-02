@@ -9,6 +9,8 @@
             <br>
             <div><label>Quantity: </label> <input v-model="quantity" :placeholder="$store.state.currentFood.quantity"/></div>
             <br>
+            <div><label>Units: {{$store.state.currentFood.unit}}</label></div>
+            <br>
             <div><label>Price: </label> <input v-model="price" placeholder='$0'/></div>
             <br>
         </article>
@@ -44,9 +46,9 @@ export default {
         enableSubmit() {
             let status = "ok";
             let errorToDisplay = "";
-            const quantityRegex = /^[1-9][0-9]*$/;
+            const quantityRegex = /^(?=.*[1-9])\d*(?:\.\d{1,2})?$|^([1-9][0-9]*)\/[1-9][0-9]*|^[1-9][0-9]*$/;
             if (!quantityRegex.test(this.quantity)) {
-                errorToDisplay = "Quantity must be an integer greater than 0.";
+                errorToDisplay = "Quantity must be a number greater than 0.";
                 status = "error";
             }
             return { status: status, errorToDisplay: errorToDisplay };
@@ -59,7 +61,7 @@ export default {
                 method: 'POST',
                 headers: { "Content-Type": "application/json" },
                 credentials: "same-origin", // Sends express-session credentials with request
-                body: JSON.stringify({ name: this.$store.state.currentFood.name, quantity: this.quantity, expiration: this.$store.state.currentFood.rawExpiration, price: this.price, email: this.$store.state.user.email }),
+                body: JSON.stringify({ name: this.$store.state.currentFood.name, quantity: this.quantity, unit: this.$store.state.currentFood.unit, expiration: this.$store.state.currentFood.rawExpiration, price: this.price, email: this.$store.state.user.email }),
                 message: "Successfully created listing",
                 callback: () => {
                     this.$set(this.alerts, "Successfully created listing", "success");

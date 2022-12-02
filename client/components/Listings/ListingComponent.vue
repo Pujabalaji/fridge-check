@@ -4,7 +4,7 @@
     <article class="listing">
         <header v-if="!editing">
             <h3 class="name">
-                {{ listing.name }} (x{{ listing.quantity }}) 
+                {{ listing.name }} ( x{{ listing.quantity }} {{ listing.unit }})
                 
                 Expires on: {{ listing.expiration }}
 
@@ -23,7 +23,7 @@
         <header v-else>
             <h3 class="name">
                 {{ listing.name }} (x
-                <textarea v-if="editing" class="quantity" :value="draft.quantity" @input="draft.quantity = $event.target.value" />)
+                <textarea v-if="editing" class="quantity" :value="draft.quantity" @input="draft.quantity = $event.target.value" /> {{ listing.unit }})
                 Price: 
                 <textarea v-if="editing" class="price" :value="draft.price" @input="draft.price = $event.target.value" />
                 Expires on: {{ listing.expiration }}
@@ -102,7 +102,7 @@ export default {
             /**
              * Updates object to have the submitted draft content.
              */
-            const quantityRegex = /^[1-9][0-9]*$/;
+            const quantityRegex = /^(?=.*[1-9])\d*(?:\.\d{1,2})?$|^([1-9][0-9]*)\/[1-9][0-9]*|^[1-9][0-9]*$/;
             if (!quantityRegex.test(this.draft.quantity)) {
                 const error = 'Error: Edited food quantity should be greater than 0. If you have eaten the food delete it instead.';
                 this.$set(this.alerts, error, 'error'); // Set an alert to be the error text, timeout of 3000 ms
@@ -154,7 +154,7 @@ export default {
 </script>
   
 <style scoped>
-.food {
+.listing {
     border: 1px solid #111;
     padding: 20px;
     position: relative;

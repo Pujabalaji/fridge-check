@@ -2,6 +2,7 @@ import type { HydratedDocument, Types } from 'mongoose';
 import type { Listing } from './model';
 import ListingModel from './model';
 import UserCollection from '../user/collection';
+import { Unit } from '../food/model';
 
 class ListingCollection {
   /**
@@ -13,11 +14,12 @@ class ListingCollection {
    * @param {string} name - The name of the food to be listed
    * @return {Promise<HydratedDocument<Food>>} - The newly created listing
    */
-  static async addOne(userId: Types.ObjectId | string, name: string, quantity: Number, expiration: string, price: string, email: string): Promise<HydratedDocument<Listing>> {
+  static async addOne(userId: Types.ObjectId | string, name: string, quantity: Number, unit: Unit, expiration: string, price: string, email: string): Promise<HydratedDocument<Listing>> {
     const listing = new ListingModel({
       userId,
       dateCreated: new Date(),
       quantity,
+      unit,
       name,
       expiration,
       price,
