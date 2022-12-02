@@ -3,11 +3,15 @@
 <template>
   <article>
     <div class="container">
-    <img :src="recipe.imageUrl" />
-    <div class="column">
-    <h4>{{ recipe.name }}</h4>
-    <button>Show recipe details</button>
-    </div>
+      <img :src="recipe.imageUrl" />
+      <div class="column">
+        <h4>{{ recipe.name }}</h4>
+        <p>
+          This recipe uses {{ recipe.usedCount }} ingredients in your stockpile.
+        </p>
+        <p>{{ recipe.expiringCount }} of these items are expiring this week.</p>
+        <button @click="showDetails">Show recipe details</button>
+      </div>
     </div>
     <h5>You have {{ recipe.usedCount }} ingredients:</h5>
     <IngredientMatchComponent
@@ -17,7 +21,11 @@
     />
     <div v-if="missingCount">
       <h5>You need {{ missingCount }} ingredients:</h5>
-      <div v-for="ingredient in missingIngredients" :key="ingredient._id" class="container">
+      <div
+        v-for="ingredient in missingIngredients"
+        :key="ingredient._id"
+        class="container"
+      >
         <p>
           {{ ingredient.amount }} {{ ingredient.unit }} of
           {{ ingredient.name[0] }}
@@ -56,6 +64,11 @@ export default {
       return this.recipe.ingredients.length - this.recipe.usedCount;
     },
   },
+  methods: {
+    showDetails() {
+      this.$emit("input", this.recipe);
+    },
+  },
 };
 </script>
 
@@ -72,5 +85,19 @@ article {
   display: flex;
   align-items: center;
   gap: 1em;
+}
+
+h4 {
+  margin-top: 0.25em;
+}
+
+img {
+  flex: 1;
+  object-fit: contain;
+  width: 12em;
+}
+
+.column {
+  flex: 3;
 }
 </style>

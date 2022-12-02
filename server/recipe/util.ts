@@ -19,9 +19,11 @@ type RecipeResponse = {
   imageUrl: string;
   ingredients: RecipeIngredient[];
   instructions: string[];
-  source: string;
+  prepTime?: number;
+  cookTime?: number;
   usedCount?: number;
   expiringCount?: number;
+  source: string;
 };
 
 
@@ -48,7 +50,7 @@ const constructSuggestedRecipeResponse = (stockpile: Array<HydratedDocument<Food
 
   recipe.extendedIngredients.forEach((ingredient: Record<any, any>) => {
     // name contains both name and nameClean, if they differ
-    const recipeIngredientNames = ingredient.name !== ingredient.nameClean ? [ingredient.name, ingredient.nameClean] : [ingredient.name];
+    const recipeIngredientNames:string[] = (ingredient.name !== ingredient.nameClean && ingredient.name && ingredient.nameClean) ? [ingredient.name, ingredient.nameClean] : [ingredient.name];
     const stockpileMatches = stockpile.filter((stockpileIngredient) => recipeIngredientNames.some((recipeIngredientName) => recipeIngredientName.includes(stockpileIngredient.name.toLowerCase()))).map(foodUtils.constructFoodResponse);
     expiringCount += stockpileMatches.reduce((prev, curr) => (curr.rawExpiration <= week) ? prev + 1 : prev, 0);
 
@@ -68,9 +70,11 @@ const constructSuggestedRecipeResponse = (stockpile: Array<HydratedDocument<Food
     imageUrl: recipe.image,
     ingredients,
     instructions: recipe.analyzedInstructions.length ? recipe.analyzedInstructions[0].steps.map((step: any) => { return step.step; }) : [],
-    source: recipe.sourceUrl,
+    prepTime: recipe.preparationMinutes,
+    cookTime: recipe.cookingMinutes,
     usedCount: recipe.usedIngredientCount,
-    expiringCount
+    expiringCount,
+    source: recipe.sourceUrl,
   };
 };
 

@@ -2,16 +2,18 @@
 
 <template>
   <article class="recipe">
-    <img :src="recipe.imageUrl" />
-    <div class="column">
-      <h4>{{ recipe.name }}</h4>
-      <p>
-        This recipe uses {{ recipe.usedCount }} ingredients in your stockpile.
-      </p>
-      <p>{{ recipe.expiringCount }} of these items are expiring this week.</p>
-      <button @click="handleClick">
-        Display additional ingredient information
-      </button>
+    <div class="container">
+      <img :src="recipe.imageUrl" />
+      <div class="column">
+        <h4>{{ recipe.name }}</h4>
+        <p>
+          This recipe uses {{ recipe.usedCount }} ingredients in your stockpile.
+        </p>
+        <p>{{ recipe.expiringCount }} of these items are expiring this week.</p>
+        <button @click="handleClick">
+          Display additional ingredient information
+        </button>
+      </div>
     </div>
   </article>
 </template>
@@ -43,9 +45,14 @@ export default {
   background-color: #eee;
 }
 
-article {
+.container {
   display: flex;
+  align-items: center;
   gap: 1em;
+}
+
+h4 {
+  margin-top: 0.25em;
 }
 
 img {

@@ -40,7 +40,6 @@ router.get(
     }
 
     await util.addUserInformationToParams(params, userId);
-    params.number = "1";
     const url = util.constructUrlWithParams(params)
 
     const r = await fetch(url);
@@ -78,7 +77,6 @@ router.get(
     };
 
     await util.addUserInformationToParams(params, req.session.userId);
-    params.number = "1";
     const url = util.constructUrlWithParams(params);
 
     const r = await fetch(url);
