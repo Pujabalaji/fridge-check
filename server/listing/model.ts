@@ -1,9 +1,8 @@
 import type { Types } from 'mongoose';
 import { Schema, model } from 'mongoose';
-import { communities, User } from '../user/model';
+import { User } from '../user/model';
 import type { Unit } from '../food/model';
 import { standardUnits } from '../food/model';
-import type { Community } from '../user/model';
 
 export type Listing = {
   _id: Types.ObjectId;

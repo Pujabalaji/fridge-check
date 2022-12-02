@@ -76,8 +76,7 @@ class ListingCollection {
    * @return {Promise<HydratedDocument<Listing>[]>} - An array of all of the listings by the given user
    */
   static async findAllByUser(userId: string): Promise<Array<HydratedDocument<Listing>>> {
-    const user = await UserCollection.findOneByUserId(userId);
-    return ListingModel.find({ userId: user._id }).sort({ expiration: 1 }).populate('userId');
+    return ListingModel.find({ userId }).sort({ expiration: 1 }).populate('userId');
   }
 
   /**
