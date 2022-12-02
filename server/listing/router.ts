@@ -17,7 +17,7 @@ const router = express.Router();
  * @return {ListingResponse[]} - An array of all listings
  *
  */
- router.get(
+router.get(
     '/temp',
     async (req: Request, res: Response) => {
         const listings = await ListingCollection.findAll();
@@ -38,7 +38,7 @@ const router = express.Router();
 router.get(
     '/',
     [
-      userValidator.isUserLoggedIn
+        userValidator.isUserLoggedIn
     ],
     async (req: Request, res: Response) => {
         const userId = (req.session.userId as string) ?? '';
@@ -57,7 +57,7 @@ router.get(
  * @throws {403} - If the user is not logged in
  *
  */
- router.get(
+router.get(
     '/foods',
     async (req: Request, res: Response) => {
         try {
@@ -81,7 +81,6 @@ router.get(
  * @param {unit} - the unit of the quantity
  * @param {expiration} - The expiration date of the food to be listed
  * @param {price} - the price description of the listing
- * @param {community} - the community of which members should be able to see this listing
  * @return {MyListingResponse} - The created listing
  * @throws {403} - If the user is not logged in
  * @throws {404} - If a food with the specified foodId does not exist
@@ -102,7 +101,7 @@ router.post(
         const userId = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
         const quantity = (req.body.quantity as number) ?? 0;
         const user: User = await UserCollection.findOneByUserId(userId);
-        const listing = await ListingCollection.addOne(userId, req.body.foodId, req.body.name, quantity, req.body.unit, req.body.expiration, req.body.price, user.email, user.homeCommunity);
+        const listing = await ListingCollection.addOne(userId, req.body.foodId, req.body.name, quantity, req.body.unit, req.body.expiration, req.body.price);
         res.status(201).json({
             message: 'Your listing was created successfully.',
             listing: util.constructMyListingResponse(listing)
@@ -145,7 +144,7 @@ router.delete(
  *                 the listing
  * @throws {404} - If no listing exists for this food
  */
- router.delete(
+router.delete(
     '/foods/:foodId?',
     [
         userValidator.isUserLoggedIn,
@@ -180,7 +179,7 @@ router.patch(
         listingValidator.isValidFoodQuantity,
     ],
     async (req: Request, res: Response) => {
-        const listing = await ListingCollection.updateOne(req.params.listingId, {quantity: req.body.quantity, price: req.body.price});
+        const listing = await ListingCollection.updateOne(req.params.listingId, { quantity: req.body.quantity, price: req.body.price });
         res.status(200).json({
             message: 'Your listing was updated successfully.',
             listing: util.constructMyListingResponse(listing)
