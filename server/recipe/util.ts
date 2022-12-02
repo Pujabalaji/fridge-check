@@ -1,6 +1,8 @@
 import type { HydratedDocument } from 'mongoose';
 import type { Food } from '../food/model';
 import UserCollection from '../user/collection';
+import { FoodResponse } from '../food/util';
+import * as foodUtils from '../food/util';
 
 type RecipeIngredient = {
   _id: number;
@@ -8,7 +10,7 @@ type RecipeIngredient = {
   amount: number;
   unit: string;
   status?: string; // either 'used' or 'missing'
-  stockpileMatches?: HydratedDocument<Food>[];
+  stockpileMatches?: FoodResponse[];
 }
 
 type RecipeResponse = {
@@ -19,7 +21,6 @@ type RecipeResponse = {
   instructions: string[];
   source: string;
   usedCount?: number;
-  usedNames?: string[];
   expiringCount?: number;
 };
 
@@ -33,25 +34,23 @@ type RecipeResponse = {
  * @returns {RecipeResponse} - The recipe object
  */
 const constructSuggestedRecipeResponse = (stockpile: Array<HydratedDocument<Food>>, recipe: Record<any, any>): RecipeResponse => {
-  // Find all used ingredient name and ids
+  // Find all used ingredient ids
   const usedIds = new Set<number>;
-  const usedNames: Array<string> = [];
   for (const ingredient of recipe.usedIngredients) {
     usedIds.add(ingredient.id);
-    usedNames.push(ingredient.name);
   }
 
   // Create recipe ingredients with match to stockpile
   let week = new Date();
   week.setDate(week.getDate() + 7);
   let expiringCount = 0;
-  const ingredients:RecipeIngredient[] = [];
-  
+  const ingredients: RecipeIngredient[] = [];
+
   recipe.extendedIngredients.forEach((ingredient: Record<any, any>) => {
     // name contains both name and nameClean, if they differ
     const recipeIngredientNames = ingredient.name !== ingredient.nameClean ? [ingredient.name, ingredient.nameClean] : [ingredient.name];
-    const stockpileMatches = stockpile.filter((stockpileIngredient) => recipeIngredientNames.some((recipeIngredientName) => recipeIngredientName.includes(stockpileIngredient.name.toLowerCase())));
-    expiringCount += stockpileMatches.reduce((prev, curr) => (curr.expiration <= week) ? prev + 1 : prev, 0);
+    const stockpileMatches = stockpile.filter((stockpileIngredient) => recipeIngredientNames.some((recipeIngredientName) => recipeIngredientName.includes(stockpileIngredient.name.toLowerCase()))).map(foodUtils.constructFoodResponse);
+    expiringCount += stockpileMatches.reduce((prev, curr) => (curr.rawExpiration <= week) ? prev + 1 : prev, 0);
 
     ingredients.push({
       _id: ingredient.id,
@@ -71,7 +70,6 @@ const constructSuggestedRecipeResponse = (stockpile: Array<HydratedDocument<Food
     instructions: recipe.analyzedInstructions.length ? recipe.analyzedInstructions[0].steps.map((step: any) => { return step.step; }) : [],
     source: recipe.sourceUrl,
     usedCount: recipe.usedIngredientCount,
-    usedNames: usedNames,
     expiringCount
   };
 };

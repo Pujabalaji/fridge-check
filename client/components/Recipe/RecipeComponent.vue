@@ -8,8 +8,10 @@
       <p>
         This recipe uses {{ recipe.usedCount }} ingredients in your stockpile.
       </p>
-      <p>TODO: How many are expiring?</p>
-      <button @click="handleClick">Select recipe and search for missing ingredients</button>
+      <p>{{ recipe.expiringCount }} of these items are expiring this week.</p>
+      <button @click="handleClick">
+        Display additional ingredient information
+      </button>
     </div>
   </article>
 </template>
@@ -27,8 +29,8 @@ export default {
   methods: {
     handleClick() {
       this.$emit("input", this.recipe);
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -55,5 +57,4 @@ img {
 .column {
   flex: 3;
 }
-
 </style>

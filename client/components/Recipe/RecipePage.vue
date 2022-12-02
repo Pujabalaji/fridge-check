@@ -19,8 +19,8 @@
       </div>
       <div class="recipes">
         <section v-if="selected">
-          <h3>Showing recipe details:</h3>
-          <RecipeDetailsComponent :recipe="selected" />
+          <h3>Showing ingredient details:</h3>
+          <IngredientDetailsComponent :recipe="selected" />
         </section>
         <section v-else-if="displaySuggested">
           <h3>Showing recipes using ingredients you have:</h3>
@@ -52,11 +52,11 @@
 
 <script>
 import RecipeComponent from "@/components/Recipe/RecipeComponent.vue";
-import RecipeDetailsComponent from "@/components/Recipe/RecipeDetailsComponent.vue";
+import IngredientDetailsComponent from "@/components/Recipe/IngredientDetailsComponent.vue";
 
 export default {
   name: "RecipePage",
-  components: { RecipeComponent, RecipeDetailsComponent },
+  components: { RecipeComponent, IngredientDetailsComponent },
   data() {
     return {
       suggestedRecipes: [],
@@ -76,10 +76,12 @@ export default {
     handleSuggestedClick() {
       this.displaySuggested = true;
       this.displayByName = false;
+      this.selected = undefined;
     },
     async handleSearchClick() {
       this.displayByName = true;
       this.displaySuggested = false;
+      this.selected = undefined;
 
       const url = `/api/recipes?recipeName=${this.searchText}`;
       try {
@@ -118,6 +120,7 @@ export default {
 .container {
   display: flex;
   align-items: flex-start;
+  gap: 1em;
 }
 
 .recipes {
