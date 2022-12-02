@@ -173,11 +173,14 @@ export default {
     },
     computed: {
         enableCreateListing() {
-            const foods = [];
-            for (const food of this.$store.state.foodIdsWithListings) {
-                foods.push(food);
+            const foodsExpiredOrListingExists = [];
+            for (const foodId of this.$store.state.foodIdsWithListings) {
+                foodsExpiredOrListingExists.push(foodId);
             }
-            return (!this.food.prepared && !foods.includes(this.food._id));
+            for (const food of this.$store.state.expired) {
+                foodsExpiredOrListingExists.push(food._id);
+            }
+            return (!this.food.prepared && !foodsExpiredOrListingExists.includes(this.food._id));
         }
     }
 };

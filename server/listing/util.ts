@@ -22,6 +22,7 @@ type ListingResponse = {
     rawExpiration: Date;
     price: string;
     email: string;
+    community: string;
 };
 
 /**
@@ -82,7 +83,8 @@ const constructMyListingResponse = (listing: HydratedDocument<Listing>): MyListi
         expiration: formatDate(listing.expiration),
         rawExpiration: listingCopy.expiration,
         price: listingCopy.price,
-        email: listingCopy.email
+        email: listingCopy.email,
+        community: listingCopy.community
     };
 };
 

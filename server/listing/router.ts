@@ -76,9 +76,12 @@ router.get(
  * @name POST /api/listings
  *
  * @param {name} - The name of the food to be listed
+ * @param {foodId} - the id of the food being listing
  * @param {quantity} - The amount of the food to be listed
  * @param {unit} - the unit of the quantity
  * @param {expiration} - The expiration date of the food to be listed
+ * @param {price} - the price description of the listing
+ * @param {community} - the community of which members should be able to see this listing
  * @return {MyListingResponse} - The created listing
  * @throws {403} - If the user is not logged in
  * @throws {404} - If a food with the specified foodId does not exist
@@ -99,7 +102,7 @@ router.post(
         const userId = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
         const quantity = (req.body.quantity as number) ?? 0;
         const user: User = await UserCollection.findOneByUserId(userId);
-        const listing = await ListingCollection.addOne(userId, req.body.foodId, req.body.name, quantity, req.body.unit, req.body.expiration, req.body.price, user.email);
+        const listing = await ListingCollection.addOne(userId, req.body.foodId, req.body.name, quantity, req.body.unit, req.body.expiration, req.body.price, user.email, user.homeCommunity);
         res.status(201).json({
             message: 'Your listing was created successfully.',
             listing: util.constructMyListingResponse(listing)

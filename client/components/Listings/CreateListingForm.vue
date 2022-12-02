@@ -52,6 +52,10 @@ export default {
                 errorToDisplay = "Quantity must be a number greater than 0.";
                 status = "error";
             }
+            if (this.quantity > this.$store.state.currentFood.quantity) {
+                errorToDisplay = "You cannot list a greater quantity than you have in your stockpile.";
+                status = "error";
+            }
             return { status: status, errorToDisplay: errorToDisplay };
         },
         async submit() {
@@ -62,7 +66,7 @@ export default {
                 method: 'POST',
                 headers: { "Content-Type": "application/json" },
                 credentials: "same-origin", // Sends express-session credentials with request
-                body: JSON.stringify({ foodId: this.$store.state.currentFood._id, name: this.$store.state.currentFood.name, quantity: this.quantity, unit: this.$store.state.currentFood.unit, expiration: this.$store.state.currentFood.rawExpiration, price: this.price, email: this.$store.state.user.email }),
+                body: JSON.stringify({ foodId: this.$store.state.currentFood._id, name: this.$store.state.currentFood.name, quantity: this.quantity, unit: this.$store.state.currentFood.unit, expiration: this.$store.state.currentFood.rawExpiration, price: this.price, email: this.$store.state.user.email, community: this.$store.state.user.homeCommunity }),
                 message: "Successfully created listing",
                 callback: () => {
                     this.$set(this.alerts, "Successfully created listing", "success");
@@ -77,13 +81,13 @@ export default {
                     throw new Error(res.error);
                 }
                 const res = await r.json();
-                this.$store.commit('clearCurrentFood');
                 options.callback();
+                this.$store.commit('clearCurrentFood');
+                this.$store.dispatch('refreshStockpile');
                 this.name = "";
                 this.quantity = "";
                 this.expiration = "";
                 this.price = "";
-                this.$router.push({ name: 'My Listings' });
             } catch (e) {
                 console.log(e);
                 this.$set(this.alerts, e, "error");

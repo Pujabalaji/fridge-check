@@ -14,7 +14,7 @@ class ListingCollection {
    * @param {string} name - The name of the food to be listed
    * @return {Promise<HydratedDocument<Food>>} - The newly created listing
    */
-  static async addOne(userId: Types.ObjectId | string, foodId: Types.ObjectId | string, name: string, quantity: Number, unit: Unit, expiration: string, price: string, email: string): Promise<HydratedDocument<Listing>> {
+  static async addOne(userId: Types.ObjectId | string, foodId: Types.ObjectId | string, name: string, quantity: Number, unit: Unit, expiration: string, price: string, email: string, community: string): Promise<HydratedDocument<Listing>> {
     const listing = new ListingModel({
       userId,
       foodId,
@@ -24,8 +24,8 @@ class ListingCollection {
       name,
       expiration,
       price,
-      email
-      
+      email,
+      community
     });
     await listing.save();
     return listing.populate('userId');

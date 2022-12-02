@@ -1,8 +1,9 @@
 import type { Types } from 'mongoose';
 import { Schema, model } from 'mongoose';
-import type { User } from '../user/model';
+import { communities, User } from '../user/model';
 import type { Unit } from '../food/model';
 import { standardUnits } from '../food/model';
+import type { Community } from '../user/model';
 
 export type Listing = {
   _id: Types.ObjectId;
@@ -15,6 +16,7 @@ export type Listing = {
   expiration: Date;
   price: string;
   email: string;
+  community: Community
 };
 
 const ListingSchema = new Schema<Listing>({
@@ -55,6 +57,11 @@ const ListingSchema = new Schema<Listing>({
   },
   email: {
     type: String,
+    required: true
+  },
+  community: {
+    type: String,
+    enum: communities,
     required: true
   }
 
