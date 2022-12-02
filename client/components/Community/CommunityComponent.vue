@@ -30,15 +30,13 @@ export default {
     },
     data() {
         return {
-            alreadyFollows: false,
             alerts: {},
         }
     },
-    mounted() {
-        console.log("in community component");
-        console.log(this.alreadyFollowedCommunities);
-        console.log(this.communityName);
-        this.alreadyFollows = ( this.alreadyFollowedCommunities.filter(community => community === this.communityName) ).length != 0;
+    computed: {
+      alreadyFollows() {
+        return this.alreadyFollowedCommunities.filter(community => community === this.communityName).length !== 0;
+      }
     },
     methods: {
         async unfollowRequest() {
@@ -51,6 +49,7 @@ export default {
                 }
             }
             const response = await this.request(params, `api/follows/${this.communityName}`);
+            this.$emit('fetchFollows');
         },
         async followRequest() {
             const params = {
@@ -63,6 +62,7 @@ export default {
                 }
             }
             const response = await this.request(params, `/api/follows`);
+            this.$emit('fetchFollows');
         },
         async request(params, url) {
             /**

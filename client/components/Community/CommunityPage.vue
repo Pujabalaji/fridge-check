@@ -16,7 +16,7 @@
         <section class="row">
             <!-- One row for each community -->
             <div v-for="community in allCommunities" :key="community">
-                <CommunityComponent v-bind:alreadyFollowedCommunities="alreadyFollowedCommunities" v-bind:communityName="community" />
+                <CommunityComponent v-bind:alreadyFollowedCommunities="alreadyFollowedCommunities" v-bind:communityName="community" @fetchFollows="communitiesUserFollows" />
             </div>
         </section>
     </main>
@@ -33,8 +33,11 @@ export default {
         return {
             alerts: {},
             allCommunities: this.getAllCommunities(),
-            alreadyFollowedCommunities: this.communitiesUserFollows()
+            alreadyFollowedCommunities: [],
         }
+    },
+    created() {
+      this.communitiesUserFollows();
     },
     methods: {
         async communitiesUserFollows() {
