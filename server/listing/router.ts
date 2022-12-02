@@ -1,11 +1,9 @@
-import type { NextFunction, Request, Response } from 'express';
+import type { Request, Response } from 'express';
 import express from 'express';
 import ListingCollection from './collection';
-import UserCollection from '../user/collection';
 import * as userValidator from '../user/middleware';
 import * as listingValidator from './middleware';
 import * as util from './util';
-import type { User } from '../user/model';
 
 const router = express.Router();
 
@@ -85,7 +83,7 @@ router.get(
  * @throws {403} - If the user is not logged in
  * @throws {404} - If a food with the specified foodId does not exist
  * @throws {400} - If the food name is empty or a stream of empty spaces
- * @throws {400} - If the food quantity is less than 1 or invalid
+ * @throws {400} - If the food quantity is less than 0 or invalid
  * @throws {400} - If the expiration date is not the proper MM/DD/YYYY format
  * @throws {413} - If the expiration date is prior to today's date
  */
@@ -100,7 +98,6 @@ router.post(
     async (req: Request, res: Response) => {
         const userId = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
         const quantity = (req.body.quantity as number) ?? 0;
-        const user: User = await UserCollection.findOneByUserId(userId);
         const listing = await ListingCollection.addOne(userId, req.body.foodId, req.body.name, quantity, req.body.unit, req.body.expiration, req.body.price);
         res.status(201).json({
             message: 'Your listing was created successfully.',
