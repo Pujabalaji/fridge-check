@@ -14,7 +14,7 @@
                 <button @click="deleteFood">
                     🗑️ Delete
                 </button>
-                <button v-if=!food.prepared @click="createListing">
+                <button v-if=enableCreateListing @click="createListing">
                     Create Listing
                 </button>
             </div>
@@ -84,9 +84,9 @@ export default {
             this.editing = false;
             this.draft = this.food.quantity;
         },
-        deleteFood() {
+        async deleteFood() {
             /**
-             * Deletes this object.
+             * Deletes this food and any associated listings.
              */
             const params = {
                 method: 'DELETE',
@@ -96,9 +96,19 @@ export default {
                     });
                 }
             };
-
             const r = this.request(params);
-            console.log(r);
+            if (this.$store.state.foodIdsWithListings.includes(this.food._id)) {
+                const paramsDeleteListing = {
+                method: 'DELETE',
+                callback: () => {
+                    this.$store.commit('alert', {
+                        message: 'Successfully deleted listing!', status: 'success'
+                    });
+                }
+                };
+                const r1 = await fetch(`/api/listings/foods/${this.food._id}`, paramsDeleteListing);
+                this.$store.dispatch('refreshMyListings');
+            }
         },
         async createListing() {
             this.$store.commit('enableCreateListing', this.food);
@@ -161,6 +171,15 @@ export default {
                 this.$set(this.alerts, e, 'error');
                 setTimeout(() => this.$delete(this.alerts, e), 3000);
             }
+        }
+    },
+    computed: {
+        enableCreateListing() {
+            const foods = [];
+            for (const food of this.$store.state.foodIdsWithListings) {
+                foods.push(food);
+            }
+            return (!(this.food.prepared) && !(foods.includes(this.food._id)));
         }
     }
 };

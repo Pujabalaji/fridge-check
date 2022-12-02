@@ -14,9 +14,10 @@ class ListingCollection {
    * @param {string} name - The name of the food to be listed
    * @return {Promise<HydratedDocument<Food>>} - The newly created listing
    */
-  static async addOne(userId: Types.ObjectId | string, name: string, quantity: Number, unit: Unit, expiration: string, price: string, email: string): Promise<HydratedDocument<Listing>> {
+  static async addOne(userId: Types.ObjectId | string, foodId: Types.ObjectId | string, name: string, quantity: Number, unit: Unit, expiration: string, price: string, email: string): Promise<HydratedDocument<Listing>> {
     const listing = new ListingModel({
       userId,
+      foodId,
       dateCreated: new Date(),
       quantity,
       unit,
@@ -33,11 +34,33 @@ class ListingCollection {
     /**
      * Find a listing by listingId
      *
-     * @param {string} foodlistingId - The id of the listing to find
+     * @param {string} listingId - The id of the listing to find
      * @return {Promise<HydratedDocument<Listing>> | Promise<null> } - The listing with the given listingId, if any
      */
     static async findOne(listingId: Types.ObjectId | string): Promise<HydratedDocument<Listing>> {
         return ListingModel.findOne({ _id: listingId }).populate('userId');
+    }
+
+    /**
+     * Find a listing by foodId
+     *
+     * @param {string} listingId - The id of the food of which to find the listing
+     * @return {Promise<HydratedDocument<Listing>> | Promise<null> } - The listing with the given foodId, if any
+     */
+     static async findOneByFoodId(foodId: Types.ObjectId | string): Promise<HydratedDocument<Listing>> {
+        return ListingModel.findOne({ foodId }).populate('userId');
+    }
+
+    /**
+     * Delete a listing by foodId
+     *
+     * @param {string} foodId - The id of the food of which to delete the listing
+     * @return {Promise<Boolean> } - True if the listing has been deleted, false otherwise
+     */
+     static async deleteOneByFoodId(foodId: Types.ObjectId | string): Promise<Boolean> {
+        console.log("coorec call");
+        const listing = await ListingModel.deleteOne({ foodId: foodId });
+        return listing !== null;
     }
 
     /**

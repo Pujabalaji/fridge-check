@@ -13,7 +13,7 @@ const router = express.Router();
 /**
  * Get all listings for the current user
  *
- * @name GET /api/listings
+ * @name GET /api/listings?foodId=foodId
  *
  * @return {MyListingResponse[]} - An array of listings created by the current user
  * @throws {403} - If the user is not logged in
@@ -33,6 +33,28 @@ router.get(
 );
 
 /**
+ * Get the listing for a given food or return null
+ *
+ * @name GET /api/listings/foods?foodId=foodId
+ *
+ * @return {MyListingResponse | null} - A listing if one exists or null
+ * @throws {403} - If the user is not logged in
+ *
+ */
+ router.get(
+    '/foods',
+    async (req: Request, res: Response) => {
+        try {
+            const listing = await ListingCollection.findOneByFoodId(req.query.foodId as string);
+            const response = util.constructMyListingResponse(listing);
+            res.status(200).json(response);
+        } catch {
+            res.status(200).json("none");
+        }
+    }
+);
+
+/**
  * Create a new listing.
  *
  * @name POST /api/listings
@@ -43,6 +65,7 @@ router.get(
  * @param {expiration} - The expiration date of the food to be listed
  * @return {MyListingResponse} - The created listing
  * @throws {403} - If the user is not logged in
+ * @throws {404} - If a food with the specified foodId does not exist
  * @throws {400} - If the food name is empty or a stream of empty spaces
  * @throws {400} - If the food quantity is less than 1 or invalid
  * @throws {400} - If the expiration date is not the proper MM/DD/YYYY format
@@ -52,13 +75,15 @@ router.post(
     '/',
     [
         userValidator.isUserLoggedIn,
+        listingValidator.isValidFoodName,
+        listingValidator.isFoodExists,
         listingValidator.isValidFoodQuantity
     ],
     async (req: Request, res: Response) => {
         const userId = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
         const quantity = (req.body.quantity as number) ?? 0;
         const user: User = await UserCollection.findOneByUserId(userId);
-        const listing = await ListingCollection.addOne(userId, req.body.name, quantity, req.body.unit, req.body.expiration, req.body.price, user.email);
+        const listing = await ListingCollection.addOne(userId, req.body.foodId, req.body.name, quantity, req.body.unit, req.body.expiration, req.body.price, user.email);
         res.status(201).json({
             message: 'Your listing was created successfully.',
             listing: util.constructMyListingResponse(listing)
@@ -85,6 +110,30 @@ router.delete(
     ],
     async (req: Request, res: Response) => {
         await ListingCollection.deleteOne(req.params.listingId);
+        res.status(200).json({
+            message: 'Your listing was deleted successfully.'
+        });
+    }
+);
+
+/**
+ * Delete the listing associated with a given food
+ *
+ * @name DELETE /api/listings/foods/:foodId
+ *
+ * @return {string} - A success message
+ * @throws {403} - If the user is not logged in or is not the author of
+ *                 the listing
+ * @throws {404} - If no listing exists for this food
+ */
+ router.delete(
+    '/foods/:foodId?',
+    [
+        userValidator.isUserLoggedIn,
+        listingValidator.isListingExistsFood,
+    ],
+    async (req: Request, res: Response) => {
+        await ListingCollection.deleteOneByFoodId(req.params.foodId);
         res.status(200).json({
             message: 'Your listing was deleted successfully.'
         });
