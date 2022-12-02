@@ -50,9 +50,12 @@ const constructSuggestedRecipeResponse = (stockpile: Array<HydratedDocument<Food
 
   recipe.extendedIngredients.forEach((ingredient: Record<any, any>) => {
     // name contains both name and nameClean, if they differ
-    const recipeIngredientNames:string[] = (ingredient.name !== ingredient.nameClean && ingredient.name && ingredient.nameClean) ? [ingredient.name, ingredient.nameClean] : [ingredient.name];
-    const stockpileMatches = stockpile.filter((stockpileIngredient) => recipeIngredientNames.some((recipeIngredientName) => recipeIngredientName.includes(stockpileIngredient.name.toLowerCase()))).map(foodUtils.constructFoodResponse);
-    expiringCount += stockpileMatches.reduce((prev, curr) => (curr.rawExpiration <= week) ? prev + 1 : prev, 0);
+    const recipeIngredientNames:string[] = (ingredient.name !== ingredient.nameClean && ingredient.nameClean) ? [ingredient.name, ingredient.nameClean] : [ingredient.name];
+    let stockpileMatches:FoodResponse[] = [];
+    if (usedIds.has(ingredient.id)) {
+      stockpileMatches = stockpile.filter((stockpileIngredient) => recipeIngredientNames.some((recipeIngredientName) => recipeIngredientName.includes(stockpileIngredient.name.toLowerCase()))).map(foodUtils.constructFoodResponse);
+      expiringCount += stockpileMatches.some((match) => match.rawExpiration <= week) ? 1 : 0;
+    }
 
     ingredients.push({
       _id: ingredient.id,
