@@ -61,7 +61,7 @@ export default {
                 method: 'POST',
                 headers: { "Content-Type": "application/json" },
                 credentials: "same-origin", // Sends express-session credentials with request
-                body: JSON.stringify({ name: this.$store.state.currentFood.name, quantity: this.quantity, unit: this.$store.state.currentFood.unit, expiration: this.$store.state.currentFood.rawExpiration, price: this.price, email: this.$store.state.user.email }),
+                body: JSON.stringify({ foodId: this.$store.state.currentFood._id, name: this.$store.state.currentFood.name, quantity: this.quantity, unit: this.$store.state.currentFood.unit, expiration: this.$store.state.currentFood.rawExpiration, price: this.price, email: this.$store.state.user.email }),
                 message: "Successfully created listing",
                 callback: () => {
                     this.$set(this.alerts, "Successfully created listing", "success");

@@ -94,9 +94,8 @@ export default {
                     });
                 }
             };
-
             const r = this.request(params);
-            console.log(r);
+            this.$store.dispatch('refreshStockpile');
         },
         submitEdit() {
             /**

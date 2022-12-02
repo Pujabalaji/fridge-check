@@ -6,6 +6,7 @@ import { standardUnits } from '../food/model';
 
 export type Listing = {
   _id: Types.ObjectId;
+  foodId: Types.ObjectId;
   userId: User;
   dateCreated: Date;
   unit: Unit;
@@ -21,6 +22,11 @@ const ListingSchema = new Schema<Listing>({
     type: Schema.Types.ObjectId,
     required: true,
     ref: 'User'
+  },
+  foodId: {
+    type: Schema.Types.ObjectId,
+    required: true,
+    ref: 'Food'
   },
   dateCreated: {
     type: Date,

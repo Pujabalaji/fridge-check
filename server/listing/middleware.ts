@@ -1,14 +1,27 @@
 import type { Request, Response, NextFunction } from 'express';
 import { Types } from 'mongoose';
+import FoodCollection from '../food/collection';
 import ListingCollection from './collection';
 
 
 const isListingExists = async (req: Request, res: Response, next: NextFunction) => {
     const validFormat = Types.ObjectId.isValid(req.params.listingId);
-    const food = validFormat ? await ListingCollection.findOne(req.params.listingId) : '';
-    if (!food) {
+    const listing = validFormat ? await ListingCollection.findOne(req.params.listingId) : '';
+    if (!listing) {
         res.status(404).json({
             error: `Listing with listing ID ${req.params.listingId} does not exist.`
+        });
+        return;
+    }
+    next();
+};
+
+const isListingExistsFood = async (req: Request, res: Response, next: NextFunction) => {
+    const validFormat = Types.ObjectId.isValid(req.params.foodId);
+    const listing = validFormat ? await ListingCollection.findOneByFoodId(req.params.foodId) : '';
+    if (!listing) {
+        res.status(404).json({
+            error: `No listing for food with food ID ${req.params.foodId} exists.`
         });
         return;
     }
@@ -26,31 +39,22 @@ const isValidFoodQuantity = (req: Request, res: Response, next: NextFunction) =>
     next();
 }
 
-const isValidFoodExpiration = (req: Request, res: Response, next: NextFunction) => {
-    const expiration = req.body.expiration as string;
-    const regex = /^\d{2}\/\d{2}\/\d{4}$/;
-    if (!regex.test(expiration)) {
+const isValidFoodName = async (req: Request, res: Response, next: NextFunction) => {
+    const name = req.body.name as string;
+    if (!name.trim()) {
         res.status(400).json({
-            error: 'Expiration Date must be in the format MM/DD/YYYY.'
-        });
-        return;
-    }
-    const curDate = new Date();
-    const date = new Date(expiration);
-    if (date <= curDate) {
-        res.status(413).json({
-            error: 'Provided date is not valid.'
+            error: 'Food name must be at least one character long.'
         });
         return;
     }
     next();
 };
 
-const isValidFoodName = async (req: Request, res: Response, next: NextFunction) => {
-    const name = req.body.name as string;
-    if (!name.trim()) {
-        res.status(400).json({
-            error: 'Food name must be at least one character long.'
+const isFoodExists = async (req: Request, res: Response, next: NextFunction) => {
+    const food = await FoodCollection.findOne(req.body.foodId);
+    if (!food) {
+        res.status(404).json({
+            error: 'Food with this foodId does not exist.'
         });
         return;
     }
@@ -72,7 +76,8 @@ const isValidListingModifier = async (req: Request, res: Response, next: NextFun
 export {
     isListingExists,
     isValidListingModifier,
-    isValidFoodExpiration,
     isValidFoodQuantity,
-    isValidFoodName
+    isValidFoodName,
+    isFoodExists,
+    isListingExistsFood
 };
