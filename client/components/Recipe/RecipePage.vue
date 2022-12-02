@@ -18,22 +18,13 @@
         </section>
       </div>
       <div class="recipes">
-        <section v-if="details">
-          <h3>Showing recipe details:</h3>
-          <RecipeDetailsComponent :recipe="details" />
-        </section>
-        <section v-else-if="selected">
-          <h3>Showing ingredient details:</h3>
-          <IngredientDetailsComponent :recipe="selected" v-model="details" />
-        </section>
-        <section v-else-if="displaySuggested">
+        <section v-if="displaySuggested">
           <h3>Showing recipes using ingredients you have:</h3>
           <div v-if="suggestedRecipes.length">
             <RecipeComponent
               v-for="recipe in suggestedRecipes"
               :key="recipe._id"
               :recipe="recipe"
-              v-model="selected"
             />
           </div>
           <h4 v-else>No results found</h4>
@@ -56,15 +47,11 @@
 
 <script>
 import RecipeComponent from "@/components/Recipe/RecipeComponent.vue";
-import IngredientDetailsComponent from "@/components/Recipe/IngredientDetailsComponent.vue";
-import RecipeDetailsComponent from "@/components/Recipe/RecipeDetailsComponent.vue";
 
 export default {
   name: "RecipePage",
   components: {
     RecipeComponent,
-    IngredientDetailsComponent,
-    RecipeDetailsComponent,
   },
   data() {
     return {
@@ -73,8 +60,6 @@ export default {
       searchText: "",
       displaySuggested: false,
       displayByName: false,
-      selected: undefined,
-      details: undefined,
     };
   },
   created() {
@@ -86,14 +71,10 @@ export default {
     handleSuggestedClick() {
       this.displaySuggested = true;
       this.displayByName = false;
-      this.selected = undefined;
-      this.details = undefined;
     },
     async handleSearchClick() {
       this.displayByName = true;
       this.displaySuggested = false;
-      this.selected = undefined;
-      this.details = undefined;
 
       const url = `/api/recipes?recipeName=${this.searchText}`;
       try {

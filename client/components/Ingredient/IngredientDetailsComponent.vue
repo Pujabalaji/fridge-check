@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import IngredientMatchComponent from "@/components/Recipe/IngredientMatchComponent.vue";
+import IngredientMatchComponent from "@/components/Ingredient/IngredientMatchComponent.vue";
 
 export default {
   name: "IngredientDetailsComponent",
@@ -66,7 +66,7 @@ export default {
   },
   methods: {
     showDetails() {
-      this.$emit("input", this.recipe);
+      this.$router.push({ path: "/recipe/details" });
     },
   },
 };

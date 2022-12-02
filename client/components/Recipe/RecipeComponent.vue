@@ -30,7 +30,8 @@ export default {
   },
   methods: {
     handleClick() {
-      this.$emit("input", this.recipe);
+      this.$store.commit("setSelectedRecipe", this.recipe);
+      this.$router.push({ path: "/recipe/ingredients" });
     },
   },
 };
