@@ -10,6 +10,8 @@ type MyListingResponse = {
     name: string;
     expiration: string;
     rawExpiration: Date;
+    email: string;
+    community: string;
 };
 
 type ListingResponse = {
@@ -47,7 +49,7 @@ const constructMyListingResponse = (listing: HydratedDocument<Listing>): MyListi
             versionKey: false // Cosmetics; prevents returning of __v property
         })
     };
-    const { username } = listingCopy.userId;
+    const { username, homeCommunity, email } = listingCopy.userId;
     delete listingCopy.userId;
     return {
         ...listingCopy,
@@ -56,6 +58,8 @@ const constructMyListingResponse = (listing: HydratedDocument<Listing>): MyListi
         dateCreated: formatDate(listing.dateCreated),
         expiration: formatDate(listing.expiration),
         rawExpiration: listingCopy.expiration,
+        email,
+        community: homeCommunity
     };
 };
 
@@ -67,13 +71,13 @@ const constructMyListingResponse = (listing: HydratedDocument<Listing>): MyListi
  * @param {HydratedDocument<Listing>} listing - A listing
  * @returns {ListingResponse} - The listing object formatted for the frontend
  */
- const constructListingResponse = (listing: HydratedDocument<Listing>): ListingResponse => {
+const constructListingResponse = (listing: HydratedDocument<Listing>): ListingResponse => {
     const listingCopy: Listing = {
         ...listing.toObject({
             versionKey: false // Cosmetics; prevents returning of __v property
         })
     };
-    const { username } = listingCopy.userId;
+    const { username, homeCommunity, email } = listingCopy.userId;
     delete listingCopy.userId;
     return {
         ...listingCopy,
@@ -83,8 +87,8 @@ const constructMyListingResponse = (listing: HydratedDocument<Listing>): MyListi
         expiration: formatDate(listing.expiration),
         rawExpiration: listingCopy.expiration,
         price: listingCopy.price,
-        email: listingCopy.email,
-        community: listingCopy.community
+        email,
+        community: homeCommunity
     };
 };
 

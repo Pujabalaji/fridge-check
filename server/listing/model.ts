@@ -15,8 +15,6 @@ export type Listing = {
   name: string;
   expiration: Date;
   price: string;
-  email: string;
-  community: Community
 };
 
 const ListingSchema = new Schema<Listing>({
@@ -53,15 +51,6 @@ const ListingSchema = new Schema<Listing>({
   },
   price: {
     type: String,
-    required: true
-  },
-  email: {
-    type: String,
-    required: true
-  },
-  community: {
-    type: String,
-    enum: communities,
     required: true
   }
 
