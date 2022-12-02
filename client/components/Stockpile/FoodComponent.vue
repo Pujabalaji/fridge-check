@@ -99,12 +99,12 @@ export default {
             const r = this.request(params);
             if (this.$store.state.foodIdsWithListings.includes(this.food._id)) {
                 const paramsDeleteListing = {
-                method: 'DELETE',
-                callback: () => {
-                    this.$store.commit('alert', {
-                        message: 'Successfully deleted listing!', status: 'success'
-                    });
-                }
+                    method: 'DELETE',
+                    callback: () => {
+                        this.$store.commit('alert', {
+                            message: 'Successfully deleted listing!', status: 'success'
+                        });
+                    }
                 };
                 const r1 = await fetch(`/api/listings/foods/${this.food._id}`, paramsDeleteListing);
                 this.$store.dispatch('refreshMyListings');
@@ -156,9 +156,7 @@ export default {
             }
 
             try {
-                console.log(options);
                 const r = await fetch(`/api/foods/${this.food._id}`, options);
-                console.log(r);
                 if (!r.ok) {
                     const res = await r.json();
                     throw new Error(res.error);
@@ -179,7 +177,7 @@ export default {
             for (const food of this.$store.state.foodIdsWithListings) {
                 foods.push(food);
             }
-            return (!(this.food.prepared) && !(foods.includes(this.food._id)));
+            return (!this.food.prepared && !foods.includes(this.food._id));
         }
     }
 };

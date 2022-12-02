@@ -3,15 +3,20 @@
 <template>
     <article class="listing">
         <header v-if="!editing">
-            <h3 class="name">
-                {{ listing.name }} ( x{{ listing.quantity }} {{ listing.unit }})
-                
-                Expires on: {{ listing.expiration }}
-
+            <div>
+                <h2>{{ listing.name }} ( x{{ listing.quantity }} {{ listing.unit }})</h2>
                 Price: {{ listing.price }}
-            </h3>
-
-            <div class="actions">
+                <br>
+                User: {{ listing.username }}
+                <br>
+                Community: TODO
+                <br>
+                Contact info: {{ listing.email }}
+                <br>
+                Expires on: {{ listing.expiration }}
+                <br>
+            </div>
+            <div v-if="listing.username === $store.state.user?.username" class="actions">
                 <button @click="startEditing">
                     ✏️ Edit Quantity or Price
                 </button>
@@ -23,9 +28,11 @@
         <header v-else>
             <h3 class="name">
                 {{ listing.name }} (x
-                <textarea v-if="editing" class="quantity" :value="draft.quantity" @input="draft.quantity = $event.target.value" /> {{ listing.unit }})
-                Price: 
-                <textarea v-if="editing" class="price" :value="draft.price" @input="draft.price = $event.target.value" />
+                <textarea v-if="editing" class="quantity" :value="draft.quantity"
+                    @input="draft.quantity = $event.target.value" /> {{ listing.unit }})
+                Price:
+                <textarea v-if="editing" class="price" :value="draft.price"
+                    @input="draft.price = $event.target.value" />
                 Expires on: {{ listing.expiration }}
             </h3>
 
@@ -64,7 +71,7 @@ export default {
         return {
             editing: false, // Whether or not this object is in edit mode
             alerts: {}, // Displays success/error messages encountered during object modification
-            draft: {quantity: this.listing.quantity, price: this.listing.price}
+            draft: { quantity: this.listing.quantity, price: this.listing.price }
         };
     },
     methods: {
@@ -73,14 +80,14 @@ export default {
              * Enables edit mode on this object.
              */
             this.editing = true; // Keeps track of if a object is being edited
-            this.draft = {quantity: this.listing.quantity, price: this.listing.price}; // The content of our current "draft" while being edited
+            this.draft = { quantity: this.listing.quantity, price: this.listing.price }; // The content of our current "draft" while being edited
         },
         stopEditing() {
             /**
              * Disables edit mode on this object.
              */
             this.editing = false;
-            this.draft = {quantity: this.listing.quantity, price: this.listing.price};
+            this.draft = { quantity: this.listing.quantity, price: this.listing.price };
         },
         deleteListing() {
             /**

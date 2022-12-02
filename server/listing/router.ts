@@ -9,6 +9,22 @@ import type { User } from '../user/model';
 
 const router = express.Router();
 
+/**
+ * Get all listings for all users
+ *
+ * @name GET /api/listings/temp
+ *
+ * @return {ListingResponse[]} - An array of all listings
+ *
+ */
+ router.get(
+    '/temp',
+    async (req: Request, res: Response) => {
+        const listings = await ListingCollection.findAll();
+        const response = listings.map(util.constructListingResponse);
+        res.status(200).json(response);
+    }
+);
 
 /**
  * Get all listings for the current user

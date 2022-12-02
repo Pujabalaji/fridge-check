@@ -3,15 +3,16 @@
     <form @submit.prevent="submit">
         <h3>Create Listing:</h3>
         <article>
-            <div><label>Name: {{$store.state.currentFood.name}}</label></div>
+            <div><label>Name: {{ $store.state.currentFood.name }}</label></div>
             <br>
-            <div><label>Expiration: {{$store.state.currentFood.expiration}} </label></div>
+            <div><label>Expiration: {{ $store.state.currentFood.expiration }} </label></div>
             <br>
-            <div><label>Quantity: </label> <input v-model="quantity" :placeholder="$store.state.currentFood.quantity"/></div>
+            <div><label>Quantity: </label> <input v-model="quantity" :placeholder="$store.state.currentFood.quantity" />
+            </div>
             <br>
-            <div><label>Units: {{$store.state.currentFood.unit}}</label></div>
+            <div><label>Units: {{ $store.state.currentFood.unit }}</label></div>
             <br>
-            <div><label>Price: </label> <input v-model="price" placeholder='$0'/></div>
+            <div><label>Price: </label> <input v-model="price" placeholder='$0' /></div>
             <br>
         </article>
         <button type="submit" :disabled="!(enableSubmit().status == 'ok')">
