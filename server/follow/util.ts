@@ -23,6 +23,7 @@ const constructFollowResponse = (follow: HydratedDocument<Follow>): FollowRespon
   };
   const {follower} = followCopy;
   const {communityName} = followCopy;
+  delete followCopy.communityName;
   return {
     _id: followCopy._id.toString(),
     follower: follower.username,

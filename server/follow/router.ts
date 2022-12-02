@@ -66,7 +66,7 @@ const router = express.Router();
 /**
  * Follow a community
  *
- * @name PUT /api/follows
+ * @name PUT /api/follows/:communityName
  *
  * @param {string} username - The username of the user to follow
  * @return {string} - A success message
@@ -76,14 +76,14 @@ const router = express.Router();
  * @throws {409} - If the user tries to follow someone they already follow
  */
  router.put(
-    '/',
+    '/:communityName?',
     [
       userValidator.isUserLoggedIn,
       followValidator.isRepeatFollow
     ],
     async (req: Request, res: Response) => {
       const curUserId = (req.session.userId as string) ?? '';
-      const communityName = req.body.communityName;
+      const communityName = req.params.communityName;
       await FollowCollection.addOne(curUserId, communityName);
       res.status(200).json({
         message: 'Your follow was added successfully.'
@@ -104,7 +104,7 @@ const router = express.Router();
     '/:communityName?',
     [
         userValidator.isUserLoggedIn,
-        // followValidator.isValidCommunityName
+        followValidator.isValidCommunityName
     ],
     async (req: Request, res: Response) => {
       const currUser = (req.session.userId as string) ?? '';

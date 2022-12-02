@@ -86,10 +86,7 @@ class FollowCollection {
    * @return {Promise<Boolean>} - true if the follow has been deleted, false otherwise
    */
   static async deleteOne(userId: string, communityName: string): Promise<boolean> {
-    const user = await UserCollection.findOneByUserId(userId);
-    console.log("user id" + user._id);
-    console.log("communityName" + communityName);
-    const followSuccess = await FollowModel.deleteOne({ follower: user._id, communityName: communityName });
+    const followSuccess = await FollowModel.deleteOne({ follower: userId, communityName: communityName });
     return followSuccess !== null;
   }
 

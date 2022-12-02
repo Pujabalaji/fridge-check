@@ -54,14 +54,13 @@ export default {
         async followRequest() {
             const params = {
                 method: 'PUT',
-                body: JSON.stringify({ communityName: this.communityName }),
                 message: "Successfully followed " + this.communityName,
                 callback: () => {
                     this.$set(this.alerts, params.message, "success");
                     setTimeout(() => this.$delete(this.alerts, params.message), 3000);
                 }
             }
-            const response = await this.request(params, `/api/follows`);
+            const response = await this.request(params, `/api/follows/${this.communityName}`);
             this.$emit('fetchFollows');
         },
         async request(params, url) {
