@@ -9,7 +9,7 @@
                 <br>
                 User: {{ listing.username }}
                 <br>
-                Community: TODO
+                Community: {{ listing.community }}
                 <br>
                 Contact info: {{ listing.email }}
                 <br>
