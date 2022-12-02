@@ -69,8 +69,9 @@ export default {
                 body: JSON.stringify({ foodId: this.$store.state.currentFood._id, name: this.$store.state.currentFood.name, quantity: this.quantity, unit: this.$store.state.currentFood.unit, expiration: this.$store.state.currentFood.rawExpiration, price: this.price }),
                 message: "Successfully created listing",
                 callback: () => {
-                    this.$set(this.alerts, "Successfully created listing", "success");
-                    setTimeout(() => this.$delete(this.alerts, "Successfully created listing"), 3000);
+                    this.$store.commit('alert', {
+                        message: "Successfully created listing", status: 'success'
+                    });
                 },
             };
 
