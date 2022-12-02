@@ -5,6 +5,7 @@ import LoginPage from './components/Login/LoginPage.vue';
 import HomePage from './components/Home/HomePage.vue';
 import StockpilePage from './components/Stockpile/StockpilePage.vue';
 import MyListingsPage from './components/Listings/MyListingsPage.vue';
+import AllListingsTempPage from './components/Listings/AllListingsTempPage.vue';
 import NotFound from './NotFound.vue';
 
 Vue.use(VueRouter);
@@ -15,6 +16,7 @@ const routes = [
   { path: '/login', name: 'Login', component: LoginPage },
   { path: '/stockpile', name: 'Stockpile', component: StockpilePage },
   { path: '/listings', name: 'My Listings', component: MyListingsPage },
+  { path: '/alllistings', name: 'All Listings', component: AllListingsTempPage},
   { path: '*', name: 'Not Found', component: NotFound }
 ];
 

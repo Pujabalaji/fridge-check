@@ -62,7 +62,7 @@ import CreateListingForm from '@/components/Listings/CreateListingForm.vue';
 export default {
     name: 'StockpilePage',
     components: { FoodComponent, CreateFoodForm, CreateListingForm },
-    created(){
+    created() {
         if (this.$store.state.username) {
             this.$store.dispatch("refreshStockpile");
         }
@@ -77,11 +77,11 @@ section {
 }
 
 .row {
-  display: flex;
-  gap: 1em;
+    display: flex;
+    gap: 1em;
 }
 
 .column {
-  flex: 1;
+    flex: 1;
 }
 </style>

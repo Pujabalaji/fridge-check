@@ -58,7 +58,6 @@ class ListingCollection {
      * @return {Promise<Boolean> } - True if the listing has been deleted, false otherwise
      */
      static async deleteOneByFoodId(foodId: Types.ObjectId | string): Promise<Boolean> {
-        console.log("coorec call");
         const listing = await ListingModel.deleteOne({ foodId: foodId });
         return listing !== null;
     }
@@ -66,10 +65,10 @@ class ListingCollection {
     /**
      * Get all the listings in the database
      *
-     * @return {Promise<HydratedDocument<Listing>[]>} - An array of all of the listings in the database, sorted by expiration date
+     * @return {Promise<HydratedDocument<Listing>[]>} - An array of all of the listings in the database
      */
     static async findAll(): Promise<Array<HydratedDocument<Listing>>> {
-        return ListingModel.find({}, { "sort": [['expiration', 'asc']] }).populate('userId');
+        return ListingModel.find({}).populate('userId');
     }
 
     /**

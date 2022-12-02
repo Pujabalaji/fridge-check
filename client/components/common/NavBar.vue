@@ -27,6 +27,11 @@
         My Listings
       </router-link>
       <router-link
+        to="/alllistings"
+      >
+        All Listings
+      </router-link>
+      <router-link
         v-if="$store.state.username"
         to="/account"
       >
