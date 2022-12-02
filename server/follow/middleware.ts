@@ -45,7 +45,7 @@ import { communities } from 'server/user/model';
  */
 const isRepeatFollow = async (req: Request, res: Response, next: NextFunction) => {
     const curUserId = (req.session.userId as string) ?? '';
-    const communityName = req.params.communityName;
+    const communityName = req.body.communityName;
     const follow = await FollowCollection.findOne(curUserId, communityName);
     if (follow) {
       res.status(409).json({

@@ -2,17 +2,90 @@
 
 <template>
     <main v-if="$store.state.username">
+        {{ this.alreadyFollowedCommunities }}
         <section>
             <header>
                 <h2>Communities</h2>
+                <p>Follow communities to indicate you are willing to pickup items from a given location.
+                    <br>
+                    Listings you post will only be visible to those who have joined your home community as set in your Account page.
+                </p>
             </header>
+        </section>
+
+        <section class="row">
+            <!-- One row for each community -->
+            <div v-for="community in allCommunities" :key="community">
+                <CommunityComponent v-bind:alreadyFollowedCommunities="alreadyFollowedCommunities" v-bind:communityName="community" />
+            </div>
         </section>
     </main>
 </template>
 
 <script>
+import CommunityComponent from '@/components/Community/CommunityComponent.vue';
+// import { communities } from '../../../server/user/model';
 
 export default {
-    name: 'CommunityPage'
+    name: 'CommunityPage',
+    components: { CommunityComponent },
+    data() {
+        return {
+            alerts: {},
+            allCommunities: this.getAllCommunities(),
+            alreadyFollowedCommunities: this.communitiesUserFollows()
+        }
+    },
+    methods: {
+        async communitiesUserFollows() {
+            // make a request to get all the communities that the current user follows
+            // if communityName is one of those communities, return True
+            // else return False
+            const params = {
+                method: 'GET',
+                message: "Successfully received all communities current user follows.",
+                callback: () => {
+                    this.$set(this.alerts, params.message, "success");
+                    setTimeout(() => this.$delete(this.alerts, params.message), 3000);
+                }
+            }
+            const response = await this.request(params, `/api/follows/session`);
+            this.alreadyFollowedCommunities = response.map(x => x.community);
+        },
+        getAllCommunities() {
+            return ["Baker", "Burton Conner", "East Campus", "MacGregor", "Maseeh", "McCormick", "New House", "New Vassar", "Next House", "Random", "Simmons", "Off-campus Cambridge", "Off-campus Boston"]
+            // return { communities };
+        },
+        async request(params, url) {
+            /**
+             * Adds and deletes follow.
+             * Submits a request to the freet's endpoint
+             * @param params - Options for the request
+             * @param params.body - Body for the request, if it exists
+             * @param params.callback - Function to run if the the request succeeds
+             */
+            const options = {
+                method: params.method, headers: {'Content-Type': 'application/json', 'Cache-Control': 'no-cache'}
+            };
+            if (params.body) {
+                options.body = params.body;
+            }
+
+            try {
+                let r = await fetch(url, options);
+                if (!r.ok) {
+                const res = await r.json();
+                throw new Error(res.error);
+                }
+                
+                params.callback();
+                const response = await r.json();
+                return response;
+            } catch (e) {
+                this.$set(this.alerts, e, 'error');
+                setTimeout(() => this.$delete(this.alerts, e), 3000);
+            }
+        }
+    }
 };
 </script>
