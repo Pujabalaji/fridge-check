@@ -107,6 +107,7 @@ export default {
                 this.quantity = "";
                 this.expiration = "";
                 this.unit = "";
+                this.prepared = false;
             } catch (e) {
                 console.log(e);
                 this.$set(this.alerts, e, "error");

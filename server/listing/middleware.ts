@@ -16,11 +16,10 @@ const isListingExists = async (req: Request, res: Response, next: NextFunction) 
 };
 
 const isValidFoodQuantity = (req: Request, res: Response, next: NextFunction) => {
-    const quantity = Number(req.body.quantity);
-
-    if (!Number.isInteger(quantity) || quantity <= 0) {
+    const quantityRegex = /^(?=.*[1-9])\d*(?:\.\d{1,2})?$|^([1-9][0-9]*)\/[1-9][0-9]*|^[1-9][0-9]*$/;
+    if (!quantityRegex.test(req.body.quantity) && eval(req.body.quantity) <= 0) {
         res.status(400).json({
-            error: 'Quantity must be an integer greater than 0.'
+            error: 'Quantity must be a number greater than 0.'
         });
         return;
     }
