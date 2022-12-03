@@ -1,9 +1,12 @@
 import type { Request, Response } from 'express';
+import { HydratedDocument } from 'mongoose';
 import fetch from 'cross-fetch';
 import express from 'express';
 import FoodCollection from '../food/collection';
+import {Food} from '../food/model';
 import * as userValidator from '../user/middleware';
 import * as util from './util';
+
 
 const router = express.Router();
 
@@ -30,18 +33,27 @@ router.get(
 
     // Add ingredients
     const fullStockpile = await FoodCollection.findAllByUser(userId);
-    const filteredStockpile = fullStockpile.filter(food => !food.prepared && (food.expiration > today));
-    const names = filteredStockpile.map((food) => food.name);
-    if (names.length) {
-      const ingredients = names.reduce((prev: string, current: string) => prev + ',+' + current);
+    const filteredStockpile:HydratedDocument<Food>[] = [];
+    let ingredientStr = '';
+    
+    fullStockpile.forEach((food) => {
+      if (!food.prepared && food.expiration > today) {
+        filteredStockpile.push(food);
+        if (ingredientStr.length === 0) {
+          ingredientStr = food.name;
+        } else {
+          ingredientStr += `,+${food.name}`;
+        }
+      }
+    });
 
-      params.includeIngredients = ingredients;
+    if (ingredientStr.length) {
+      params.includeIngredients = ingredientStr;
       params.sort = 'max-used-ingredients';
     }
 
     await util.addUserInformationToParams(params, userId);
     const url = util.constructUrlWithParams(params)
-
     const r = await fetch(url);
     const apiRes = await r.json();
 
