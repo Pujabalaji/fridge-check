@@ -51,7 +51,7 @@ const isValidFoodName = async (req: Request, res: Response, next: NextFunction) 
 };
 
 const isFoodExists = async (req: Request, res: Response, next: NextFunction) => {
-    const food = await FoodCollection.findOne(req.body.foodId);
+    const food = await FoodCollection.findOne(req.params.foodId);
     if (!food) {
         res.status(404).json({
             error: 'Food with this foodId does not exist.'

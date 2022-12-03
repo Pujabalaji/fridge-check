@@ -179,12 +179,11 @@ Vercel will automatically deploy the latest version of your code whenever a push
 
 ### `GET /api/listings` - Get all listings created by the current user
 
-### `POST /api/listings` - Add listing to current user’s listings
+### `PUT /api/listings/foodId` - Add listing to current user’s listings
 
 **Body**
 
-- `foodId` _{string}_ - the food item that is being listed
-- `price` _{string}_ - the price the food item is being sold for (TODO: how do you handle free items)
+- `price` _{string}_ - the price the food item is being sold for
 
 ### `PATCH /api/listings/:listingId` - Change quantity or price of a listing
 

@@ -63,10 +63,10 @@ export default {
              * Submits a form with the specified options from data().
              */
             const options = {
-                method: 'POST',
+                method: 'PUT',
                 headers: { "Content-Type": "application/json" },
                 credentials: "same-origin", // Sends express-session credentials with request
-                body: JSON.stringify({ foodId: this.$store.state.currentFood._id, name: this.$store.state.currentFood.name, quantity: this.quantity, unit: this.$store.state.currentFood.unit, expiration: this.$store.state.currentFood.rawExpiration, price: this.price }),
+                body: JSON.stringify({ name: this.$store.state.currentFood.name, quantity: this.quantity, unit: this.$store.state.currentFood.unit, expiration: this.$store.state.currentFood.rawExpiration, price: this.price }),
                 message: "Successfully created listing",
                 callback: () => {
                     this.$store.commit('alert', {
@@ -76,7 +76,7 @@ export default {
             };
 
             try {
-                const r = await fetch('/api/listings', options);
+                const r = await fetch(`/api/listings/${this.$store.state.currentFood._id}`, options);
                 if (!r.ok) {
                     const res = await r.json();
                     throw new Error(res.error);
