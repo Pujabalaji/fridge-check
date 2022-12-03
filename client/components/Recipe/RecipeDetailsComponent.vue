@@ -5,8 +5,12 @@
       <img :src="recipe.imageUrl" />
       <div class="column">
         <h4>{{ recipe.name }}</h4>
-        <p v-if="recipe.prepTime >= 0">Prep Time: {{ recipe.prepTime }} minutes</p>
-        <p v-if="recipe.cookTime >= 0">Cooking Time: {{ recipe.cookTime }} minutes</p>
+        <p v-if="recipe.prepTime >= 0">
+          Prep Time: {{ recipe.prepTime }} minutes
+        </p>
+        <p v-if="recipe.cookTime >= 0">
+          Cooking Time: {{ recipe.cookTime }} minutes
+        </p>
         <button>Make this recipe and update stockpile</button>
       </div>
     </div>
