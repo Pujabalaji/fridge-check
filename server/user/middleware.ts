@@ -71,9 +71,10 @@ const isValidPassword = (req: Request, res: Response, next: NextFunction) => {
  * Checks if proposed email is valid
  */
  const isValidEmail = (req: Request, res: Response, next: NextFunction) => {
-  if ("email" in req.body && !(req.body.email.length >= 1)) {
+  const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+  if ("email" in req.body && !emailRegex.test(req.body.email)) {
     res.status(400).json({
-      error: 'You must provide an email address.'
+      error: 'You must provide a valid email address.'
     });
     return;
   }
