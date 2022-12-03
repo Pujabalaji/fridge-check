@@ -16,6 +16,7 @@ const store = new Vuex.Store({
     expiring: [], // foods that will expire within a week for current user
     remainingFoods: [], // foods that have not expired and will not expire in a week for current user
     foods: [],  // all foods of current user
+    selectedRecipe: null // recipe user has selected to see further details from
   },
   mutations: {
     alert(state, payload) {
@@ -40,6 +41,13 @@ const store = new Vuex.Store({
        * @param user - new user to set
        */
       state.user = user;
+    },
+    setSelectedRecipe(state, recipe) {
+      /**
+       * Update the stored selected recipe to the specified one.
+       * @param recipe - new recipe to display details
+       */
+      state.selectedRecipe = recipe;
     },
     updateStockpile(state, stockpile) {
       /**

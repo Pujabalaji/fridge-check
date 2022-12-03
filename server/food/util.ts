@@ -2,7 +2,7 @@ import type { HydratedDocument } from 'mongoose';
 import moment from 'moment';
 import type { Food, Unit } from './model';
 
-type FoodResponse = {
+export type FoodResponse = {
     _id: string;
     username: string;
     dateCreated: string;

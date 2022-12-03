@@ -3,6 +3,9 @@ import VueRouter from 'vue-router';
 import AccountPage from './components/Account/AccountPage.vue';
 import LoginPage from './components/Login/LoginPage.vue';
 import HomePage from './components/Home/HomePage.vue';
+import RecipePage from './components/Recipe/RecipePage.vue';
+import IngredientDetailsPage from './components/Ingredient/IngredientDetailsPage.vue';
+import RecipeDetailsPage from './components/Recipe/RecipeDetailsPage.vue';
 import StockpilePage from './components/Stockpile/StockpilePage.vue';
 import NotFound from './NotFound.vue';
 
@@ -13,7 +16,10 @@ const routes = [
   { path: '/account', name: 'Account', component: AccountPage },
   { path: '/login', name: 'Login', component: LoginPage },
   { path: '/stockpile', name: 'Stockpile', component: StockpilePage },
-  { path: '*', name: 'Not Found', component: NotFound }
+  { path: '/recipe', name: 'Recipe', component: RecipePage },
+  { path: '/recipe/ingredients', name: 'Ingredient Details', component: IngredientDetailsPage },
+  { path: '/recipe/details', name: 'Recipe Details', component: RecipeDetailsPage },
+  { path: '*', name: 'Not Found', component: NotFound },
 ];
 
 const router = new VueRouter({ routes });
