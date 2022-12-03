@@ -14,16 +14,13 @@
 
         <section class="row">
             <!-- One row for each community -->
-            <div v-for="community in allCommunities" :key="community">
-                <CommunityComponent v-bind:alreadyFollowedCommunities="alreadyFollowedCommunities" v-bind:communityName="community" @fetchFollows="communitiesUserFollows" />
-            </div>
+            <CommunityComponent v-for="community in $store.state.communities" :key="community" v-bind:alreadyFollowedCommunities="alreadyFollowedCommunities" v-bind:communityName="community" @fetchFollows="communitiesUserFollows" />
         </section>
     </main>
 </template>
 
 <script>
 import CommunityComponent from '@/components/Community/CommunityComponent.vue';
-// import { communities } from '../../../server/user/model';
 
 export default {
     name: 'CommunityPage',
@@ -31,7 +28,6 @@ export default {
     data() {
         return {
             alerts: {},
-            allCommunities: this.getAllCommunities(),
             alreadyFollowedCommunities: [],
         }
     },
@@ -53,10 +49,6 @@ export default {
             }
             const response = await this.request(params, `/api/follows/session`);
             this.alreadyFollowedCommunities = response.map(x => x.community);
-        },
-        getAllCommunities() {
-            return ["Baker", "Burton Conner", "East Campus", "MacGregor", "Maseeh", "McCormick", "New House", "New Vassar", "Next House", "Random", "Simmons", "Off-campus Cambridge", "Off-campus Boston"]
-            // return { communities };
         },
         async request(params, url) {
             /**

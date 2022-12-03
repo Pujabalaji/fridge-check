@@ -60,7 +60,7 @@ const router = express.Router();
  * @param {string} username - The username of the user to follow
  * @return {string} - A success message
  * @throws {403} - If the user is not logged in
- * @throws {400} - If `username` is not a recognized username of any user
+ * @throws {400} - If the user is trying to follow community with invalid name
  * @throws {409} - If the user tries to follow a community they already follow
  */
  router.put(

@@ -9,6 +9,7 @@ Vue.use(Vuex);
  */
 const store = new Vuex.Store({
   state: {
+    communities: ["Baker", "Burton Conner", "East Campus", "MacGregor", "Maseeh", "McCormick", "New House", "New Vassar", "Next House", "Random", "Simmons", "Off-campus Cambridge", "Off-campus Boston"],
     username: null, // Username of the logged in user
     alerts: {}, // global success/error messages encountered during submissions to non-visible forms
     user: null,
@@ -26,6 +27,9 @@ const store = new Vuex.Store({
       setTimeout(() => {
         Vue.delete(state.alerts, payload.message);
       }, 3000);
+    },
+    setCommunities(state, communities) {
+      state.communities = communities;
     },
     setUsername(state, username) {
       /**

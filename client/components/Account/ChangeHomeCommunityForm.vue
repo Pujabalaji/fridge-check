@@ -7,7 +7,7 @@
       Home community:
       <select name="homeCommunity" id="homeCommunity" v-model="homeCommunity">
         <option value="Baker">Baker </option>
-        <option value="Burton Connor">Burton Connor </option>
+        <option value="Burton Conner">Burton Conner </option>
         <option value="East Campus">East Campus </option>
         <option value="MacGregor">MacGregor </option>
         <option value="Maseeh">Maseeh </option>
