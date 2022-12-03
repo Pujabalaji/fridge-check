@@ -9,8 +9,8 @@ type RecipeIngredient = {
   name: string[];
   amount: number;
   unit: string;
-  status?: string; // either 'used' or 'missing'
-  stockpileMatches?: FoodResponse[];
+  status: string; // either 'used' or 'missing'
+  stockpileMatches: FoodResponse[];
 }
 
 type RecipeResponse = {
@@ -19,10 +19,10 @@ type RecipeResponse = {
   imageUrl: string;
   ingredients: RecipeIngredient[];
   instructions: string[];
-  prepTime?: number;
-  cookTime?: number;
-  usedCount?: number;
-  expiringCount?: number;
+  prepTime: number;
+  cookTime: number;
+  usedCount: number;
+  expiringCount: number;
   source: string;
 };
 
@@ -50,8 +50,8 @@ const constructSuggestedRecipeResponse = (stockpile: Array<HydratedDocument<Food
 
   recipe.extendedIngredients.forEach((ingredient: Record<any, any>) => {
     // name contains both name and nameClean, if they differ
-    const recipeIngredientNames:string[] = (ingredient.name !== ingredient.nameClean && ingredient.nameClean) ? [ingredient.name, ingredient.nameClean] : [ingredient.name];
-    let stockpileMatches:FoodResponse[] = [];
+    const recipeIngredientNames: string[] = (ingredient.name !== ingredient.nameClean && ingredient.nameClean) ? [ingredient.name, ingredient.nameClean] : [ingredient.name];
+    let stockpileMatches: FoodResponse[] = [];
     if (usedIds.has(ingredient.id)) {
       stockpile.forEach((stockpileIngredient) => {
         const lowerStockpileName = stockpileIngredient.name.toLowerCase();
@@ -98,15 +98,42 @@ const constructSuggestedRecipeResponse = (stockpile: Array<HydratedDocument<Food
  * @param {Object} recipe - a recipe response from the api
  * @returns {RecipeResponse} - The recipe object
  */
-const constructQueryRecipeResponse = (recipe: Record<any, any>): RecipeResponse => {
+const constructQueryRecipeResponse = (stockpile: Array<HydratedDocument<Food>>, recipe: Record<any, any>): RecipeResponse => {
   // Create recipe ingredients
-  const ingredients = recipe.extendedIngredients.map((ingredient: Record<any, any>) => {
-    return {
+  let week = new Date();
+  week.setDate(week.getDate() + 7);
+  let expiringCount = 0;
+  let usedCount = 0;
+  const ingredients: RecipeIngredient[] = [];
+
+  recipe.extendedIngredients.forEach((ingredient: Record<any, any>) => {
+    // name contains both name and nameClean, if they differ
+    const recipeIngredientNames: string[] = (ingredient.name !== ingredient.nameClean && ingredient.nameClean) ? [ingredient.name, ingredient.nameClean] : [ingredient.name];
+    let stockpileMatches: FoodResponse[] = [];
+
+    stockpile.forEach((stockpileIngredient) => {
+      const lowerStockpileName = stockpileIngredient.name.toLowerCase();
+      let foundMatch = false;
+
+      if (recipeIngredientNames.some((recipeIngredientName) => recipeIngredientName.includes(lowerStockpileName))) {
+        stockpileMatches.push(foodUtils.constructFoodResponse(stockpileIngredient));
+       
+        if (!foundMatch) {
+          usedCount += 1;
+          expiringCount += (stockpileIngredient.expiration <= week) ? 1 : 0;
+        }
+        foundMatch = true;
+      }
+    });
+
+    ingredients.push({
       _id: ingredient.id,
-      name: ingredient.name !== ingredient.nameClean ? [ingredient.name, ingredient.nameClean] : [ingredient.name],
+      name: recipeIngredientNames,
       amount: ingredient.amount,
       unit: ingredient.unit,
-    };
+      status: (stockpileMatches.length) ? "used" : "missing",
+      stockpileMatches,
+    });
   });
 
   return {
@@ -115,6 +142,10 @@ const constructQueryRecipeResponse = (recipe: Record<any, any>): RecipeResponse 
     imageUrl: recipe.image,
     ingredients,
     instructions: recipe.analyzedInstructions.length ? recipe.analyzedInstructions[0].steps.map((step: any) => { return step.step; }) : [],
+    prepTime: recipe.preparationMinutes,
+    cookTime: recipe.cookingMinutes,
+    usedCount,
+    expiringCount,
     source: recipe.sourceUrl,
   };
 };

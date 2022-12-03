@@ -3,7 +3,7 @@ import { HydratedDocument } from 'mongoose';
 import fetch from 'cross-fetch';
 import express from 'express';
 import FoodCollection from '../food/collection';
-import {Food} from '../food/model';
+import { Food } from '../food/model';
 import * as userValidator from '../user/middleware';
 import * as util from './util';
 
@@ -33,9 +33,9 @@ router.get(
 
     // Add ingredients
     const fullStockpile = await FoodCollection.findAllByUser(userId);
-    const filteredStockpile:HydratedDocument<Food>[] = [];
+    const filteredStockpile: HydratedDocument<Food>[] = [];
     let ingredientStr = '';
-    
+
     fullStockpile.forEach((food) => {
       if (!food.prepared && food.expiration > today) {
         filteredStockpile.push(food);
@@ -82,6 +82,7 @@ router.get(
     userValidator.isUserLoggedIn,
   ],
   async (req: Request, res: Response) => {
+    const today = new Date();
     const params: Record<string, string> = {
       query: (req.query.recipeName as string),
       addRecipeInformation: 'true',
@@ -99,7 +100,21 @@ router.get(
       return;
     }
 
-    const response = apiRes.results.map(util.constructQueryRecipeResponse);
+    const fullStockpile = await FoodCollection.findAllByUser(req.session.userId);
+    const filteredStockpile = fullStockpile.filter((food) => !food.prepared && food.expiration > today);
+
+    const response = apiRes.results.map((recipe:Record<any, any>) => util.constructQueryRecipeResponse(filteredStockpile, recipe));
+    response.sort((recipe1: any, recipe2: any) => {
+      if (recipe1.usedCount > recipe2.usedCount) {
+        return -1;
+      } else if (recipe1.usedCount < recipe2.usedCount) {
+        return 1;
+      } else if (recipe1.expiringCount > recipe2.expiringCount) {
+        return -1;
+      } else {
+        return 1;
+      }
+    });
     res.status(200).json(response);
     return;
   }
