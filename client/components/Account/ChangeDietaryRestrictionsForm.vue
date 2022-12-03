@@ -1,69 +1,90 @@
 <!-- Form for changing dietary restrictions (block style) -->
 <template>
-  <form @submit.prevent="submit">
-    <h3>Change dietary restrictions</h3>
-    <article>
-      <div>
-        Other dietary restrictions:
-        <span>
-          <input type="checkbox" id="vegetarian" v-model="vegetarianChecked" />
-          <label for="vegetarian">Vegetarian </label>
-        </span><span>
-          <input type="checkbox" id="vegan" v-model="veganChecked" />
-          <label for="vegan">Vegan </label>
-        </span>
-        <span>
-          <input type="checkbox" id="pescetarian" v-model="pescetarianChecked" />
-          <label for="pescetarian">Pescatarian </label>
-        </span>
-      </div>
-    </article>
-    <button type="submit">
-      Change dietary restrictions
-    </button>
-    <section class="alerts">
-      <article v-for="(status, alert, index) in alerts" :key="index" :class="status">
-        <p>{{ alert }}</p>
+  <div>
+    <BForm @submit.prevent="submit">
+      <h3>Change dietary restrictions</h3>
+      <article>
+        <BFormGroup
+          id="other"
+          label="Other dietary restrictions"
+          label-for="other"
+        >
+          <BFormCheckboxGroup id="other" v-model="selectedOtherRestrictions">
+            <BFormCheckbox value="Vegetarian">Vegetarian</BFormCheckbox>
+            <BFormCheckbox value="Vegan">Vegan</BFormCheckbox>
+            <BFormCheckbox value="Pescetarian">Pescatarian</BFormCheckbox>
+          </BFormCheckboxGroup>
+        </BFormGroup>
       </article>
-    </section>
-  </form>
+      <BButton type="submit" variant="primary">
+        Change dietary restrictions
+      </BButton>
+    </BForm>
+    <BAlert
+      v-for="(status, alert, index) in alerts"
+      :key="index"
+      :variant="status === 'error' ? 'danger' : 'success'"
+      show
+      >{{ alert }}</BAlert
+    >
+  </div>
 </template>
   
 <script>
+import {
+  BForm,
+  BFormGroup,
+  BFormCheckboxGroup,
+  BFormCheckbox,
+  BButton,
+  BAlert,
+} from "bootstrap-vue";
+
 export default {
   name: "ChangeDietaryRestrictionsForm",
+  components: {
+    BForm,
+    BFormGroup,
+    BFormCheckboxGroup,
+    BFormCheckbox,
+    BButton,
+    BAlert,
+  },
   data() {
     return {
-      vegetarianChecked: this.$store.state.user?.otherDietaryRestrictions.includes("Vegetarian") ?? false,
-      veganChecked: this.$store.state.user?.otherDietaryRestrictions.includes("Vegan") ?? false,
-      pescetarianChecked: this.$store.state.user?.otherDietaryRestrictions.includes("Pescatarian") ?? false,
+      selectedOtherRestrictions: this.$store.state.user?.otherDietaryRestrictions,
       alerts: {},
-      callback: null
-    }
+      callback: null,
+    };
   },
   methods: {
     async submit() {
-      let dietaryRestrictionsArray = [];
-      if (this.vegetarianChecked) {
-        dietaryRestrictionsArray.push('Vegetarian');
-      } if (this.veganChecked) {
-        dietaryRestrictionsArray.push("Vegan");
-      } if (this.pescetarianChecked) {
-        dietaryRestrictionsArray.push("Pescatarian");
-      }
       const options = {
-        method: 'PATCH',
+        method: "PATCH",
         headers: { "Content-Type": "application/json" },
         credentials: "same-origin", // Sends express-session credentials with request
-        body: JSON.stringify({ otherDietaryRestrictions: dietaryRestrictionsArray }),
+        body: JSON.stringify({
+          otherDietaryRestrictions: this.selectedOtherRestrictions,
+        }),
         callback: () => {
-          this.$set(this.alerts, "Successfully updated dietary restrictions", "success");
-          setTimeout(() => this.$delete(this.alerts, "Successfully updated dietary restrictions"), 3000);
+          this.$set(
+            this.alerts,
+            "Successfully updated dietary restrictions",
+            "success"
+          );
+          setTimeout(
+            () =>
+              this.$delete(
+                this.alerts,
+                "Successfully updated dietary restrictions"
+              ),
+            3000
+          );
         },
       };
 
       try {
-        const r = await fetch('/api/users', options);
+        const r = await fetch("/api/users", options);
         if (!r.ok) {
           const res = await r.json();
           throw new Error(res.error);
