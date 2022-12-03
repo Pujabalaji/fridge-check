@@ -7,12 +7,14 @@
                 <h2>{{ listing.name }} ( x{{ listing.quantity }} {{ listing.unit }})</h2>
                 Price: {{ listing.price }}
                 <br>
-                User: {{ listing.username }}
-                <br>
-                Community: {{ listing.community }}
-                <br>
-                Contact info: {{ listing.email }}
-                <br>
+                <div v-if="listing.username !== $store.state.user?.username">
+                    User: {{ listing.username }}
+                    <br>
+                    Community: {{ listing.community }}
+                    <br>
+                    Contact info: {{ listing.email }}
+                    <br>
+                </div>
                 Expires on: {{ listing.expiration }}
                 <br>
             </div>
