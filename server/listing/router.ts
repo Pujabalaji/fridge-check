@@ -71,7 +71,7 @@ router.get(
 /**
  * Create a new listing.
  *
- * @name POST /api/listings
+ * @name PUT /api/listings/:foodId
  *
  * @param {name} - The name of the food to be listed
  * @param {foodId} - the id of the food being listing
@@ -87,8 +87,8 @@ router.get(
  * @throws {400} - If the expiration date is not the proper MM/DD/YYYY format
  * @throws {413} - If the expiration date is prior to today's date
  */
-router.post(
-    '/',
+router.put(
+    '/:foodId?',
     [
         userValidator.isUserLoggedIn,
         listingValidator.isValidFoodName,
@@ -98,7 +98,7 @@ router.post(
     async (req: Request, res: Response) => {
         const userId = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
         const quantity = (req.body.quantity as number) ?? 0;
-        const listing = await ListingCollection.addOne(userId, req.body.foodId, req.body.name, quantity, req.body.unit, req.body.expiration, req.body.price);
+        const listing = await ListingCollection.addOne(userId, req.params.foodId, req.body.name, quantity, req.body.unit, req.body.expiration, req.body.price);
         res.status(201).json({
             message: 'Your listing was created successfully.',
             listing: util.constructMyListingResponse(listing)
