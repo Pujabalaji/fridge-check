@@ -29,7 +29,7 @@ const isValidFoodQuantity = (req: Request, res: Response, next: NextFunction) =>
 
 const isValidFoodExpiration = (req: Request, res: Response, next: NextFunction) => {
     const expiration = req.body.expiration as string;
-    const regex = /^\d{2}\/\d{2}\/\d{4}$/;
+    const regex = /^\d{4}-\d{2}-\d{2}$/;
     if (!regex.test(expiration)) {
         res.status(400).json({
             error: 'Expiration Date must be in the format MM/DD/YYYY.'

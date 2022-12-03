@@ -15,7 +15,7 @@ class FoodCollection {
    */
   static async addOne(userId: Types.ObjectId | string, name: string, quantity:Number, expiration:string, unit:Unit, prepared:Boolean): Promise<HydratedDocument<Food>> {
     const date = new Date();
-    const [month, day, year] = expiration.split('/');
+    const [year, month, day] = expiration.split('-');
     const expirationDate = new Date(+year, +month - 1, +day);
     const food = new FoodModel({
       userId,
