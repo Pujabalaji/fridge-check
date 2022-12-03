@@ -17,6 +17,9 @@
                 <button v-if=enableCreateListing @click="createListing">
                     Create Listing
                 </button>
+                <button v-else-if="$store.state.foodIdsWithListings.includes(food._id)" @click="viewListing">
+                    View Listing
+                </button>
             </div>
         </header>
         <header v-else>
@@ -112,6 +115,9 @@ export default {
         },
         async createListing() {
             this.$store.commit('enableCreateListing', this.food);
+        },
+        viewListing() {
+            this.$router.push({name: 'My Listings'});
         },
         submitEdit() {
             /**
