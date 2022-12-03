@@ -42,10 +42,10 @@ export default {
         async unfollowRequest() {
             const params = {
                 method: 'DELETE',
-                message: "Successfully unfollowed " + this.communityName,
                 callback: () => {
-                    this.$set(this.alerts, params.message, "success");
-                    setTimeout(() => this.$delete(this.alerts, params.message), 3000);
+                    this.$store.commit('alert', {
+                        message: "Successfully unfollowed " + this.communityName, status: 'success'
+                    });
                 }
             }
             const response = await this.request(params, `api/follows/${this.communityName}`);
@@ -54,10 +54,10 @@ export default {
         async followRequest() {
             const params = {
                 method: 'PUT',
-                message: "Successfully followed " + this.communityName,
                 callback: () => {
-                    this.$set(this.alerts, params.message, "success");
-                    setTimeout(() => this.$delete(this.alerts, params.message), 3000);
+                    this.$store.commit('alert', {
+                        message: "Successfully followed " + this.communityName, status: 'success'
+                    });
                 }
             }
             const response = await this.request(params, `/api/follows/${this.communityName}`);

@@ -6,17 +6,6 @@ import * as userValidator from '../user/middleware';
 import { constructFollowResponse } from './util';
 import * as followValidator from '../follow/middleware';
 
-/**
-### `GET /api/follows/session` - Get all the communities that the current user follows
-
-### `GET /api/follows/listings` - Get all listings in communities that the current user follows
-
-### `POST /api/follows` - Follow a community
-
-### `DELETE /api/follows/:communityName` - Unfollow a community
- * 
- */
-
 const router = express.Router();
 
 /**
@@ -70,16 +59,16 @@ const router = express.Router();
  *
  * @param {string} username - The username of the user to follow
  * @return {string} - A success message
- * @throws {400} - If the user tries to follow themselves
  * @throws {403} - If the user is not logged in
- * @throws {404} - If `username` is not a recognized username of any user
- * @throws {409} - If the user tries to follow someone they already follow
+ * @throws {400} - If `username` is not a recognized username of any user
+ * @throws {409} - If the user tries to follow a community they already follow
  */
  router.put(
     '/:communityName?',
     [
       userValidator.isUserLoggedIn,
-      followValidator.isRepeatFollow
+      followValidator.isRepeatFollow,
+      followValidator.isValidCommunityName
     ],
     async (req: Request, res: Response) => {
       const curUserId = (req.session.userId as string) ?? '';

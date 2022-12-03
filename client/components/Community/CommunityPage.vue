@@ -2,7 +2,6 @@
 
 <template>
     <main v-if="$store.state.username">
-        {{ this.alreadyFollowedCommunities }}
         <section>
             <header>
                 <h2>Communities</h2>
