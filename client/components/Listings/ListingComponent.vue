@@ -1,34 +1,41 @@
 <!-- Reusable component representing a single food and its actions -->
 
 <template>
-    <article class="food">
+    <article class="listing">
         <header v-if="!editing">
-            <h3 class="name">
-                {{ food.name }} ( x{{ food.quantity }} {{ food.unit }}) Expires on: {{ food.expiration }}
-            </h3>
-
-            <div class="actions">
+            <div>
+                <h2>{{ listing.name }} ( x{{ listing.quantity }} {{ listing.unit }})</h2>
+                Price: {{ listing.price }}
+                <br>
+                <div v-if="listing.username !== $store.state.user?.username">
+                    User: {{ listing.username }}
+                    <br>
+                    Community: {{ listing.community }}
+                    <br>
+                    Contact info: {{ listing.email }}
+                    <br>
+                </div>
+                Expires on: {{ listing.expiration }}
+                <br>
+            </div>
+            <div v-if="listing.username === $store.state.user?.username" class="actions">
                 <button @click="startEditing">
-                    ✏️ Edit Quantity
+                    ✏️ Edit Quantity or Price
                 </button>
-                <button @click="deleteFood">
-                    🗑️ Delete
-                </button>
-                <button v-if=enableCreateListing @click="createListing">
-                    Create Listing
-                </button>
-                <button v-else-if="$store.state.foodIdsWithListings.includes(food._id)" @click="viewListing">
-                    View Listing
+                <button @click="deleteListing">
+                    🗑️ Delete Listing
                 </button>
             </div>
         </header>
         <header v-else>
             <h3 class="name">
-                {{ food.name }} ( x
-                <textarea v-if="editing" class="quantity" :value="draft" @input="draft = $event.target.value" />{{
-                        food.unit
-                }})
-                Expires on: {{ food.expiration }}
+                {{ listing.name }} (x
+                <textarea v-if="editing" class="quantity" :value="draft.quantity"
+                    @input="draft.quantity = $event.target.value" /> {{ listing.unit }})
+                Price:
+                <textarea v-if="editing" class="price" :value="draft.price"
+                    @input="draft.price = $event.target.value" />
+                Expires on: {{ listing.expiration }}
             </h3>
 
             <div class="actions">
@@ -38,11 +45,8 @@
                 <button v-if="editing" @click="stopEditing">
                     🚫 Discard changes
                 </button>
-                <button @click="deleteFood">
-                    🗑️ Delete
-                </button>
-                <button v-if=!food.prepared @click="createListing">
-                    Create Listing
+                <button @click="deleteListing">
+                    🗑️ Delete Listing
                 </button>
             </div>
         </header>
@@ -57,10 +61,10 @@
 <script>
 
 export default {
-    name: 'FoodComponent',
+    name: 'ListingComponent',
     components: {},
     props: {
-        food: {
+        listing: {
             type: Object,
             required: true
         }
@@ -69,7 +73,7 @@ export default {
         return {
             editing: false, // Whether or not this object is in edit mode
             alerts: {}, // Displays success/error messages encountered during object modification
-            draft: this.food.quantity,
+            draft: { quantity: this.listing.quantity, price: this.listing.price }
         };
     },
     methods: {
@@ -78,68 +82,45 @@ export default {
              * Enables edit mode on this object.
              */
             this.editing = true; // Keeps track of if a object is being edited
-            this.draft = this.food.quantity; // The content of our current "draft" while being edited
+            this.draft = { quantity: this.listing.quantity, price: this.listing.price }; // The content of our current "draft" while being edited
         },
         stopEditing() {
             /**
              * Disables edit mode on this object.
              */
             this.editing = false;
-            this.draft = this.food.quantity;
+            this.draft = { quantity: this.listing.quantity, price: this.listing.price };
         },
-        async deleteFood() {
+        deleteListing() {
             /**
-             * Deletes this food and any associated listings.
+             * Deletes this object.
              */
             const params = {
                 method: 'DELETE',
                 callback: () => {
                     this.$store.commit('alert', {
-                        message: 'Successfully deleted food!', status: 'success'
+                        message: 'Successfully deleted listing!', status: 'success'
                     });
                 }
             };
             const r = this.request(params);
-            if (this.$store.state.foodIdsWithListings.includes(this.food._id)) {
-                const paramsDeleteListing = {
-                    method: 'DELETE',
-                    callback: () => {
-                        this.$store.commit('alert', {
-                            message: 'Successfully deleted listing!', status: 'success'
-                        });
-                    }
-                };
-                const r1 = await fetch(`/api/listings/foods/${this.food._id}`, paramsDeleteListing);
-                this.$store.dispatch('refreshMyListings');
-            }
-        },
-        async createListing() {
-            this.$store.commit('enableCreateListing', this.food);
-        },
-        viewListing() {
-            this.$router.push({name: 'My Listings'});
+            this.$store.dispatch('refreshStockpile');
         },
         submitEdit() {
             /**
              * Updates object to have the submitted draft content.
              */
             const quantityRegex = /^(?=.*[1-9])\d*(?:\.\d{1,2})?$|^([1-9][0-9]*)\/[1-9][0-9]*|^[1-9][0-9]*$/;
-            if (this.food.quantity === this.draft) {
-                const error = 'Error: Edited food quantity should be different than current food quantity.';
-                this.$set(this.alerts, error, 'error'); // Set an alert to be the error text, timeout of 3000 ms
-                setTimeout(() => this.$delete(this.alerts, error), 3000);
-                return;
-            } else if (!quantityRegex.test(this.draft)) {
+            if (!quantityRegex.test(this.draft.quantity)) {
                 const error = 'Error: Edited food quantity should be greater than 0. If you have eaten the food delete it instead.';
                 this.$set(this.alerts, error, 'error'); // Set an alert to be the error text, timeout of 3000 ms
                 setTimeout(() => this.$delete(this.alerts, error), 3000);
                 return;
             }
-
             const params = {
                 method: 'PATCH',
-                message: 'Successfully edited quantity!',
-                body: JSON.stringify({ quantity: this.draft }),
+                message: 'Successfully edited listing!',
+                body: JSON.stringify({ quantity: this.draft.quantity, price: this.draft.price }),
                 callback: () => {
                     this.$set(this.alerts, params.message, 'success');
                     setTimeout(() => this.$delete(this.alerts, params.message), 3000);
@@ -162,38 +143,26 @@ export default {
             }
 
             try {
-                const r = await fetch(`/api/foods/${this.food._id}`, options);
+                const r = await fetch(`/api/listings/${this.listing._id}`, options);
                 if (!r.ok) {
                     const res = await r.json();
                     throw new Error(res.error);
                 }
                 const res = await r.json();
                 this.editing = false;
-                this.$store.dispatch("refreshStockpile");
+                this.$store.dispatch("refreshMyListings");
                 params.callback();
             } catch (e) {
                 this.$set(this.alerts, e, 'error');
                 setTimeout(() => this.$delete(this.alerts, e), 3000);
             }
         }
-    },
-    computed: {
-        enableCreateListing() {
-            const foodsExpiredOrListingExists = [];
-            for (const foodId of this.$store.state.foodIdsWithListings) {
-                foodsExpiredOrListingExists.push(foodId);
-            }
-            for (const food of this.$store.state.expired) {
-                foodsExpiredOrListingExists.push(food._id);
-            }
-            return (!this.food.prepared && !foodsExpiredOrListingExists.includes(this.food._id));
-        }
     }
 };
 </script>
   
 <style scoped>
-.food {
+.listing {
     border: 1px solid #111;
     padding: 20px;
     position: relative;

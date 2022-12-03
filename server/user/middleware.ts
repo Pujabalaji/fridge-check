@@ -68,10 +68,10 @@ const isValidPassword = (req: Request, res: Response, next: NextFunction) => {
 };
 
 /**
- * Checks if proposed contact info is valid
+ * Checks if proposed email is valid
  */
- const isValidContactInfo = (req: Request, res: Response, next: NextFunction) => {
-  if ("contactInfo" in req.body && !(req.body.contactInfo.length >= 1)) {
+ const isValidEmail = (req: Request, res: Response, next: NextFunction) => {
+  if ("email" in req.body && !(req.body.email.length >= 1)) {
     res.status(400).json({
       error: 'You must provide an email address.'
     });
@@ -188,7 +188,7 @@ export {
   isAccountExists,
   isValidUsername,
   isValidPassword,
-  isValidContactInfo,
+  isValidEmail,
   isValidAllergies,
   isValidDietaryRestrictions,
   isValidHomeCommunity

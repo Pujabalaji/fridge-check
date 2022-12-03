@@ -16,6 +16,10 @@ const store = new Vuex.Store({
     expiring: [], // foods that will expire within a week for current user
     remainingFoods: [], // foods that have not expired and will not expire in a week for current user
     foods: [],  // all foods of current user
+    currentFood: null, // the food, if any, that the current user has selected to create a listing from
+    listings: [],
+    foodIdsWithListings: [],
+    allListingsTemp: [],
     selectedRecipe: null // recipe user has selected to see further details from
   },
   mutations: {
@@ -73,6 +77,18 @@ const store = new Vuex.Store({
           state.remainingFoods.push(food);
         }
       }
+    },
+    updateMyListings(state, listings) {
+      state.listings = listings;
+    },
+    updateAllListings(state, listings) {
+      state.allListingsTemp = listings;
+    },
+    enableCreateListing(state, food) {
+      state.currentFood = food;
+    },
+    clearCurrentFood(state) {
+      state.currentFood = null;
     }
   },
   actions: {
@@ -83,7 +99,23 @@ const store = new Vuex.Store({
       const url = '/api/foods';
       const res = await fetch(url).then(async r => r.json());
       commit('updateStockpile', res);
+      state.foodIdsWithListings = [];
+      for (const food of res) {
+        const res1 = await fetch(`/api/listings/foods?foodId=${food._id}`).then(async r => r.json());
+        if (res1 !== "none") {
+          state.foodIdsWithListings.push(food._id);
+        }
+      }
+
     },
+    async refreshMyListings({ commit, state }) {
+      const listings = await fetch('/api/listings').then(async r => r.json());
+      commit('updateMyListings', listings);
+    },
+    async refreshAllListings({ commit, state }) {
+      const listings = await fetch('/api/listings/temp').then(async r => r.json());
+      commit('updateAllListings', listings);
+    }
   },
   // Store data across page refreshes, only discard on browser close
   plugins: [createPersistedState()]
