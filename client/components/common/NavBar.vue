@@ -3,96 +3,52 @@
 <!-- This navbar takes advantage of both flex and grid layouts for positioning elements; feel free to redesign as you see fit! -->
 
 <template>
-  <nav>
-    <div class="left">
-      <!-- <img src="../../public/logo.svg"> -->
-      <h1 class="title">
-        FridgeCheck
-      </h1>
-    </div>
-    <div class="right">
-      <router-link to="/">
-        Home
-      </router-link>
-      <router-link
-        v-if="$store.state.username"
-        to="/stockpile"
-      >
-        Stockpile
-      </router-link>
-      <router-link
-        v-if="$store.state.username"
-        to="/listings"
-      >
-        My Listings
-      </router-link>
-      <router-link
-        to="/alllistings"
-      >
-        All Listings
-      </router-link>
-      <router-link
-        v-if="$store.state.username"
-        to="/account"
-      >
-        Account
-      </router-link>
-      <router-link
-        v-else
-        to="/login"
-      >
-        Login
-      </router-link>
-    </div>
-    <section class="alerts">
-      <article
-        v-for="(status, alert, index) in $store.state.alerts"
-        :key="index"
-        :class="status"
-      >
-        <p>{{ alert }}</p>
-      </article>
-    </section>
-  </nav>
+  <div>
+    <BNavbar type="dark" variant="dark">
+      <BNavbarBrand>FridgeCheck</BNavbarBrand>
+      <BNavbarToggle target="nav-collapse" />
+      <BCollapse id="nav-collapse" is-nav>
+        <BNavbarNav class="ml-auto">
+          <BNavItem v-for="link in links" :key="link.name" :to="link.to" :active="$route.path == link.to" v-show="link.visible">
+            {{link.name}}
+          </BNavItem>
+        </BNavbarNav>
+      </BCollapse>
+    </BNavbar>
+  </div>
 </template>
 
-<style scoped>
-nav {
-    padding: 1vw 2vw;
-    background-color: #ccc;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: relative;
-}
+<script>
+import {
+  BNavbar,
+  BNavbarBrand,
+  BNavbarToggle,
+  BCollapse,
+  BNavbarNav,
+  BNavItem,
+} from "bootstrap-vue";
+export default {
+  name: "NavBar",
+  components: {
+    BNavbar,
+    BNavbarBrand,
+    BNavbarToggle,
+    BCollapse,
+    BNavbarNav,
+    BNavItem,
+  },
+  computed: {
+    links() {
+      return [
+        {to: '/', name: 'Home', visible: true},
+        {to: '/stockpile', name: 'Stockpile', visible: this.$store.state.username ? true : false},
+        {to: '/listings', name: 'My Listings', visible: this.$store.state.username ? true : false},
+        {to: '/alllistings', name: 'All Listings', visible: true},
+        {to: '/account', name: 'Account', visible: this.$store.state.username ? true : false},
+        {to: '/login', name: 'Login', visible: this.$store.state.username ? false : true}
+      ];
+    }
+  }
+};
+</script>
 
-.title {
-    font-size: 32px;
-    margin: 0 5px;
-}
-
-img {
-    height: 32px;
-}
-
-.left {
-	display: flex;
-	align-items: center;
-}
-
-.right {
-    font-size: 20px;
-    display: grid;
-    gap: 16px;
-    grid-auto-flow: column;
-    align-items: center;
-}
-
-.right a {
-    margin-left: 5px;
-}
-
-.alerts {
-    width: 25%;
-}
-</style>
