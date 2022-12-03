@@ -12,9 +12,15 @@
             </header>
         </section>
 
-        <section class="row">
+        <h3>Your communities</h3>
+        <section>
+            <CommunityComponent v-for="community in alreadyFollowedCommunities" :key="community" v-bind:alreadyFollows="true" v-bind:communityName="community" @fetchFollows="communitiesUserFollows" />
+        </section>
+
+        <h3>Follow other communities</h3>
+        <section>
             <!-- One row for each community -->
-            <CommunityComponent v-for="community in $store.state.communities" :key="community" v-bind:alreadyFollowedCommunities="alreadyFollowedCommunities" v-bind:communityName="community" @fetchFollows="communitiesUserFollows" />
+            <CommunityComponent v-for="community in unfollowedCommunities" :key="community" v-bind:alreadyFollows="false" v-bind:communityName="community" @fetchFollows="communitiesUserFollows" />
         </section>
     </main>
 </template>
@@ -29,16 +35,20 @@ export default {
         return {
             alerts: {},
             alreadyFollowedCommunities: [],
+            unfollowedCommunities: []
         }
     },
     created() {
       this.communitiesUserFollows();
+      this.alreadyFollows();
+    },
+    computed: {
+      alreadyFollows() {
+        this.unfollowedCommunities = this.$store.state.communities.filter(community => !this.alreadyFollowedCommunities.includes(community));
+      }
     },
     methods: {
         async communitiesUserFollows() {
-            // make a request to get all the communities that the current user follows
-            // if communityName is one of those communities, return True
-            // else return False
             const params = {
                 method: 'GET',
                 message: "Successfully received all communities current user follows.",

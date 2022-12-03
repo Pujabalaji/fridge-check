@@ -26,18 +26,18 @@ export default {
     name: 'CommunityComponent',
     props: {
         communityName: String,
-        alreadyFollowedCommunities: Array
+        alreadyFollows: Boolean
     },
     data() {
         return {
             alerts: {},
         }
     },
-    computed: {
-      alreadyFollows() {
-        return this.alreadyFollowedCommunities.filter(community => community === this.communityName).length !== 0;
-      }
-    },
+    // computed: {
+    //   alreadyFollows() {
+    //     return this.alreadyFollowedCommunities.filter(community => community === this.communityName).length !== 0;
+    //   }
+    // },
     methods: {
         async unfollowRequest() {
             const params = {
@@ -97,3 +97,15 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+.oneCommunity {
+    border: 1px solid #111;
+    padding: 20px;
+    position: relative;
+    font-family: "Helvetica Neue", Roboto, "Segoe UI", Calibri, sans-serif;
+    font-size: 12px;
+    line-height: 16px;
+    background-color: #eee;
+}
+</style>
