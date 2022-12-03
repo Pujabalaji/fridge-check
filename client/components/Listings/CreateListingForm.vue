@@ -10,9 +10,11 @@
             <div><label>Quantity: </label> <input v-model="quantity" :placeholder="$store.state.currentFood.quantity" />
             </div>
             <br>
-            <div><label>Units: {{ ($store.state.currentFood.unit == '') ? 'None' : $store.state.currentFood.unit }}</label></div>
+            <div><label>Units: {{ ($store.state.currentFood.unit == '') ? 'None' : $store.state.currentFood.unit
+            }}</label></div>
             <br>
-            <div><label>Price: </label> <input v-model="price" placeholder='examples: $0, free, $2 for 1 or $4 for all, $3 each, $10 total' /></div>
+            <div><label>Price: </label> <input v-model="price"
+                    placeholder='examples: $0, free, $2 for 1 or $4 for all, $3 each, $10 total' /></div>
             <br>
         </article>
         <button type="submit" :disabled="!(enableSubmit().status == 'ok')">
@@ -21,6 +23,9 @@
         <div class="disabledsubmit" v-if="!(enableSubmit().status == 'ok')">
             {{ enableSubmit().errorToDisplay }}
         </div>
+        <button type="submit" @click="cancel">
+            Cancel
+        </button>
         <section class="alerts">
             <article v-for="(status, alert, index) in alerts" :key="index" :class="status">
                 <p>{{ alert }}</p>
@@ -95,6 +100,9 @@ export default {
                 setTimeout(() => this.$delete(this.alerts, e), 3000);
             }
 
+        },
+        cancel() {
+            this.$store.commit('clearCurrentFood');
         },
     },
 };
