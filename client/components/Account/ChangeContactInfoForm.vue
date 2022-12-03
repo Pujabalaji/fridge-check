@@ -33,9 +33,12 @@ export default {
     isValidEmail(value) {
       const emailRegex = /^\S+$/;
       if (!emailRegex.test(value)) {
-        return false;
+        return {
+          status: "error",
+          errorToDisplay: "Email must be a nonempty alphanumeric string.",
+        };
       }
-      return true;
+      return { status: "ok", errorToDisplay: "" };
     },
   },
 };
