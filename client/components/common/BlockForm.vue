@@ -99,7 +99,6 @@ export default {
           Object.fromEntries(
             this.fields.map((field) => {
               const { id, value } = field;
-              field.value = "";
               return [id, value];
             })
           )
@@ -123,6 +122,10 @@ export default {
           );
           this.$store.commit("setUser", res.user ? res.user : null);
         }
+
+        this.fields.forEach((field) => {
+          field.value = "";
+        });
 
         if (this.callback) {
           this.callback();
