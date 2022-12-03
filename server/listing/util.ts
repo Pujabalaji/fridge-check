@@ -10,8 +10,7 @@ type MyListingResponse = {
     name: string;
     expiration: string;
     rawExpiration: Date;
-    email: string;
-    community: string;
+    unit: string;
 };
 
 type ListingResponse = {
@@ -25,6 +24,7 @@ type ListingResponse = {
     price: string;
     email: string;
     community: string;
+    unit: string;
 };
 
 /**
@@ -50,16 +50,17 @@ const constructMyListingResponse = (listing: HydratedDocument<Listing>): MyListi
         })
     };
     const { username, homeCommunity, email } = listingCopy.userId;
+    const { name, unit, expiration } = listingCopy.foodId;
     delete listingCopy.userId;
     return {
         ...listingCopy,
         _id: listingCopy._id.toString(),
         username,
         dateCreated: formatDate(listing.dateCreated),
-        expiration: formatDate(listing.expiration),
-        rawExpiration: listingCopy.expiration,
-        email,
-        community: homeCommunity
+        expiration: formatDate(expiration),
+        rawExpiration: expiration,
+        unit: unit,
+        name: name,
     };
 };
 
@@ -78,17 +79,20 @@ const constructListingResponse = (listing: HydratedDocument<Listing>): ListingRe
         })
     };
     const { username, homeCommunity, email } = listingCopy.userId;
+    const { name, unit, expiration } = listingCopy.foodId;
     delete listingCopy.userId;
     return {
         ...listingCopy,
         _id: listingCopy._id.toString(),
         username,
+        name: name,
         dateCreated: formatDate(listing.dateCreated),
-        expiration: formatDate(listing.expiration),
-        rawExpiration: listingCopy.expiration,
+        expiration: formatDate(expiration),
+        rawExpiration: expiration,
         price: listingCopy.price,
         email,
-        community: homeCommunity
+        community: homeCommunity,
+        unit
     };
 };
 

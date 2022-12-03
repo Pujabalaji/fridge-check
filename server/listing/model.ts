@@ -1,18 +1,14 @@
 import type { Types } from 'mongoose';
 import { Schema, model } from 'mongoose';
 import { User } from '../user/model';
-import type { Unit } from '../food/model';
-import { standardUnits } from '../food/model';
+import { Food } from '../food/model';
 
 export type Listing = {
   _id: Types.ObjectId;
-  foodId: Types.ObjectId;
+  foodId: Food;
   userId: User;
   dateCreated: Date;
-  unit: Unit;
   quantity: number;
-  name: string;
-  expiration: Date;
   price: string;
 };
 
@@ -31,22 +27,9 @@ const ListingSchema = new Schema<Listing>({
     type: Date,
     required: true
   },
-  name: {
-    type: String,
-    required: true
-  },
-  expiration: {
-    type: Date,
-    required: true
-  },
   quantity: {
     type: Number,
     required: true
-  },
-  unit: {
-    type: String,
-    enum: standardUnits,
-    required: false
   },
   price: {
     type: String,
