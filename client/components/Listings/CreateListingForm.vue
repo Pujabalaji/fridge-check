@@ -1,42 +1,31 @@
-<!-- Form for creating a food (block style) -->
+<!-- Form for creating a listing (block style) -->
 <template>
     <form @submit.prevent="submit">
-        <h3>Create a Food:</h3>
+        <h3>Create Listing:</h3>
         <article>
-            <div><label>Name: </label> <input v-model="name" placeholder="Milk" /></div>
+            <div><label>Name: {{ $store.state.currentFood.name }}</label></div>
             <br>
-            <div><label>Expiration (MM/DD/YYYY): </label> <input v-model="expiration" placeholder="01/20/2023" /></div>
+            <div><label>Expiration: {{ $store.state.currentFood.expiration }} </label></div>
             <br>
-            <div><label>Quantity: </label> <input v-model="quantity" placeholder="2" /></div>
-            <br>
-            <div>
-                Units:
-                <select name="unit" id="unit" v-model="unit">
-                    <option value=""> </option>
-                    <option value="sticks">Sitcks</option>
-                    <option value="oz">Oz</option>
-                    <option value="g">g</option>
-                    <option value="tsps">Tsp</option>
-                    <option value="tbsps">Tbsp</option>
-                    <option value="cups">Cups</option>
-                    <option value="pints">Pints </option>
-                    <option value="quarts">Quarts</option>
-                    <option value="gallons">Gallons</option>
-                </select>
+            <div><label>Quantity: </label> <input v-model="quantity" :placeholder="$store.state.currentFood.quantity" />
             </div>
-            <div>
-                <span>
-                    <br>Is this leftovers of a food you made?
-                    <input type="checkbox" id="prepared" v-model="prepared"/>
-                </span>
-            </div>
+            <br>
+            <div><label>Units: {{ ($store.state.currentFood.unit == '') ? 'None' : $store.state.currentFood.unit
+            }}</label></div>
+            <br>
+            <div><label>Price: </label> <input v-model="price"
+                    placeholder='examples: $0, free, $2 for 1 or $4 for all, $3 each, $10 total' /></div>
+            <br>
         </article>
         <button type="submit" :disabled="!(enableSubmit().status == 'ok')">
-            Create food
+            Create listing
         </button>
         <div class="disabledsubmit" v-if="!(enableSubmit().status == 'ok')">
             {{ enableSubmit().errorToDisplay }}
         </div>
+        <button type="submit" @click="cancel">
+            Cancel
+        </button>
         <section class="alerts">
             <article v-for="(status, alert, index) in alerts" :key="index" :class="status">
                 <p>{{ alert }}</p>
@@ -47,14 +36,13 @@
   
 <script>
 export default {
-    name: "CreateFoodForm",
+    name: "CreateListingForm",
     data() {
         return {
             name: "",
             expiration: "",
             quantity: "",
-            unit: "",
-            prepared: false,
+            price: "",
             alerts: {},
             callback: null,
             refreshFoods: true
@@ -64,16 +52,13 @@ export default {
         enableSubmit() {
             let status = "ok";
             let errorToDisplay = "";
-            const dateRegex = /^\d{2}\/\d{2}\/\d{4}$/;
             const quantityRegex = /^(?=.*[1-9])\d*(?:\.\d{1,2})?$|^([1-9][0-9]*)\/[1-9][0-9]*|^[1-9][0-9]*$/;
-            if (this.name.length == 0) {
-                errorToDisplay = "Food name must be a nonempty string.";;
+            if (!quantityRegex.test(this.quantity)) {
+                errorToDisplay = "Quantity must be a number greater than 0.";
                 status = "error";
-            } else if (!dateRegex.test(this.expiration)) {
-                errorToDisplay = "Date must be a MM/DD/YYYY format.";
-                status = "error";
-            } else if (!quantityRegex.test(this.quantity)) {
-                errorToDisplay = "Quantity must be an number greater than 0.";
+            }
+            if (this.quantity > this.$store.state.currentFood.quantity) {
+                errorToDisplay = "You cannot list a greater quantity than you have in your stockpile.";
                 status = "error";
             }
             return { status: status, errorToDisplay: errorToDisplay };
@@ -83,37 +68,41 @@ export default {
              * Submits a form with the specified options from data().
              */
             const options = {
-                method: 'POST',
+                method: 'PUT',
                 headers: { "Content-Type": "application/json" },
                 credentials: "same-origin", // Sends express-session credentials with request
-                body: JSON.stringify({ name: this.name, quantity: this.quantity, expiration: this.expiration, unit: this.unit, prepared: this.prepared }),
-                message: "Successfully created food",
+                body: JSON.stringify({ name: this.$store.state.currentFood.name, quantity: this.quantity, unit: this.$store.state.currentFood.unit, expiration: this.$store.state.currentFood.rawExpiration, price: this.price }),
+                message: "Successfully created listing",
                 callback: () => {
-                    this.$set(this.alerts, "Successfully created food", "success");
-                    setTimeout(() => this.$delete(this.alerts, "Successfully created food"), 3000);
+                    this.$store.commit('alert', {
+                        message: "Successfully created listing", status: 'success'
+                    });
                 },
             };
 
             try {
-                const r = await fetch('/api/foods', options);
+                const r = await fetch(`/api/listings/${this.$store.state.currentFood._id}`, options);
                 if (!r.ok) {
                     const res = await r.json();
                     throw new Error(res.error);
                 }
                 const res = await r.json();
-                this.$store.dispatch("refreshStockpile");
                 options.callback();
+                this.$store.commit('clearCurrentFood');
+                this.$store.dispatch('refreshStockpile');
                 this.name = "";
                 this.quantity = "";
                 this.expiration = "";
-                this.unit = "";
-                this.prepared = false;
+                this.price = "";
             } catch (e) {
                 console.log(e);
                 this.$set(this.alerts, e, "error");
                 setTimeout(() => this.$delete(this.alerts, e), 3000);
             }
 
+        },
+        cancel() {
+            this.$store.commit('clearCurrentFood');
         },
     },
 };

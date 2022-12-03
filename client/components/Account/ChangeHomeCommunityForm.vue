@@ -38,7 +38,7 @@ export default {
   name: "ChangeHomeCommunityForm",
   data () {
     return {
-      homeCommunity: this.$store.state.user.homeCommunity ?? "", //$store.state.user.homeCommunity,
+      homeCommunity: this.$store.state.user.homeCommunity ?? "",
       alerts: {},
       callback: null
     }

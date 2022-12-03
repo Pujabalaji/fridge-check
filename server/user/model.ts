@@ -18,7 +18,7 @@ export type User = {
   _id: Types.ObjectId; // MongoDB assigns each object this ID on creation
   username: string;
   password: string;
-  contactInfo: string;
+  email: string;
   allergies: Array<Allergy>;
   otherDietaryRestrictions: Array<OtherRestriction>;
   homeCommunity: Community;
@@ -39,7 +39,7 @@ const UserSchema = new Schema({
     required: true
   },
   // the user's contact info
-  contactInfo: {
+  email: {
     type: String,
     required: true
   },

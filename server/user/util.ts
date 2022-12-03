@@ -6,7 +6,7 @@ import type {User, Allergy, OtherRestriction, Community} from './model';
 type UserResponse = {
   _id: string;
   username: string;
-  contactInfo: string;
+  email: string;
   allergies: Array<Allergy>;
   otherDietaryRestrictions: Array<OtherRestriction>;
   homeCommunity: Community;
@@ -30,7 +30,7 @@ const constructUserResponse = (user: HydratedDocument<User>): UserResponse => {
   return {
     ...userCopy,
     _id: userCopy._id.toString(),
-    contactInfo: userCopy.contactInfo,
+    email: userCopy.email,
     allergies: userCopy.allergies,
     otherDietaryRestrictions: userCopy.otherDietaryRestrictions,
     homeCommunity: userCopy.homeCommunity,

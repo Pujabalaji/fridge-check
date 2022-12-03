@@ -142,6 +142,7 @@ Vercel will automatically deploy the latest version of your code whenever a push
 
 - `name` _{string}_ - The food's name
 - `quantity` _{number}_ - The food's quantity
+- `unit` _{string}_ - The unit associated with the quantity
 - `expiration` _{date}_ - The food's expiration date
 
 **Throws**
@@ -149,6 +150,7 @@ Vercel will automatically deploy the latest version of your code whenever a push
 - `403` if the user is not logged in
 - `400` if the food name is empty or a stream of empty spaces
 - `400` if the food quantity is less than 1
+- `400` if the food unit is not a valid string in the Unit enum
 - `400` if the expiration date is not the proper MM/DD/YYYY format
 - `413` if the expiration date is prior to today's date
 
@@ -177,12 +179,11 @@ Vercel will automatically deploy the latest version of your code whenever a push
 
 ### `GET /api/listings` - Get all listings created by the current user
 
-### `POST /api/listings` - Add listing to current user’s listings
+### `PUT /api/listings/foodId` - Add listing to current user’s listings
 
 **Body**
 
-- `foodId` _{string}_ - the food item that is being listed
-- `price` _{string}_ - the price the food item is being sold for (TODO: how do you handle free items)
+- `price` _{string}_ - the price the food item is being sold for
 
 ### `PATCH /api/listings/:listingId` - Change quantity or price of a listing
 

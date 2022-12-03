@@ -7,7 +7,7 @@
       <br>
       <div><label>Password: </label> <input type="password" v-model="password" /></div>
       <br>
-      <div><label>Email: </label> <input v-model="contactInfo" />
+      <div><label>Email: </label> <input v-model="email" />
       <p>Your email will be visible to users who follow your home community. </p></div>
       <br>
       <div>
@@ -80,7 +80,7 @@ export default {
     return {
       username: "",
       password: "",
-      contactInfo: "",
+      email: "",
       peanutChecked: false,
       treenutChecked: false,
       seafoodChecked: false,
@@ -105,7 +105,7 @@ export default {
       } else if (!passwordRegex.test(this.password)) {
         errorToDisplay = "Password must be a nonempty string.";
         status = "error";
-      } else if (!emailRegex.test(this.contactInfo)) {
+      } else if (!emailRegex.test(this.email)) {
         errorToDisplay = "Email must be a nonempty alphanumeric string.";
         status = "error";
       }
@@ -135,7 +135,7 @@ export default {
         method: 'POST',
         headers: { "Content-Type": "application/json" },
         credentials: "same-origin", // Sends express-session credentials with request
-        body: JSON.stringify({ username: this.username, password: this.password, contactInfo: this.contactInfo, allergies: allergiesArray, otherDietaryRestrictions: dietaryRestrictionsArray, homeCommunity: this.homeCommunity }),
+        body: JSON.stringify({ username: this.username, password: this.password, email: this.email, allergies: allergiesArray, otherDietaryRestrictions: dietaryRestrictionsArray, homeCommunity: this.homeCommunity }),
         message: "Successfully created user",
         callback: () => {
           this.$set(this.alerts, "Successfully created user", "success");

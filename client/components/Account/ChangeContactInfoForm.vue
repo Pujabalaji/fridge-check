@@ -26,7 +26,7 @@ export default {
       hasBody: true,
       setUsername: true,
       fields: [
-        { id: 'contactInfo', label: 'Email', value: this.$store.state.user?.contactInfo ?? '' }
+        { id: 'email', label: 'Email', value: this.$store.state.user?.email ?? '' }
       ],
       title: 'Change email',
       callback: () => {

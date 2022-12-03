@@ -2,9 +2,11 @@
 import type {Request, Response, NextFunction} from 'express';
 import express from 'express';
 import FollowCollection from './collection';
+import ListingCollection from '../listing/collection';
 import * as userValidator from '../user/middleware';
 import { constructFollowResponse } from './util';
 import * as followValidator from '../follow/middleware';
+import { constructListingResponse } from '..//listing/util';
 
 const router = express.Router();
 
@@ -45,9 +47,11 @@ const router = express.Router();
     async (req: Request, res: Response) => {
         const curUserId = (req.session.userId as string) ?? '';
         const follows = await FollowCollection.findAllFollowsByUserId(curUserId);
-        const communityNames = await follows.map(follow => follow.communityName);
-        // const listings = await ListingsCollection.findAllListingsByCommunity(communityNames);
-        // const response = listings.map(listingUtil.constructListingResponse);
+        // const communityNames = await follows.map(follow => follow.communityName);
+        // console.log("community names you follow");
+        // console.log(communityNames);
+        // const listings = await ListingCollection.findAllListingsByCommunity(communityNames);
+        // const response = listings.map(constructListingResponse);
         // res.status(200).json(response);
     }
   );

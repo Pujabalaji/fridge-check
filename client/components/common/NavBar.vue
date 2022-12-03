@@ -6,18 +6,11 @@
   <nav>
     <div class="left">
       <!-- <img src="../../public/logo.svg"> -->
-      <h1 class="title">
-        FridgeCheck
-      </h1>
+      <h1 class="title">FridgeCheck</h1>
     </div>
     <div class="right">
-      <router-link to="/">
-        Home
-      </router-link>
-      <router-link
-        v-if="$store.state.username"
-        to="/stockpile"
-      >
+      <router-link to="/"> Home </router-link>
+      <router-link v-if="$store.state.username" to="/stockpile">
         Stockpile
       </router-link>
       <router-link
@@ -26,25 +19,22 @@
       >
         Communities
       </router-link>
-      <router-link
-        v-if="$store.state.username"
-        to="/account"
-      >
+      <router-link v-if="$store.state.username" to="/recipe">
+        Suggested Recipes
+      </router-link>
+      <router-link v-if="$store.state.username" to="/listings">
+        My Listings
+      </router-link>
+      <router-link to="/alllistings">
+        All Listings
+      </router-link>
+      <router-link v-if="$store.state.username" to="/account">
         Account
       </router-link>
-      <router-link
-        v-else
-        to="/login"
-      >
-        Login
-      </router-link>
+      <router-link v-else to="/login"> Login </router-link>
     </div>
     <section class="alerts">
-      <article
-        v-for="(status, alert, index) in $store.state.alerts"
-        :key="index"
-        :class="status"
-      >
+      <article v-for="(status, alert, index) in $store.state.alerts" :key="index" :class="status">
         <p>{{ alert }}</p>
       </article>
     </section>
@@ -53,41 +43,41 @@
 
 <style scoped>
 nav {
-    padding: 1vw 2vw;
-    background-color: #ccc;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: relative;
+  padding: 1vw 2vw;
+  background-color: #ccc;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
 }
 
 .title {
-    font-size: 32px;
-    margin: 0 5px;
+  font-size: 32px;
+  margin: 0 5px;
 }
 
 img {
-    height: 32px;
+  height: 32px;
 }
 
 .left {
-	display: flex;
-	align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .right {
-    font-size: 20px;
-    display: grid;
-    gap: 16px;
-    grid-auto-flow: column;
-    align-items: center;
+  font-size: 20px;
+  display: grid;
+  gap: 16px;
+  grid-auto-flow: column;
+  align-items: center;
 }
 
 .right a {
-    margin-left: 5px;
+  margin-left: 5px;
 }
 
 .alerts {
-    width: 25%;
+  width: 25%;
 }
 </style>

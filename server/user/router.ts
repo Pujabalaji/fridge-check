@@ -90,7 +90,7 @@ router.delete(
  *
  * @param {string} username - username of user
  * @param {string} password - user's password
- * @param {string} contactInfo - user's contact info
+ * @param {string} email - user's contact info
  * @param {string} allergies - user's allergies
  * @param {string} otherDietaryRestrictions - user's dietary restrictions
  * @param {string} homeCommunity - user's home community
@@ -107,13 +107,13 @@ router.post(
     userValidator.isValidUsername,
     userValidator.isUsernameNotAlreadyInUse,
     userValidator.isValidPassword,
-    userValidator.isValidContactInfo,
+    userValidator.isValidEmail,
     userValidator.isValidAllergies,
     userValidator.isValidDietaryRestrictions,
     userValidator.isValidHomeCommunity
   ],
   async (req: Request, res: Response) => {
-    const user = await UserCollection.addOne(req.body.username, req.body.password, req.body.contactInfo, req.body.allergies, req.body.otherDietaryRestrictions, req.body.homeCommunity);
+    const user = await UserCollection.addOne(req.body.username, req.body.password, req.body.email, req.body.allergies, req.body.otherDietaryRestrictions, req.body.homeCommunity);
     req.session.userId = user._id.toString();
     res.status(201).json({
       message: `Your account was created successfully. You have been logged in as ${user.username}`,
@@ -141,7 +141,7 @@ router.patch(
     userValidator.isValidUsername,
     userValidator.isUsernameNotAlreadyInUse,
     userValidator.isValidPassword,
-    userValidator.isValidContactInfo,
+    userValidator.isValidEmail,
     userValidator.isValidAllergies,
     userValidator.isValidDietaryRestrictions,
     userValidator.isValidHomeCommunity

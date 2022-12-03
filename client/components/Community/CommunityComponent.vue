@@ -33,11 +33,6 @@ export default {
             alerts: {},
         }
     },
-    // computed: {
-    //   alreadyFollows() {
-    //     return this.alreadyFollowedCommunities.filter(community => community === this.communityName).length !== 0;
-    //   }
-    // },
     methods: {
         async unfollowRequest() {
             const params = {
