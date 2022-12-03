@@ -100,6 +100,9 @@ export default {
                 }
             };
             const r = this.request(params);
+            this.$store.commit("clearRecipes");
+            this.$store.commit("updateShowSuggested", false);
+            this.$store.commit("updateShowByName", false);
             if (this.$store.state.foodIdsWithListings.includes(this.food._id)) {
                 const paramsDeleteListing = {
                     method: 'DELETE',
