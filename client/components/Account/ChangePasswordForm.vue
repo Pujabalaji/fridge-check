@@ -6,7 +6,7 @@ import BlockForm from '@/components/common/BlockForm.vue';
 export default {
   name: 'ChangePasswordForm',
   mixins: [BlockForm],
-  methods: {
+  computed: {
     enableSubmit() {
       let status = "ok";
       let errorToDisplay = "";
@@ -25,7 +25,7 @@ export default {
       method: 'PATCH',
       hasBody: true,
       fields: [
-        {id: 'password', label: 'Password', value: ''}
+        {id: 'password', label: 'Password', value: '', type: 'password'}
       ],
       title: 'Change password',
       callback: () => {
