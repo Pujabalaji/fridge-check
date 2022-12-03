@@ -7,12 +7,12 @@
             <br>
             <div><label>Expiration: {{ $store.state.currentFood.expiration }} </label></div>
             <br>
-            <div><label>Quantity: </label> <input v-model="quantity" :placeholder="'examples: $0, free, $2 for 1 or $4 for all, $3 each, $10 total'" />
+            <div><label>Quantity: </label> <input v-model="quantity" :placeholder="$store.state.currentFood.quantity" />
             </div>
             <br>
             <div><label>Units: {{ ($store.state.currentFood.unit == '') ? 'None' : $store.state.currentFood.unit }}</label></div>
             <br>
-            <div><label>Price: </label> <input v-model="price" placeholder='$0' /></div>
+            <div><label>Price: </label> <input v-model="price" placeholder='examples: $0, free, $2 for 1 or $4 for all, $3 each, $10 total' /></div>
             <br>
         </article>
         <button type="submit" :disabled="!(enableSubmit().status == 'ok')">

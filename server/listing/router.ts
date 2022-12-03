@@ -98,7 +98,7 @@ router.post(
     async (req: Request, res: Response) => {
         const userId = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
         const quantity = (req.body.quantity as number) ?? 0;
-        const listing = await ListingCollection.addOne(userId, req.body.foodId, req.body.name, quantity, req.body.unit, req.body.expiration, req.body.price);
+        const listing = await ListingCollection.addOne(userId, req.body.foodId, quantity, req.body.price);
         res.status(201).json({
             message: 'Your listing was created successfully.',
             listing: util.constructMyListingResponse(listing)

@@ -1,7 +1,6 @@
 import type { HydratedDocument, Types } from 'mongoose';
 import type { Listing } from './model';
 import ListingModel from './model';
-import { Unit } from '../food/model';
 
 class ListingCollection {
   /**
@@ -13,19 +12,16 @@ class ListingCollection {
    * @param {string} name - The name of the food to be listed
    * @return {Promise<HydratedDocument<Food>>} - The newly created listing
    */
-  static async addOne(userId: Types.ObjectId | string, foodId: Types.ObjectId | string, name: string, quantity: Number, unit: Unit, expiration: string, price: string): Promise<HydratedDocument<Listing>> {
+  static async addOne(userId: Types.ObjectId | string, foodId: Types.ObjectId | string, quantity: Number, price: string): Promise<HydratedDocument<Listing>> {
     const listing = new ListingModel({
       userId,
       foodId,
       dateCreated: new Date(),
       quantity,
-      unit,
-      name,
-      expiration,
       price
     });
     await listing.save();
-    return listing.populate('userId');
+    return (await listing.populate('userId')).populate('foodId');
   }
 
   /**
@@ -35,7 +31,7 @@ class ListingCollection {
    * @return {Promise<HydratedDocument<Listing>> | Promise<null> } - The listing with the given listingId, if any
    */
   static async findOne(listingId: Types.ObjectId | string): Promise<HydratedDocument<Listing>> {
-    return ListingModel.findOne({ _id: listingId }).populate('userId');
+    return (await ListingModel.findOne({ _id: listingId }).populate('userId')).populate('foodId');
   }
 
   /**
@@ -45,7 +41,7 @@ class ListingCollection {
    * @return {Promise<HydratedDocument<Listing>> | Promise<null> } - The listing with the given foodId, if any
    */
   static async findOneByFoodId(foodId: Types.ObjectId | string): Promise<HydratedDocument<Listing>> {
-    return ListingModel.findOne({ foodId }).populate('userId');
+    return (await ListingModel.findOne({ foodId }).populate('userId')).populate('foodId');
   }
 
   /**
@@ -65,7 +61,7 @@ class ListingCollection {
    * @return {Promise<HydratedDocument<Listing>[]>} - An array of all of the listings in the database
    */
   static async findAll(): Promise<Array<HydratedDocument<Listing>>> {
-    return ListingModel.find({}).populate('userId');
+    return await (ListingModel.find({}).populate('userId')).populate('foodId');
   }
 
   /**
@@ -75,7 +71,7 @@ class ListingCollection {
    * @return {Promise<HydratedDocument<Listing>[]>} - An array of all of the listings by the given user
    */
   static async findAllByUser(userId: string): Promise<Array<HydratedDocument<Listing>>> {
-    return ListingModel.find({ userId }).sort({ expiration: 1 }).populate('userId');
+    return ListingModel.find({ userId }).sort({ expiration: 1 }).populate('userId').populate('foodId');
   }
 
   /**
@@ -94,7 +90,7 @@ class ListingCollection {
       listing.price = listingDetails.price;
     }
     await listing.save();
-    return listing.populate('userId');
+    return (await listing.populate('userId')).populate('foodId');
   }
 
   /**
