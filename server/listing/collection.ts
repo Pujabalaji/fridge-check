@@ -1,7 +1,6 @@
 import type { HydratedDocument, Types } from 'mongoose';
 import type { Listing } from './model';
 import ListingModel from './model';
-import UserCollection from '../user/collection';
 import { Unit } from '../food/model';
 
 class ListingCollection {
