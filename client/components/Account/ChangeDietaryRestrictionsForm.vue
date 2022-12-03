@@ -79,39 +79,3 @@ export default {
   },
 };
 </script>
-  
-<style scoped>
-form {
-  padding: 0.5rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  margin-bottom: 14px;
-  position: relative;
-  background-color: rgb(238, 238, 238);
-  box-shadow: 0 12px 12px rgba(0, 0, 0, 0.2);
-}
-
-article>div {
-  display: flex;
-  flex-direction: column;
-}
-
-form>article p {
-  margin: 0;
-}
-
-form h3,
-form>* {
-  margin: 0.3em 0;
-}
-
-form h3 {
-  margin-top: 0;
-}
-
-textarea {
-  font-family: inherit;
-  font-size: inherit;
-}
-</style>

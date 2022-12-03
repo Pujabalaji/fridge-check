@@ -6,22 +6,6 @@ import BlockForm from '@/components/common/BlockForm.vue';
 export default {
   name: 'LoginForm',
   mixins: [BlockForm],
-  methods: {
-    enableSubmit() {
-      let status = "ok";
-      let errorToDisplay = "";
-      const usernameRegex = /^\w+$/i;
-      const passwordRegex = /^\S+$/;
-      if (!usernameRegex.test(this.fields[0].value)) {
-        errorToDisplay = "Username must be a nonempty alphanumeric string.";
-        status = "error";
-      } else if (!passwordRegex.test(this.fields[1].value)) {
-        errorToDisplay = "Password must be a nonempty string.";
-        status = "error";
-      }
-      return { status: status, errorToDisplay: errorToDisplay };
-    },
-  },
   data() {
     return {
       url: '/api/users/session',
@@ -29,8 +13,8 @@ export default {
       hasBody: true,
       setUsername: true,
       fields: [
-        {id: 'username', label: 'Username', value: ''},
-        {id: 'password', label: 'Password', value: ''}
+        {id: 'username', label: 'Username', value: '', type: 'text', submitStatus: this.isValidUsername},
+        {id: 'password', label: 'Password', value: '', type: 'password', submitStatus: this.isValidPassword}
       ],
       title: 'Sign in',
       callback: () => {
@@ -40,6 +24,22 @@ export default {
         });
       }
     };
-  }
+  },
+  methods: {
+    isValidUsername(value) {
+      const usernameRegex = /^\w+$/i;
+      if (!usernameRegex.test(value)) {
+        return {status: 'error', errorToDisplay: "Username must be a nonempty alphanumeric string."};
+      }
+      return {status: 'ok', errorToDisplay: ''};
+    },
+    isValidPassword(value) {
+      const passwordRegex = /^\S+$/;
+      if (!passwordRegex.test(value)) {
+        return {status: 'error', errorToDisplay: "Password must be a nonempty string."}
+      }
+      return {status: 'ok', errorToDisplay: ''};
+    }
+  },
 };
 </script>

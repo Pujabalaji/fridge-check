@@ -47,6 +47,14 @@ body {
 
 main {
   padding: 0 5em 5em;
+  word-break: break-all
+}
+
+form {
+  padding: 0.5rem;
+  background-color: rgb(238, 238, 238);
+  box-shadow: 0 12px 12px rgba(0, 0, 0, 0.2);
+  margin-bottom: 1em;
 }
 
 .alerts {

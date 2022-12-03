@@ -6,7 +6,7 @@ import BlockForm from '@/components/common/BlockForm.vue';
 export default {
   name: 'ChangeUsernameForm',
   mixins: [BlockForm],
-  methods: {
+  computed: {
     enableSubmit() {
       let status = "ok";
       let errorToDisplay = "";
@@ -29,7 +29,7 @@ export default {
       hasBody: true,
       setUsername: true,
       fields: [
-        { id: 'username', label: 'Username', value: '' }
+        { id: 'username', label: 'Username', value: '', type: 'text' }
       ],
       title: 'Change username',
       callback: () => {

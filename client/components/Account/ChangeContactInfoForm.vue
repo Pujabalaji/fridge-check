@@ -6,7 +6,7 @@ import BlockForm from '@/components/common/BlockForm.vue';
 export default {
   name: 'ChangeContactInfoForm',
   mixins: [BlockForm],
-  methods: {
+  computed: {
     enableSubmit() {
       let status = "ok";
       let errorToDisplay = "";
@@ -26,7 +26,7 @@ export default {
       hasBody: true,
       setUsername: true,
       fields: [
-        { id: 'email', label: 'Email', value: this.$store.state.user?.email ?? '' }
+        { id: 'email', label: 'Email', value: this.$store.state.user?.email ?? '', type: 'email'}
       ],
       title: 'Change email',
       callback: () => {
