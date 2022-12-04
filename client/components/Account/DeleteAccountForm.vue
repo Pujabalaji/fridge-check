@@ -16,6 +16,9 @@ export default {
       content: 'Deleting your account is permanent and irreversible. Proceed only if you understand these consequences.',
       callback: () => {
         this.$router.push({name: 'Login'}); // Goes to Home page after deleting account
+        this.$store.commit("clearRecipes");
+        this.$store.commit("updateShowSuggested", false);
+        this.$store.commit("updateShowByName", false);
         this.$store.commit('alert', {
           message: 'Your account has been deleted!', status: 'success'
         });

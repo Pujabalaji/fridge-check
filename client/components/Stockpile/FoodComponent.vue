@@ -116,19 +116,6 @@ export default {
       this.$store.commit("updateShowSuggested", false);
       this.$store.commit("updateShowByName", false);
       if (this.$store.state.foodIdsWithListings.includes(this.food._id)) {
-        const paramsDeleteListing = {
-          method: "DELETE",
-          callback: () => {
-            this.$store.commit("alert", {
-              message: "Successfully deleted listing!",
-              status: "success",
-            });
-          },
-        };
-        const r1 = await fetch(
-          `/api/listings/foods/${this.food._id}`,
-          paramsDeleteListing
-        );
         this.$store.dispatch("refreshMyListings");
       }
     },
