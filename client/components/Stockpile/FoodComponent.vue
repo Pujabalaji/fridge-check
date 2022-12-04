@@ -211,7 +211,7 @@ export default {
 <style scoped>
 .actions {
   display: flex;
-  justify-content: space-between;
+  gap: 1em;
 }
 
 .food {
