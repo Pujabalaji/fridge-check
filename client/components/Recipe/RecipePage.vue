@@ -23,17 +23,21 @@
               label="Search Recipes by Name"
               label-for="search-recipe"
             >
-              <BFormInput
-                id="search-recipe"
-                v-model="searchText"
-                type="text"
-                placeholder="Search"
-                required
-              />
+              <BInputGroup>
+                <BFormInput
+                  id="search-recipe"
+                  v-model="searchText"
+                  type="text"
+                  placeholder="Search"
+                  required
+                />
+                <BInputGroupAppend>
+                  <BButton type="submit" variant="primary"
+                    ><BIconSearch /> <span>Search</span>
+                  </BButton>
+                </BInputGroupAppend>
+              </BInputGroup>
             </BFormGroup>
-            <BButton type="submit" variant="primary"
-              ><BIconSearch /> <span>Search</span>
-            </BButton>
           </BForm>
         </div>
         <div class="recipes">
@@ -150,8 +154,8 @@ export default {
 }
 
 div {
-    margin-left: 0em;
-    margin-right: 0em;
+  margin-left: 0em;
+  margin-right: 0em;
 }
 
 button {

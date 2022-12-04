@@ -53,6 +53,7 @@ router.get(
     }
 
     await util.addUserInformationToParams(params, userId);
+    params.number = '5';
     const url = util.constructUrlWithParams(params)
     const r = await fetch(url);
     const apiRes = await r.json();
@@ -90,6 +91,7 @@ router.get(
     };
 
     await util.addUserInformationToParams(params, req.session.userId);
+    params.number = '5';
     const url = util.constructUrlWithParams(params);
 
     const r = await fetch(url);
