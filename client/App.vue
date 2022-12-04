@@ -33,6 +33,13 @@ export default {
 
     // Clear alerts on page refresh
     this.$store.state.alerts = {};
+
+    const params = {
+      method: 'DELETE',
+      headers: { "Content-Type": "application/json" },
+      credentials: "same-origin", // Sends express-session credentials with request
+    };
+    fetch('/api/listings/expired', params);
   }
 };
 </script>

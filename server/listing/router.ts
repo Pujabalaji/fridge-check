@@ -106,6 +106,31 @@ router.put(
     }
 );
 
+
+/**
+ * Delete all listings where the food is expired
+ *
+ * @name DELETE /api/listings/expired
+ *
+ * @return {string} - A success message
+ */
+ router.delete(
+    '/expired',
+    async (req: Request, res: Response) => {
+        const listings = await ListingCollection.findAll();
+        for (const listing of listings) {
+            const foodDate = new Date(listing.foodId.expiration);
+            const today = new Date();
+            if (foodDate < today) {
+                await ListingCollection.deleteOne(listing._id);
+            }
+        }
+        res.status(200).json({
+            message: 'All listings for expired foods have been deleted successfully.'
+        });
+    }
+);
+
 /**
  * Delete a listing
  *
