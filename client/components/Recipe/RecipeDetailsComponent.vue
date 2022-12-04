@@ -53,7 +53,7 @@ export default {
 
 <style scoped>
 .recipeDetails {
-  background-color: #d3f9d8;
+  background-color: #d3e6f9;
 }
 
 div {
