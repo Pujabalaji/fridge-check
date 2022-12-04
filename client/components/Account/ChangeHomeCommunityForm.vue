@@ -1,33 +1,34 @@
 <!-- Form for changing home community (block style) -->
 <template>
-  <div>
-    <BForm @submit.prevent="submit">
-      <h3>Change home community</h3>
-      <article>
-        <BFormGroup id="home" label="Home Community" label-for="home">
-          <BFormSelect
-            id="home"
-            v-model="homeCommunity"
-            :options="communityOptions"
-          >
-            <template #first>
-              <BFormSelectOption value="" disabled
-                >Please select a home community</BFormSelectOption
-              >
-            </template>
-          </BFormSelect>
-        </BFormGroup>
-      </article>
-      <BButton type="submit" variant="primary" block> Change home community </BButton>
-    </BForm>
+  <BForm @submit.prevent="submit">
+    <h3>Change home community</h3>
+    <article>
+      <BFormGroup id="home" label="Home Community" label-for="home">
+        <BFormSelect
+          id="home"
+          v-model="homeCommunity"
+          :options="communityOptions"
+        >
+          <template #first>
+            <BFormSelectOption value="" disabled
+              >Please select a home community</BFormSelectOption
+            >
+          </template>
+        </BFormSelect>
+      </BFormGroup>
+    </article>
+    <BButton type="submit" variant="primary" block>
+      Change home community
+    </BButton>
     <BAlert
       v-for="(status, alert, index) in alerts"
       :key="index"
       :variant="status === 'error' ? 'danger' : 'success'"
       show
-      >{{ alert }}</BAlert
     >
-  </div>
+      {{ alert }}
+    </BAlert>
+  </BForm>
 </template>
 
 <script>

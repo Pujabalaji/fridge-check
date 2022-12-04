@@ -2,43 +2,42 @@
 <!-- This is just an example; feel free to define any reusable components you want! -->
 
 <template>
-  <div>
-    <BForm @submit.prevent="submit">
-      <h3>{{ title }}</h3>
-      <article v-if="fields.length">
-        <BFormGroup
-          v-for="field in fields"
-          :key="field.id"
+  <BForm @submit.prevent="submit">
+    <h3>{{ title }}</h3>
+    <article v-if="fields.length">
+      <BFormGroup
+        v-for="field in fields"
+        :key="field.id"
+        :id="field.id"
+        :label="field.label"
+        :label-for="field.id"
+      >
+        <BFormInput
           :id="field.id"
-          :label="field.label"
-          :label-for="field.id"
-        >
-          <BFormInput
-            :id="field.id"
-            v-model="field.value"
-            :type="field.type"
-            :state="field.submitStatus(field.value).status == 'ok'"
-          />
-          <BFormInvalidFeedback>
-            {{ field.submitStatus(field.value).errorToDisplay }}
-          </BFormInvalidFeedback>
-        </BFormGroup>
-      </article>
-      <article v-else>
-        <p>{{ content }}</p>
-      </article>
-      <BButton type="submit" variant="primary" :disabled="!shouldSubmit" block>
-        {{ title }}
-      </BButton>
-    </BForm>
+          v-model="field.value"
+          :type="field.type"
+          :state="field.submitStatus(field.value).status == 'ok'"
+        />
+        <BFormInvalidFeedback>
+          {{ field.submitStatus(field.value).errorToDisplay }}
+        </BFormInvalidFeedback>
+      </BFormGroup>
+    </article>
+    <article v-else>
+      <p>{{ content }}</p>
+    </article>
+    <BButton type="submit" variant="primary" :disabled="!shouldSubmit" block>
+      {{ title }}
+    </BButton>
     <BAlert
       v-for="(status, alert, index) in alerts"
       :key="index"
       :variant="status === 'error' ? 'danger' : 'success'"
       show
-      >{{ alert }}</BAlert
     >
-  </div>
+      {{ alert }}
+    </BAlert>
+  </BForm>
 </template>
 
 <script>

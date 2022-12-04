@@ -3,31 +3,28 @@
 
 <template>
   <form @submit.prevent="submit">
-    <input
-      v-model="value"
-      type="text"
-      :placeholder="placeholder"
-    >
-    <button
-      type="submit"
-    >
+    <input v-model="value" type="text" :placeholder="placeholder" />
+    <button type="submit">
       {{ button }}
     </button>
-    <section class="alerts">
-      <article
-        v-for="(status, alert, index) in alerts"
-        :key="index"
-        :class="status"
-      >
-        <p>{{ alert }}</p>
-      </article>
-    </section>
+    <BAlert
+      v-for="(status, alert, index) in alerts"
+      :key="index"
+      :variant="status === 'error' ? 'danger' : 'success'"
+      show
+    >
+      {{ alert }}
+    </BAlert>
   </form>
 </template>
 
 <script>
+import {
+  BAlert,
+} from "bootstrap-vue";
 export default {
   name: 'InlineForm',
+  components: {BAlert},
   props: {
     placeholder: {
       type: String,
@@ -46,12 +43,12 @@ export default {
 
 <style scoped>
 form {
-    display: flex;
-    position: relative;
+  display: flex;
+  position: relative;
 }
 
 input {
-    padding: 0 5px;
-    min-width: 200px;
+  padding: 0 5px;
+  min-width: 200px;
 }
 </style>

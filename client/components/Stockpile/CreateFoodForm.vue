@@ -1,72 +1,66 @@
 <!-- Form for creating a food (block style) -->
 <template>
-  <div>
-    <BForm @submit.prevent="submit">
-      <h3>Create a Food:</h3>
-      <article>
-        <BFormGroup id="name" label="Name" label-for="name">
-          <BFormInput
-            id="name"
-            v-model="name"
-            type="text"
-            :state="isValidName"
-          />
-          <BFormInvalidFeedback>
-            Food name must be a nonempty string
-          </BFormInvalidFeedback>
-        </BFormGroup>
-        <BFormGroup id="expiration" label="Expiration" label-for="expiration">
-          <BFormInput
-            id="expiration"
-            v-model="expiration"
-            type="date"
-            :state="isValidDate"
-          />
-          <BFormInvalidFeedback>
-            Date must be a mm/dd/yyyy format.
-          </BFormInvalidFeedback>
-        </BFormGroup>
-        <BFormGroup id="quantity" label="Quantity" label-for="quantity">
-          <BFormInput
-            id="quantity"
-            v-model="quantity"
-            type="number"
-            min="0"
-            step="0.01"
-            :state="isValidQuantity"
-          />
-          <BFormInvalidFeedback>
-            Quantity must be a number greater than zero with up to two decimal
-            places
-          </BFormInvalidFeedback>
-        </BFormGroup>
+  <BForm @submit.prevent="submit">
+    <h3>Create a Food:</h3>
+    <article>
+      <BFormGroup id="name" label="Name" label-for="name">
+        <BFormInput id="name" v-model="name" type="text" :state="isValidName" />
         <BFormInvalidFeedback>
-          Quantity must be an integer greater than 0
+          Food name must be a nonempty string
         </BFormInvalidFeedback>
-        <BFormGroup id="unit" label="Units" label-for="unit">
-          <BFormSelect id="unit" v-model="unit" :options="unitOptions" />
-        </BFormGroup>
-        <BFormCheckbox
-          id="prepared"
-          v-model="prepared"
-          name="prepared"
-          :value="true"
-          :unchecked-value="false"
-          >Is this leftovers of a food you made?</BFormCheckbox
-        >
-      </article>
-      <BButton type="submit" variant="primary" :disabled="!enableSubmit">
-        Create food
-      </BButton>
-    </BForm>
+      </BFormGroup>
+      <BFormGroup id="expiration" label="Expiration" label-for="expiration">
+        <BFormInput
+          id="expiration"
+          v-model="expiration"
+          type="date"
+          :state="isValidDate"
+        />
+        <BFormInvalidFeedback>
+          Date must be a mm/dd/yyyy format.
+        </BFormInvalidFeedback>
+      </BFormGroup>
+      <BFormGroup id="quantity" label="Quantity" label-for="quantity">
+        <BFormInput
+          id="quantity"
+          v-model="quantity"
+          type="number"
+          min="0"
+          step="0.01"
+          :state="isValidQuantity"
+        />
+        <BFormInvalidFeedback>
+          Quantity must be a number greater than zero with up to two decimal
+          places
+        </BFormInvalidFeedback>
+      </BFormGroup>
+      <BFormInvalidFeedback>
+        Quantity must be an integer greater than 0
+      </BFormInvalidFeedback>
+      <BFormGroup id="unit" label="Units" label-for="unit">
+        <BFormSelect id="unit" v-model="unit" :options="unitOptions" />
+      </BFormGroup>
+      <BFormCheckbox
+        id="prepared"
+        v-model="prepared"
+        name="prepared"
+        :value="true"
+        :unchecked-value="false"
+        >Is this leftovers of a food you made?</BFormCheckbox
+      >
+    </article>
+    <BButton type="submit" variant="primary" :disabled="!enableSubmit">
+      Create food
+    </BButton>
     <BAlert
       v-for="(status, alert, index) in alerts"
       :key="index"
       :variant="status === 'error' ? 'danger' : 'success'"
       show
-      >{{ alert }}</BAlert
     >
-  </div>
+      {{ alert }}
+    </BAlert>
+  </BForm>
 </template>
   
 <script>

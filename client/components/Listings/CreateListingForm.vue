@@ -1,68 +1,66 @@
 <!-- Form for creating a listing (block style) -->
 <template>
-  <div>
-    <BForm @submit.prevent="submit" @reset.prevent="cancel">
-      <h3>Create Listing:</h3>
-      <article>
-        <BFormGroup id="listing-name" label="Name" label-for="listing-name">
-          <BFormInput
-            id="listing-name"
-            v-model="$store.state.currentFood.name"
-            type="text"
-            :disabled="true"
-          />
-        </BFormGroup>
-        <BFormGroup
+  <BForm @submit.prevent="submit" @reset.prevent="cancel">
+    <h3>Create Listing:</h3>
+    <article>
+      <BFormGroup id="listing-name" label="Name" label-for="listing-name">
+        <BFormInput
+          id="listing-name"
+          v-model="$store.state.currentFood.name"
+          type="text"
+          :disabled="true"
+        />
+      </BFormGroup>
+      <BFormGroup
+        id="listing-expiration"
+        label="Expiration"
+        label-for="listing-expiration"
+      >
+        <BFormInput
           id="listing-expiration"
-          label="Expiration"
+          v-model="$store.state.currentFood.expiration"
+          type="text"
           label-for="listing-expiration"
-        >
+          :disabled="true"
+        />
+      </BFormGroup>
+      <BFormGroup
+        id="listing-quantity"
+        label="Quantity"
+        label-for="listing-quantity"
+        :invalid-feedback="isValidQuantity.display"
+        :state="isValidQuantity.valid"
+      >
+        <BInputGroup :append="$store.state.currentFood.unit">
           <BFormInput
-            id="listing-expiration"
-            v-model="$store.state.currentFood.expiration"
-            type="text"
-            label-for="listing-expiration"
-            :disabled="true"
+            id="listing-quantity"
+            type="number"
+            min="0"
+            :max="$store.state.currentFood.quantity"
+            step="0.01"
+            v-model="quantity"
+            label-for="listing-quantity"
+            :state="isValidQuantity.valid"
           />
-        </BFormGroup>
-        <BFormGroup
-          id="listing-quantity"
-          label="Quantity"
-          label-for="listing-quantity"
-          :invalid-feedback="isValidQuantity.display"
-          :state="isValidQuantity.valid"
-        >
-          <BInputGroup :append="$store.state.currentFood.unit">
-            <BFormInput
-              id="listing-quantity"
-              type="number"
-              min="0"
-              :max="$store.state.currentFood.quantity"
-              step="0.01"
-              v-model="quantity"
-              label-for="listing-quantity"
-              :state="isValidQuantity.valid"
-            />
-          </BInputGroup>
-        </BFormGroup>
-        <BFormGroup id="listing-price" label="Price" label-for="listing-price">
-          <BFormInput
-            id="listing-price"
-            v-model="price"
-            type="text"
-            placeholder="examples: $0, free, $2 for 1 or $4 for all, $3 each, $10 total"
-            :state="isValidPrice.valid"
-          />
-          <BFormInvalidFeedback>
-            {{ isValidPrice.display }}
-          </BFormInvalidFeedback>
-        </BFormGroup>
-      </article>
-      <BButton type="submit" variant="primary" :disabled="!enableSubmit">
-        Create listing
-      </BButton>
-      <BButton type="reset" variant="danger">Cancel</BButton>
-    </BForm>
+        </BInputGroup>
+      </BFormGroup>
+      <BFormGroup id="listing-price" label="Price" label-for="listing-price">
+        <BFormInput
+          id="listing-price"
+          v-model="price"
+          type="text"
+          placeholder="examples: $0, free, $2 for 1 or $4 for all, $3 each, $10 total"
+          :state="isValidPrice.valid"
+        />
+        <BFormInvalidFeedback>
+          {{ isValidPrice.display }}
+        </BFormInvalidFeedback>
+      </BFormGroup>
+    </article>
+    <BButton type="submit" variant="primary" :disabled="!enableSubmit">
+      Create listing
+    </BButton>
+    <BButton type="reset" variant="danger">Cancel</BButton>
     <BAlert
       v-for="(status, alert, index) in alerts"
       :key="index"
@@ -71,7 +69,7 @@
     >
       {{ alert }}
     </BAlert>
-  </div>
+  </BForm>
 </template>
   
 <script>

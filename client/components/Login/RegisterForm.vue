@@ -1,87 +1,91 @@
 <!-- Form for registering an account (block style) -->
 <template>
-  <div>
-    <BForm @submit.prevent="submit">
-      <h3>Create an account:</h3>
-      <article>
-        <BFormGroup id="new-username" label="Username" label-for="new-username">
-          <BFormInput
-            id="new-username"
-            v-model="username"
-            type="text"
-            :state="isValidUsername"
-          />
-          <BFormInvalidFeedback>
-            Username must be a nonempty alphanumeric string
-          </BFormInvalidFeedback>
-        </BFormGroup>
-        <BFormGroup id="new-password" label="Password" label-for="new-password">
-          <BFormInput
-            id="new-password"
-            v-model="password"
-            type="password"
-            :state="isValidPassword"
-          />
-          <BFormInvalidFeedback>
-            Password must be a nonempty string.
-          </BFormInvalidFeedback>
-        </BFormGroup>
-        <BFormGroup
+  <BForm @submit.prevent="submit">
+    <h3>Create an account:</h3>
+    <article>
+      <BFormGroup id="new-username" label="Username" label-for="new-username">
+        <BFormInput
+          id="new-username"
+          v-model="username"
+          type="text"
+          :state="isValidUsername"
+        />
+        <BFormInvalidFeedback>
+          Username must be a nonempty alphanumeric string
+        </BFormInvalidFeedback>
+      </BFormGroup>
+      <BFormGroup id="new-password" label="Password" label-for="new-password">
+        <BFormInput
+          id="new-password"
+          v-model="password"
+          type="password"
+          :state="isValidPassword"
+        />
+        <BFormInvalidFeedback>
+          Password must be a nonempty string.
+        </BFormInvalidFeedback>
+      </BFormGroup>
+      <BFormGroup
+        id="email"
+        label="Email"
+        label-for="email"
+        description="Your email will be visible to users who follow your home community."
+      >
+        <BFormInput
           id="email"
-          label="Email"
-          label-for="email"
-          description="Your email will be visible to users who follow your home community."
+          v-model="email"
+          type="email"
+          :state="isValidEmail"
+        />
+        <BFormInvalidFeedback>
+          Email must be a nonempty alphanumeric string.
+        </BFormInvalidFeedback>
+      </BFormGroup>
+      <BFormGroup id="home" label="Home Community" label-for="home">
+        <BFormSelect
+          id="home"
+          v-model="homeCommunity"
+          :options="communityOptions"
+          :state="isValidCommunity"
         >
-          <BFormInput id="email" v-model="email" type="email" :state="isValidEmail"/>
-          <BFormInvalidFeedback>
-            Email must be a nonempty alphanumeric string.
-          </BFormInvalidFeedback>
-        </BFormGroup>
-        <BFormGroup id="home" label="Home Community" label-for="home">
-          <BFormSelect
-            id="home"
-            v-model="homeCommunity"
-            :options="communityOptions"
-            :state="isValidCommunity"
-          >
-            <template #first>
-              <BFormSelectOption value="" disabled
-                >
-                Please select a home community
-                </BFormSelectOption
-              >
-            </template>
-          </BFormSelect>
-        </BFormGroup>
-        <BFormGroup id="allergies" label="Allergies" label-for="allergies">
-          <BFormCheckboxGroup id="allergies" v-model="selectedAllergies">
-            <BFormCheckbox value="Peanut">Peanuts</BFormCheckbox>
-            <BFormCheckbox value="Tree Nut">Tree Nuts</BFormCheckbox>
-            <BFormCheckbox value="Seafood">Seafood</BFormCheckbox>
-          </BFormCheckboxGroup>
-        </BFormGroup>
-        <BFormGroup
-          id="other"
-          label="Other dietary restrictions"
-          label-for="other"
-        >
-          <BFormCheckboxGroup id="other" v-model="selectedOtherRestrictions">
-            <BFormCheckbox value="Vegetarian">Vegetarian</BFormCheckbox>
-            <BFormCheckbox value="Vegan">Vegan</BFormCheckbox>
-            <BFormCheckbox value="Pescetarian">Pescatarian</BFormCheckbox>
-          </BFormCheckboxGroup>
-        </BFormGroup>
-      </article>
-      <BButton type="submit" variant="primary" :disabled="!enableSubmit" block> Create account </BButton>
-    </BForm>
+          <template #first>
+            <BFormSelectOption value="" disabled>
+              Please select a home community
+            </BFormSelectOption>
+          </template>
+        </BFormSelect>
+      </BFormGroup>
+      <BFormGroup id="allergies" label="Allergies" label-for="allergies">
+        <BFormCheckboxGroup id="allergies" v-model="selectedAllergies">
+          <BFormCheckbox value="Peanut">Peanuts</BFormCheckbox>
+          <BFormCheckbox value="Tree Nut">Tree Nuts</BFormCheckbox>
+          <BFormCheckbox value="Seafood">Seafood</BFormCheckbox>
+        </BFormCheckboxGroup>
+      </BFormGroup>
+      <BFormGroup
+        id="other"
+        label="Other dietary restrictions"
+        label-for="other"
+      >
+        <BFormCheckboxGroup id="other" v-model="selectedOtherRestrictions">
+          <BFormCheckbox value="Vegetarian">Vegetarian</BFormCheckbox>
+          <BFormCheckbox value="Vegan">Vegan</BFormCheckbox>
+          <BFormCheckbox value="Pescetarian">Pescatarian</BFormCheckbox>
+        </BFormCheckboxGroup>
+      </BFormGroup>
+    </article>
+    <BButton type="submit" variant="primary" :disabled="!enableSubmit" block>
+      Create account
+    </BButton>
     <BAlert
       v-for="(status, alert, index) in alerts"
       :key="index"
       :variant="status === 'error' ? 'danger' : 'success'"
       show
-      >{{ alert }}</BAlert
     >
-  </div>
+      {{ alert }}
+    </BAlert>
+  </BForm>
 </template>
 
 <script>
@@ -166,11 +170,15 @@ export default {
       return this.homeCommunity.length > 0;
     },
     enableSubmit() {
-      return this.isValidUsername && this.isValidPassword && this.isValidEmail && this.isValidCommunity;
-    }
+      return (
+        this.isValidUsername &&
+        this.isValidPassword &&
+        this.isValidEmail &&
+        this.isValidCommunity
+      );
+    },
   },
   methods: {
-    
     async submit() {
       /**
        * Submits a form with the specified options from data().

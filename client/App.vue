@@ -3,16 +3,25 @@
     <header>
       <NavBar />
     </header>
+    <BAlert
+      v-for="(status, alert, index) in $store.state.alerts"
+      :key="index"
+      :variant="status === 'error' ? 'danger' : 'success'"
+      show
+    >
+      {{ alert }}
+    </BAlert>
     <router-view />
   </div>
 </template>
 
 <script>
 import NavBar from '@/components/common/NavBar.vue';
+import { BAlert } from "bootstrap-vue";
 
 export default {
   name: 'App',
-  components: {NavBar},
+  components: {NavBar, BAlert},
   beforeCreate() {
     // Sync stored username to current session
     fetch('/api/users/session', {
@@ -54,5 +63,10 @@ form {
   background-color: rgb(238, 238, 238);
   box-shadow: 0 12px 12px rgba(0, 0, 0, 0.2);
   margin-bottom: 1.5em;
+}
+
+button + .alert {
+  margin-top: 1em;
+  margin-bottom: 0.5em;
 }
 </style>

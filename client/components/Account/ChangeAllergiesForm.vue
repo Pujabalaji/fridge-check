@@ -1,27 +1,26 @@
 <!-- Form for changing allergies (block style) -->
 <template>
-  <div>
-    <BForm @submit.prevent="submit">
-      <h3>Change allergies</h3>
-      <article>
-        <BFormGroup id="allergies" label="Allergies" label-for="allergies">
-          <BFormCheckboxGroup id="allergies" v-model="selectedAllergies">
-            <BFormCheckbox value="Peanut">Peanuts</BFormCheckbox>
-            <BFormCheckbox value="Tree Nut">Tree Nuts</BFormCheckbox>
-            <BFormCheckbox value="Seafood">Seafood</BFormCheckbox>
-          </BFormCheckboxGroup>
-        </BFormGroup>
-      </article>
-      <BButton type="submit" variant="primary" block>Change allergies</BButton>
-    </BForm>
+  <BForm @submit.prevent="submit">
+    <h3>Change allergies</h3>
+    <article>
+      <BFormGroup id="allergies" label="Allergies" label-for="allergies">
+        <BFormCheckboxGroup id="allergies" v-model="selectedAllergies">
+          <BFormCheckbox value="Peanut">Peanuts</BFormCheckbox>
+          <BFormCheckbox value="Tree Nut">Tree Nuts</BFormCheckbox>
+          <BFormCheckbox value="Seafood">Seafood</BFormCheckbox>
+        </BFormCheckboxGroup>
+      </BFormGroup>
+    </article>
+    <BButton type="submit" variant="primary" block>Change allergies</BButton>
     <BAlert
       v-for="(status, alert, index) in alerts"
       :key="index"
       :variant="status === 'error' ? 'danger' : 'success'"
       show
-      >{{ alert }}</BAlert
     >
-  </div>
+      {{ alert }}
+    </BAlert>
+  </BForm>
 </template>
   
 <script>

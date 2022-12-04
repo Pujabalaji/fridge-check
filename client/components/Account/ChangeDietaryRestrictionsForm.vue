@@ -1,33 +1,32 @@
 <!-- Form for changing dietary restrictions (block style) -->
 <template>
-  <div>
-    <BForm @submit.prevent="submit">
-      <h3>Change dietary restrictions</h3>
-      <article>
-        <BFormGroup
-          id="other"
-          label="Other dietary restrictions"
-          label-for="other"
-        >
-          <BFormCheckboxGroup id="other" v-model="selectedOtherRestrictions">
-            <BFormCheckbox value="Vegetarian">Vegetarian</BFormCheckbox>
-            <BFormCheckbox value="Vegan">Vegan</BFormCheckbox>
-            <BFormCheckbox value="Pescetarian">Pescatarian</BFormCheckbox>
-          </BFormCheckboxGroup>
-        </BFormGroup>
-      </article>
-      <BButton type="submit" variant="primary" block>
-        Change dietary restrictions
-      </BButton>
-    </BForm>
+  <BForm @submit.prevent="submit">
+    <h3>Change dietary restrictions</h3>
+    <article>
+      <BFormGroup
+        id="other"
+        label="Other dietary restrictions"
+        label-for="other"
+      >
+        <BFormCheckboxGroup id="other" v-model="selectedOtherRestrictions">
+          <BFormCheckbox value="Vegetarian">Vegetarian</BFormCheckbox>
+          <BFormCheckbox value="Vegan">Vegan</BFormCheckbox>
+          <BFormCheckbox value="Pescetarian">Pescatarian</BFormCheckbox>
+        </BFormCheckboxGroup>
+      </BFormGroup>
+    </article>
+    <BButton type="submit" variant="primary" block>
+      Change dietary restrictions
+    </BButton>
     <BAlert
       v-for="(status, alert, index) in alerts"
       :key="index"
       :variant="status === 'error' ? 'danger' : 'success'"
       show
-      >{{ alert }}</BAlert
     >
-  </div>
+      {{ alert }}
+    </BAlert>
+  </BForm>
 </template>
   
 <script>
@@ -52,7 +51,8 @@ export default {
   },
   data() {
     return {
-      selectedOtherRestrictions: this.$store.state.user?.otherDietaryRestrictions,
+      selectedOtherRestrictions:
+        this.$store.state.user?.otherDietaryRestrictions,
       alerts: {},
       callback: null,
     };
