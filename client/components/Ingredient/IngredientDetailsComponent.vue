@@ -132,7 +132,7 @@ export default {
 
 <style scoped>
 .ingredientDetails {
-  background-color: #d3e6f9;
+  background-color: #e7f5ff;
 }
 
 .ingredient {

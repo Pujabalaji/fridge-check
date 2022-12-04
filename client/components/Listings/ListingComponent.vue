@@ -202,7 +202,7 @@ button {
 }
 
 .listing {
-  background-color: #d3e6f9;
+  background-color: #d0ebff;
 }
 
 .name {

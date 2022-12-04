@@ -89,7 +89,7 @@ export default {
 
 <style scoped>
 .oneCommunity {
-    background-color: #d3e6f9;
+    background-color: #d0ebff;
     margin-bottom: 0.5em;
 }
 </style>
