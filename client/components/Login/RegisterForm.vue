@@ -190,7 +190,7 @@ export default {
         this.$store.commit("setUsername", res.user ? res.user.username : null);
         this.$store.commit("setUser", res.user ? res.user : null);
         options.callback();
-        this.$router.push({ name: "Home" });
+        this.$router.push({ name: "Stockpile" });
       } catch (e) {
         this.$set(this.alerts, e, "error");
         setTimeout(() => this.$delete(this.alerts, e), 3000);
