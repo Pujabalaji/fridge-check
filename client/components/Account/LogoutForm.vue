@@ -17,6 +17,9 @@ export default {
       callback: () => {
         this.$router.push({name: 'Login'}); // Goes to Home page after signing out
         this.$store.commit('clearCurrentFood');
+        this.$store.commit("clearRecipes");
+        this.$store.commit("updateShowSuggested", false);
+        this.$store.commit("updateShowByName", false);
         this.$store.commit('alert', {
           message: 'You are now signed out!', status: 'success'
         });

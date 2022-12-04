@@ -4,6 +4,7 @@ import FoodCollection from './collection';
 import * as userValidator from '../user/middleware';
 import * as foodValidator from './middleware';
 import * as util from './util';
+import ListingCollection from '../listing/collection';
 
 const router = express.Router();
 
@@ -83,7 +84,7 @@ router.delete(
         foodValidator.isValidFoodModifier
     ],
     async (req: Request, res: Response) => {
-        await FoodCollection.deleteOne(req.params.foodId);
+        await Promise.all([FoodCollection.deleteOne(req.params.foodId), ListingCollection.deleteOneByFoodId(req.params.foodId)]);
         res.status(200).json({
             message: 'Your food was deleted successfully.'
         });
