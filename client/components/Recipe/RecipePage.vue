@@ -5,13 +5,16 @@
     <section v-if="$store.state.username">
       <header>
         <h2>Suggested Recipes</h2>
-      </header> <br>
+      </header>
+      <br />
       <div class="container">
         <div class="actions">
           <section>
             <h3>Quick Suggest:</h3>
             <BButton @click="handleSuggestedClick">
-              Suggest any recipe that uses ingredients in my stockpile
+              <span>
+                Suggest recipes that use ingredients in my stockpile
+              </span>
             </BButton>
           </section>
           <BForm @submit.prevent="submit">
@@ -28,7 +31,9 @@
                 required
               />
             </BFormGroup>
-            <BButton type="submit" variant="primary">Search</BButton>
+            <BButton type="submit" variant="primary"
+              ><BIconSearch /> <span>Search</span>
+            </BButton>
           </BForm>
         </div>
         <div class="recipes">
@@ -140,8 +145,19 @@ export default {
 <style scoped>
 .container {
   display: flex;
-  align-items: flex-start;
+  justify-content: space-between;
   gap: 1em;
+}
+
+div {
+    margin-left: 0em;
+    margin-right: 0em;
+}
+
+button {
+  display: flex;
+  gap: 0.25em;
+  align-items: center;
 }
 
 .recipes {
@@ -160,5 +176,4 @@ export default {
   flex-direction: column;
   gap: 0.5em;
 }
-
 </style>
