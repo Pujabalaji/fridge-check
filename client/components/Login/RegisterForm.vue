@@ -135,7 +135,7 @@ export default {
       return true;
     },
     isValidEmail() {
-      const emailRegex = /^\S+$/;
+      const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
       if (!emailRegex.test(this.email)) {
         return false;
       }

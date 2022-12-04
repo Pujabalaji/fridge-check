@@ -31,7 +31,7 @@ export default {
   },
   methods: {
     isValidEmail(value) {
-      const emailRegex = /^\S+$/;
+      const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
       if (!emailRegex.test(value)) {
         return {
           status: "error",
