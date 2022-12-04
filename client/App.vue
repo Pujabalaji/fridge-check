@@ -66,7 +66,7 @@ main {
 
 form {
   padding: 0.5em;
-  background-color: #e3fafc;
+  background-color: #c0dfff;
   box-shadow: 0 12px 12px rgba(0, 0, 0, 0.2);
   margin-bottom: 1.5em;
   border-radius: 5px;
