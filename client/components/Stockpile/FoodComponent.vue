@@ -12,7 +12,7 @@
         <BButton @click="startEditing"
           ><BIconPencilFill /> <span>Edit Quantity</span></BButton
         >
-        <BButton @click="deleteFood"><BIconTrash /> Delete</BButton>
+        <BButton @click="deleteFood"><BIconTrash /> <span>Delete</span> </BButton>
         <BButton v-if="enableCreateListing" @click="createListing">
           <BIconClipboardPlus /> <span>Create Listing</span>
         </BButton>
@@ -36,13 +36,23 @@
       </h3>
 
       <div class="actions">
-        <BButton v-if="editing" @click="submitEdit">✅ Save changes</BButton>
+        <BButton v-if="editing" @click="submitEdit"
+          ><BIconCheck2 /> <span>Save changes</span>
+        </BButton>
         <BButton v-if="editing" @click="stopEditing"
-          >🚫 Discard changes</BButton
+          ><BIconX /> <span>Discard changes</span>
+        </BButton>
+        <BButton @click="deleteFood"
+          ><BIconTrash /> <span>Delete</span>
+        </BButton>
+        <BButton v-if="enableCreateListing" @click="createListing">
+          <span>Create Listing</span>
+        </BButton>
+        <BButton
+          v-else-if="$store.state.foodIdsWithListings.includes(food._id)"
+          @click="viewListing"
         >
-        <BButton @click="deleteFood">🗑️ Delete</BButton>
-        <BButton v-if="!food.prepared" @click="createListing">
-          Create Listing
+          <BIconClipboard /> <span>View Listing</span>
         </BButton>
       </div>
     </header>
