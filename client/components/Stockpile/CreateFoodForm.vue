@@ -164,26 +164,6 @@ export default {
         this.$set(this.alerts, e, "error");
         setTimeout(() => this.$delete(this.alerts, e), 3000);
       }
-
-      try {
-        const r = await fetch("/api/foods", options);
-        if (!r.ok) {
-          const res = await r.json();
-          throw new Error(res.error);
-        }
-        const res = await r.json();
-        this.$store.dispatch("refreshStockpile");
-        options.callback();
-        this.name = "";
-        this.quantity = "";
-        this.expiration = "";
-        this.unit = "";
-        this.prepared = false;
-      } catch (e) {
-        console.log(e);
-        this.$set(this.alerts, e, "error");
-        setTimeout(() => this.$delete(this.alerts, e), 3000);
-      }
     },
   },
 };
