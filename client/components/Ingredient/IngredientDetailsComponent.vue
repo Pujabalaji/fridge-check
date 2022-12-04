@@ -118,6 +118,7 @@ export default {
   display: flex;
   align-items: left;
   gap: 1em;
+  margin-bottom: 0.5em;
 }
 
 
