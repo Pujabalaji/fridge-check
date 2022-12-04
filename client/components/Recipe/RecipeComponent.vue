@@ -39,15 +39,11 @@ export default {
 
 <style scoped>
 .recipe {
-  padding: 5px;
-  position: relative;
-  margin: 0.5em 0em;
   background-color: rgb(238, 238, 238);
 }
 
 .container {
   display: flex;
-  align-items: center;
   gap: 1em;
 }
 
