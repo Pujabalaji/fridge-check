@@ -47,12 +47,10 @@ const router = express.Router();
     async (req: Request, res: Response) => {
         const curUserId = (req.session.userId as string) ?? '';
         const follows = await FollowCollection.findAllFollowsByUserId(curUserId);
-        // const communityNames = await follows.map(follow => follow.communityName);
-        // console.log("community names you follow");
-        // console.log(communityNames);
-        // const listings = await ListingCollection.findAllListingsByCommunity(communityNames);
-        // const response = listings.map(constructListingResponse);
-        // res.status(200).json(response);
+        const communityNames = await follows.map(follow => follow.communityName);
+        const listings = await ListingCollection.findAllListingsByCommunity(communityNames);
+        const response = listings.map(constructListingResponse);
+        res.status(200).json(response);
     }
   );
 

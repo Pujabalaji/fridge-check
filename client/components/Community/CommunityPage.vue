@@ -38,12 +38,13 @@ export default {
             unfollowedCommunities: []
         }
     },
-    created() {
-      this.communitiesUserFollows();
-      this.alreadyFollows();
+    async created() {
+      await this.communitiesUserFollows();
+      this.unfollowedCommunities = this.$store.state.communities.filter(community => !this.alreadyFollowedCommunities.includes(community));
     },
     computed: {
       alreadyFollows() {
+        this.communitiesUserFollows();
         this.unfollowedCommunities = this.$store.state.communities.filter(community => !this.alreadyFollowedCommunities.includes(community));
       }
     },
@@ -59,6 +60,7 @@ export default {
             }
             const response = await this.request(params, `/api/follows/session`);
             this.alreadyFollowedCommunities = response.map(x => x.community);
+            this.unfollowedCommunities = this.$store.state.communities.filter(community => !this.alreadyFollowedCommunities.includes(community));
         },
         async request(params, url) {
             /**

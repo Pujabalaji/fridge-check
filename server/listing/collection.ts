@@ -1,8 +1,9 @@
 import type { HydratedDocument, Types } from 'mongoose';
-import UserCollection from 'server/user/collection';
-import UserModel from 'server/user/model';
+import UserCollection from '../user/collection';
+import UserModel from '../user/model';
 import type { Listing } from './model';
 import ListingModel from './model';
+// import { communities } from '../user/model'; 
 
 class ListingCollection {
   /**
@@ -76,16 +77,16 @@ class ListingCollection {
     return ListingModel.find({ userId }).sort({ expiration: 1 }).populate('userId').populate('foodId');
   }
 
-  // /**
-  //  * Get all the listings in communities the user follows
-  //  *
-  //  * @param {string} userId - The userId of the author of the listings
-  //  * @return {Promise<HydratedDocument<Listing>[]>} - An array of all of the listings by the given user
-  //  */
-  //  static async findAllListingsByCommunity(communities: Array<string>): Promise<Array<HydratedDocument<Listing>>> {
-  //   console.log(communities[4]);
-  //   return ListingModel.find({ 'userId.homeCommunity': communities[4] }).sort({ expiration: 1 }).populate(['userId', 'foodId']);
-  // }
+  /**
+   * Get all the listings in the given communities
+   *
+   * @param {Array<string>} communities - The communities to search
+   * @return {Promise<HydratedDocument<Listing>[]>} - An array of listings posted by users whose home communities are in communities
+   */
+       static async findAllListingsByCommunity(communities: Array<string>): Promise<Array<HydratedDocument<Listing>>> {
+        const users = await UserModel.find({ "homeCommunity": {"$in": communities }});
+        return ListingModel.find({ "userId": {"$in": users.map(user => user._id)}}).populate('userId').populate('foodId');
+      }
 
   /**
    * Update a listing with the new quantity and/or price
