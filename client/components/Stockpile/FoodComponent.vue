@@ -10,17 +10,17 @@
 
       <div class="actions">
         <BButton @click="startEditing"
-          ><BIconPencilFill /> Edit Quantity</BButton
+          ><BIconPencilFill /> <span>Edit Quantity</span></BButton
         >
         <BButton @click="deleteFood"><BIconTrash /> Delete</BButton>
         <BButton v-if="enableCreateListing" @click="createListing">
-          <BIconClipboardPlus /> Create Listing
+          <BIconClipboardPlus /> <span>Create Listing</span>
         </BButton>
         <BButton
           v-else-if="$store.state.foodIdsWithListings.includes(food._id)"
           @click="viewListing"
         >
-          <BIconClipboard />View Listing
+          <BIconClipboard /> <span>View Listing</span>
         </BButton>
       </div>
     </header>
@@ -220,5 +220,11 @@ export default {
 
 .name {
   font-size: 1.25em;
+}
+
+button {
+  display: flex;
+  gap: 0.25em;
+  align-items: center;
 }
 </style>

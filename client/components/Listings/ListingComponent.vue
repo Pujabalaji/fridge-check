@@ -3,23 +3,23 @@
 <template>
   <article>
     <BCard class="listing">
-      <header v-if="!editing">
+      <div v-if="!editing">
         <div>
-          <h2 class="name">
-            {{ listing.name }} ( x{{ listing.quantity }} {{ listing.unit }})
-          </h2>
-          Price: {{ listing.price }}
-          <br />
-          <div v-if="listing.username !== $store.state.user?.username">
-            User: {{ listing.username }}
-            <br />
-            Community: {{ listing.community }}
-            <br />
-            Contact info: {{ listing.email }}
-            <br />
+          <header>
+            <h2 class="name">
+              {{ listing.name }} ( x{{ listing.quantity }} {{ listing.unit }})
+            </h2>
+          </header>
+          <p>Price: {{ listing.price }}</p>
+          <div
+            v-if="listing.username !== $store.state.user?.username"
+            class="user-info"
+          >
+            <p>User: {{ listing.username }}</p>
+            <p>Community: {{ listing.community }}</p>
+            <p>Contact info: {{ listing.email }}</p>
           </div>
-          Expires on: {{ listing.expiration }}
-          <br />
+          <p>Expires on: {{ listing.expiration }}</p>
         </div>
         <div
           v-if="listing.username === $store.state.user?.username"
@@ -27,15 +27,16 @@
         >
           <BButton @click="startEditing">
             <BIconstack>
-              <BIconClipboard stacked/> <BIconPencil scale="0.50" shift-v="-1" stacked/>
+              <BIconClipboard stacked />
+              <BIconPencil scale="0.50" shift-v="-1" stacked />
             </BIconstack>
-            Edit Quantity or Price</BButton
-          >
+            <span>Edit Quantity or Price</span>
+          </BButton>
           <BButton @click="deleteListing"
-            ><BIconClipboardX /> Delete Listing</BButton
+            ><BIconClipboardX /> <span>Delete Listing</span> </BButton
           >
         </div>
-      </header>
+      </div>
       <header v-else>
         <h3 class="name">
           {{ listing.name }} (x
@@ -56,11 +57,15 @@
         </h3>
 
         <div class="actions">
-          <BButton v-if="editing" @click="submitEdit">✅ Save changes</BButton>
+          <BButton v-if="editing" @click="submitEdit"
+            ><BIconCheck2 /> <span>Save changes</span>
+          </BButton>
           <BButton v-if="editing" @click="stopEditing"
-            >🚫 Discard changes</BButton
-          >
-          <BButton @click="deleteListing">🗑️ Delete Listing</BButton>
+            ><BIconX /> <span>Discard changes</span>
+          </BButton>
+          <BButton @click="deleteListing"
+            ><BIconClipboardX /> <span>Delete Listing</span>
+          </BButton>
         </div>
       </header>
     </BCard>
@@ -190,12 +195,28 @@ export default {
 </script>
 
 <style scoped>
+button {
+  display: flex;
+  gap: 0.25em;
+  align-items: center;
+}
+
 .listing {
   background-color: rgb(238, 238, 238);
-  margin-bottom: 0.5em;
 }
 
 .name {
-  font-size: 20px;
+  font-size: 1.25em;
+}
+
+.actions {
+  display: flex;
+  gap: 1em;
+}
+
+p + p,
+.user-info,
+.user-info + p {
+  margin-top: -1em;
 }
 </style>
