@@ -24,11 +24,11 @@
           </form>
         </div>
         <div class="recipes">
-          <section v-if="displaySuggested">
+          <section v-if="$store.state.displaySuggested">
             <h3>Showing recipes using ingredients you have:</h3>
-            <div v-if="suggestedRecipes.length">
+            <div v-if="$store.state.recipes.length">
               <RecipeComponent
-                v-for="recipe in suggestedRecipes"
+                v-for="recipe in $store.state.recipes"
                 :key="recipe._id"
                 :recipe="recipe"
               />
@@ -36,11 +36,11 @@
             <h4 v-else-if="loadingSuggested">Loading Recipes</h4>
             <h4 v-else>No results found</h4>
           </section>
-          <section v-else-if="displayByName">
-            <h3>Showing recipes for "{{ lastSearched }}":</h3>
-            <div v-if="nameRecipes.length">
+          <section v-else-if="$store.state.displayByName">
+            <h3>Showing recipes for "{{ $store.state.lastSearched }}":</h3>
+            <div v-if="$store.state.recipes.length">
               <RecipeComponent
-                v-for="recipe in nameRecipes"
+                v-for="recipe in $store.state.recipes"
                 :key="recipe._id"
                 :recipe="recipe"
               />
@@ -70,32 +70,25 @@ export default {
   },
   data() {
     return {
-      suggestedRecipes: [],
-      nameRecipes: [],
       searchText: "",
-      lastSearched: "",
-      displaySuggested: false,
-      displayByName: false,
       loadingSuggested: false,
       loadingNameSearch: false,
     };
   },
-  created() {
-    if (this.$store.state.username) {
-      this.fetchSuggestedRecipes();
-    }
-  },
   methods: {
-    handleSuggestedClick() {
-      this.displaySuggested = true;
-      this.displayByName = false;
+    async handleSuggestedClick() {
+      this.$store.commit('updateShowSuggested', true);
+      this.$store.commit('updateShowByName', false);
+      if (this.$store.state.username) {
+        await this.fetchSuggestedRecipes();
+      }
     },
     async submit() {
       this.loadingNameSearch = true;
-      this.displayByName = true;
-      this.displaySuggested = false;
-      if (this.lastSearched.length === 0) {
-        this.lastSearched = this.searchText;
+      this.$store.commit('updateShowByName', true);
+      this.$store.commit('updateShowSuggested', false);
+      if (this.$store.state.lastSearched.length === 0) {
+        this.$store.commit('updateLastSearched', this.searchText);
       }
 
       const url = `/api/recipes?recipeName=${this.searchText}`;
@@ -107,11 +100,12 @@ export default {
         }
 
         this.nameRecipes = res;
+        this.$store.commit('updateRecipes', res);
       } catch (e) {
         this.$set(this.alerts, e, "error");
         setTimeout(() => this.$delete(this.alerts, e), 3000);
       }
-      this.lastSearched = this.searchText;
+      this.$store.commit('updateLastSearched', this.searchText);
       this.searchText = '';
       this.loadingNameSearch = false;
     },
@@ -124,8 +118,7 @@ export default {
         if (!r.ok) {
           throw new Error(res.error);
         }
-
-        this.suggestedRecipes = res;
+        this.$store.commit('updateRecipes', res);
       } catch (e) {
         this.$set(this.alerts, e, "error");
         setTimeout(() => this.$delete(this.alerts, e), 3000);

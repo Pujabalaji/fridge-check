@@ -108,6 +108,9 @@ export default {
                 this.expiration = "";
                 this.unit = "";
                 this.prepared = false;
+                this.$store.commit("clearRecipes");
+                this.$store.commit("updateShowSuggested", false);
+                this.$store.commit("updateShowByName", false);
             } catch (e) {
                 console.log(e);
                 this.$set(this.alerts, e, "error");
