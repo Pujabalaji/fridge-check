@@ -1,6 +1,5 @@
 import type { HydratedDocument, Types } from 'mongoose';
 import UserCollection from '../user/collection';
-import UserModel from '../user/model';
 import type { Listing } from './model';
 import ListingModel from './model';
 // import { communities } from '../user/model'; 
@@ -24,7 +23,7 @@ class ListingCollection {
       price
     });
     await listing.save();
-    return (await listing.populate('userId')).populate('foodId');
+    return listing.populate(['userId', 'foodId']);
   }
 
   /**
@@ -34,7 +33,7 @@ class ListingCollection {
    * @return {Promise<HydratedDocument<Listing>> | Promise<null> } - The listing with the given listingId, if any
    */
   static async findOne(listingId: Types.ObjectId | string): Promise<HydratedDocument<Listing>> {
-    return (await ListingModel.findOne({ _id: listingId }).populate('userId')).populate('foodId');
+    return ListingModel.findOne({ _id: listingId }).populate(['userId', 'foodId']);
   }
 
   /**
@@ -44,7 +43,7 @@ class ListingCollection {
    * @return {Promise<HydratedDocument<Listing>> | Promise<null> } - The listing with the given foodId, if any
    */
   static async findOneByFoodId(foodId: Types.ObjectId | string): Promise<HydratedDocument<Listing>> {
-    return (await ListingModel.findOne({ foodId }).populate('userId')).populate('foodId');
+    return ListingModel.findOne({ foodId }).populate(['userId', 'foodId']);
   }
 
   /**
@@ -64,7 +63,7 @@ class ListingCollection {
    * @return {Promise<HydratedDocument<Listing>[]>} - An array of all of the listings in the database
    */
   static async findAll(): Promise<Array<HydratedDocument<Listing>>> {
-    return await (ListingModel.find({}).populate('userId')).populate('foodId');
+    return ListingModel.find({}).populate(['userId', 'foodId']);
   }
 
   /**
@@ -74,7 +73,7 @@ class ListingCollection {
    * @return {Promise<HydratedDocument<Listing>[]>} - An array of all of the listings by the given user
    */
   static async findAllByUser(userId: string): Promise<Array<HydratedDocument<Listing>>> {
-    return ListingModel.find({ userId }).sort({ expiration: 1 }).populate('userId').populate('foodId');
+    return ListingModel.find({ userId }).sort({ expiration: 1 }).populate(['userId', 'foodId']);
   }
 
   /**
@@ -83,10 +82,10 @@ class ListingCollection {
    * @param {Array<string>} communities - The communities to search
    * @return {Promise<HydratedDocument<Listing>[]>} - An array of listings posted by users whose home communities are in communities
    */
-       static async findAllListingsByCommunity(communities: Array<string>): Promise<Array<HydratedDocument<Listing>>> {
-        const users = await UserModel.find({ "homeCommunity": {"$in": communities }});
-        return ListingModel.find({ "userId": {"$in": users.map(user => user._id)}}).populate('userId').populate('foodId');
-      }
+  static async findAllListingsByCommunity(communities: Array<string>): Promise<Array<HydratedDocument<Listing>>> {
+    const users = await UserCollection.findAllByHomeCommunities(communities);
+    return ListingModel.find({ "userId": { "$in": users.map(user => user._id) } }).populate(['userId', 'foodId']);
+  }
 
   /**
    * Update a listing with the new quantity and/or price
@@ -104,7 +103,7 @@ class ListingCollection {
       listing.price = listingDetails.price;
     }
     await listing.save();
-    return (await listing.populate('userId')).populate('foodId');
+    return listing.populate(['userId', 'foodId']);
   }
 
   /**
