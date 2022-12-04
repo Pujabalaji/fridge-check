@@ -77,6 +77,11 @@ export default {
 .container {
   display: flex;
   justify-content: space-between;
+  gap: 1em;
+}
+
+.container > * {
+  flex: 1;
 }
 
 .food-container {

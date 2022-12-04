@@ -13,7 +13,7 @@ import NotFound from './NotFound.vue';
 Vue.use(VueRouter);
 
 const routes = [
-  { path: '/', name: 'Stockpile', component: StockpilePage },
+  { path: '/', name: 'Home', component: StockpilePage },
   { path: '/account', name: 'Account', component: AccountPage },
   { path: '/login', name: 'Login', component: LoginPage },
   { path: '/community', name: 'Community', component: CommunityPage },
@@ -36,7 +36,7 @@ router.beforeEach((to, from, next) => {
       return;
     }
 
-    if (to.name === 'Account' && !router.app.$store.state.username) {
+    if (!router.app.$store.state.username) {
       next({ name: 'Login' }); // Go to Login page if user navigates to Account and are not signed in
       return;
     }

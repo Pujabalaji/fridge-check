@@ -24,7 +24,7 @@ export default {
   computed: {
     links() {
       return [
-        {to: '/', name: 'Home', visible: true},
+        {to: '/', name: 'Stockpile', visible: this.$store.state.username ? true : false},
         {to: '/listings', name: 'My Listings', visible: this.$store.state.username ? true : false},
         {to: '/recipe', name: 'Suggested Recipes', visible: this.$store.state.username ? true : false},
         {to: '/community', name: 'Communities', visible: this.$store.state.username ? true: false},
