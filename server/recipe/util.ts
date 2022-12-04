@@ -56,8 +56,7 @@ const constructSuggestedRecipeResponse = (stockpile: Array<HydratedDocument<Food
       stockpile.forEach((stockpileIngredient) => {
         const lowerStockpileName = stockpileIngredient.name.toLowerCase();
         let foundMatch = false;
-
-        if (recipeIngredientNames.some((recipeIngredientName) => recipeIngredientName.includes(lowerStockpileName))) {
+        if (recipeIngredientNames.some((recipeIngredientName) => recipeIngredientName.includes(lowerStockpileName) || lowerStockpileName.includes(recipeIngredientName))) {
           stockpileMatches.push(foodUtils.constructFoodResponse(stockpileIngredient));
           if (!foundMatch && stockpileIngredient.expiration <= week) {
             expiringCount += 1;

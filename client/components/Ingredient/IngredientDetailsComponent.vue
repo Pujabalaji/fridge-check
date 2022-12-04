@@ -14,7 +14,7 @@
       </div>
     </div>
     <h5>You have {{ recipe.usedCount }} ingredients:</h5>
-    <IngredientMatchComponent v-for="ingredient in usedIngredients" :key="ingredient._id" :ingredient="ingredient" />
+    <IngredientMatchComponent v-for="ingredient in usedIngredients" :key="ingredient._id" :ingredient="ingredient" class="ingredient"/>
     <br>
     <div v-if="missingCount">
       <h5>You need {{ missingCount }} ingredients:</h5>
@@ -101,6 +101,10 @@ export default {
 <style scoped>
 .ingredientDetails {
   background-color: rgb(250, 250, 250);
+}
+
+.ingredient {
+  margin-bottom: 1em;
 }
 
 .container {
