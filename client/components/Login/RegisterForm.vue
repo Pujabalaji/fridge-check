@@ -37,6 +37,22 @@
             Email must be a nonempty alphanumeric string.
           </BFormInvalidFeedback>
         </BFormGroup>
+        <BFormGroup id="home" label="Home Community" label-for="home">
+          <BFormSelect
+            id="home"
+            v-model="homeCommunity"
+            :options="communityOptions"
+            :state="isValidCommunity"
+          >
+            <template #first>
+              <BFormSelectOption value="" disabled
+                >
+                Please select a home community
+                </BFormSelectOption
+              >
+            </template>
+          </BFormSelect>
+        </BFormGroup>
         <BFormGroup id="allergies" label="Allergies" label-for="allergies">
           <BFormCheckboxGroup id="allergies" v-model="selectedAllergies">
             <BFormCheckbox value="Peanut">Peanuts</BFormCheckbox>
@@ -55,22 +71,8 @@
             <BFormCheckbox value="Pescetarian">Pescatarian</BFormCheckbox>
           </BFormCheckboxGroup>
         </BFormGroup>
-        <BFormGroup id="home" label="Home Community" label-for="home">
-          <BFormSelect
-            id="home"
-            v-model="homeCommunity"
-            :options="communityOptions"
-            :state="isValidCommunity"
-          >
-            <template #first>
-              <BFormSelectOption value="" disabled
-                >Please select a home community</BFormSelectOption
-              >
-            </template>
-          </BFormSelect>
-        </BFormGroup>
       </article>
-      <BButton type="submit" variant="primary" :disabled="!enableSubmit"> Create account </BButton>
+      <BButton type="submit" variant="primary" :disabled="!enableSubmit" block> Create account </BButton>
     </BForm>
     <BAlert
       v-for="(status, alert, index) in alerts"

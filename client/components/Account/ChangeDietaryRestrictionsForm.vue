@@ -16,7 +16,7 @@
           </BFormCheckboxGroup>
         </BFormGroup>
       </article>
-      <BButton type="submit" variant="primary">
+      <BButton type="submit" variant="primary" block>
         Change dietary restrictions
       </BButton>
     </BForm>

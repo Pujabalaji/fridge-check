@@ -18,7 +18,7 @@
           </BFormSelect>
         </BFormGroup>
       </article>
-      <BButton type="submit" variant="primary"> Change home community </BButton>
+      <BButton type="submit" variant="primary" block> Change home community </BButton>
     </BForm>
     <BAlert
       v-for="(status, alert, index) in alerts"

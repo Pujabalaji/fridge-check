@@ -27,7 +27,7 @@
       <article v-else>
         <p>{{ content }}</p>
       </article>
-      <BButton type="submit" variant="primary" :disabled="!shouldSubmit">
+      <BButton type="submit" variant="primary" :disabled="!shouldSubmit" block>
         {{ title }}
       </BButton>
     </BForm>

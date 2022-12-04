@@ -21,10 +21,9 @@ const routes = [
   { path: '/recipe', name: 'Recipe', component: RecipePage },
   { path: '/recipe/ingredients', name: 'Ingredient Details', component: IngredientDetailsPage },
   { path: '/recipe/details', name: 'Recipe Details', component: RecipeDetailsPage },
-  { path: '*', name: 'Not Found', component: NotFound },
   { path: '/listings', name: 'My Listings', component: MyListingsPage },
   { path: '/alllistings', name: 'All Listings', component: AllListingsTempPage},
-  { path: '*', name: 'Not Found', component: NotFound }
+  { path: '*', name: 'Not Found', component: NotFound },
 ];
 
 const router = new VueRouter({ routes });

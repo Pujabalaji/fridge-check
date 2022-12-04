@@ -12,7 +12,7 @@
           </BFormCheckboxGroup>
         </BFormGroup>
       </article>
-      <BButton type="submit" variant="primary">Change allergies</BButton>
+      <BButton type="submit" variant="primary" block>Change allergies</BButton>
     </BForm>
     <BAlert
       v-for="(status, alert, index) in alerts"
