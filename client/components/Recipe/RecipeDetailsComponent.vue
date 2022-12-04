@@ -13,20 +13,28 @@
         </p>
       </div>
     </div>
-    <h5>Ingredients:</h5>
-    <ul>
-      <li v-for="ingredient in recipe.ingredients" :key="ingredient._id">
-        {{ ingredient.amount }} {{ ingredient.unit }} of
-        {{ ingredient.name[0] }}
-      </li>
-    </ul>
-    <h5>Instructions:</h5>
-    <ol>
-      <li v-for="(step, index) in recipe.instructions" :key="index">
-        {{ step }}
-      </li>
-    </ol>
-    <a :href="recipe.source" target="_blank">Open Recipe Source in new tab</a>
+    <section>
+      <h5>Ingredients:</h5>
+      <ul>
+        <li v-for="ingredient in recipe.ingredients" :key="ingredient._id">
+          {{ ingredient.amount }} {{ ingredient.unit }} of
+          {{ ingredient.name[0] }}
+        </li>
+      </ul>
+    </section>
+    <section>
+      <h5>Instructions:</h5>
+      <ol>
+        <li v-for="(step, index) in recipe.instructions" :key="index">
+          {{ step }}
+        </li>
+      </ol>
+    </section>
+    <div class="center-button">
+      <BButton :href="recipe.source" target="_blank"
+        ><BIconBoxArrowUpRight /> <span>Open Recipe Source</span>
+      </BButton>
+    </div>
   </BCard>
 </template>
 
@@ -45,27 +53,41 @@ export default {
 
 <style scoped>
 .recipeDetails {
-  background-color: #eee;
+  background-color: rgb(250, 250, 250);
+}
+
+div {
+  margin-left: 0em;
+  margin-right: 0em;
 }
 
 .container {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 1em;
 }
 
-h4 {
-  margin-top: 0.25em;
+.center-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 img {
-  margin-bottom: 1em;
   flex: 1;
   object-fit: contain;
   width: 12em;
+  margin-bottom: 1em;
 }
 
 .column {
   flex: 3;
+  margin-top: 1em;
+}
+
+button {
+  display: flex;
+  gap: 0.25em;
+  align-items: center;
 }
 </style>
