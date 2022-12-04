@@ -1,6 +1,9 @@
 import type {Request, Response} from 'express';
 import express from 'express';
 import UserCollection from './collection';
+import FoodCollection from '../food/collection';
+import ListingCollection from '../listing/collection';
+import FollowCollection from '../follow/collection';
 import * as userValidator from '../user/middleware';
 import * as util from './util';
 
@@ -171,7 +174,7 @@ router.delete(
   ],
   async (req: Request, res: Response) => {
     const userId = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
-    await UserCollection.deleteOne(userId);
+    await Promise.all([UserCollection.deleteOne(userId), FoodCollection.deleteMany(userId), ListingCollection.deleteMany(userId), FollowCollection.deleteMany(userId)]);
     req.session.userId = undefined;
     res.status(200).json({
       message: 'Your account has been deleted successfully.'
