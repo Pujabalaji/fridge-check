@@ -18,7 +18,7 @@
     <br>
     <div v-if="missingCount">
       <h5>You need {{ missingCount }} ingredients:</h5>
-      <div v-for="ingredient in missingIngredients" :key="ingredient._id" class="container">
+      <div v-for="ingredient in missingIngredients" :key="ingredient._id" class="containeringredient">
         <p>
           {{ ingredient.amount }} {{ ingredient.unit }} of
           {{ ingredient.name[0] }}
@@ -112,6 +112,14 @@ export default {
   align-items: center;
   gap: 1em;
 }
+
+.containeringredient {
+  padding-left: 5px;
+  display: flex;
+  align-items: left;
+  gap: 1em;
+}
+
 
 h4 {
   margin-top: 0.25em;
