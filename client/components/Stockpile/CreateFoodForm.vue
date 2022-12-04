@@ -48,7 +48,6 @@
             id="unit"
             v-model="unit"
             :options="unitOptions"
-            label-for="unit"
           />
         </BFormGroup>
         <BFormCheckbox
