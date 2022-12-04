@@ -150,7 +150,10 @@ const constructQueryRecipeResponse = (stockpile: Array<HydratedDocument<Food>>, 
 };
 
 const constructUrlWithParams = (params: Record<string, string>): string => {
-  let url = `https://api.spoonacular.com/recipes/complexSearch?apiKey=${process.env.API_KEY}`;
+  const keys = [process.env.API_KEY, process.env.API_KEY2, process.env.API_KEY3, process.env.API_KEY4, process.env.API_KEY5];
+  const random = Math.floor(Math.random() * 5);
+  
+  let url = `https://api.spoonacular.com/recipes/complexSearch?apiKey=${keys[random]}`;
 
   for (const [key, value] of Object.entries(params)) {
     url += `&${key}=${value}`;
