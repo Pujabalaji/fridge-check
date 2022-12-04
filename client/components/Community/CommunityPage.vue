@@ -7,20 +7,24 @@
                 <h2>Communities</h2>
                 <p>Follow communities to indicate you are willing to pickup items from a given location.
                     <br>
-                    Listings you post will only be visible to those who have joined your home community as set in your Account page.
+                    Listings you post will only be visible to those who have joined your home community as set in your
+                    Account page.
                 </p>
             </header>
         </section>
 
         <h3>Your communities</h3>
         <section>
-            <CommunityComponent v-for="community in alreadyFollowedCommunities" :key="community" v-bind:alreadyFollows="true" v-bind:communityName="community" @fetchFollows="communitiesUserFollows" />
+            <CommunityComponent v-for="community in alreadyFollowedCommunities" :key="community"
+                v-bind:alreadyFollows="true" v-bind:communityName="community" @fetchFollows="communitiesUserFollows" />
         </section>
+        <br>
 
         <h3>Follow other communities</h3>
         <section>
             <!-- One row for each community -->
-            <CommunityComponent v-for="community in unfollowedCommunities" :key="community" v-bind:alreadyFollows="false" v-bind:communityName="community" @fetchFollows="communitiesUserFollows" />
+            <CommunityComponent v-for="community in unfollowedCommunities" :key="community"
+                v-bind:alreadyFollows="false" v-bind:communityName="community" @fetchFollows="communitiesUserFollows" />
         </section>
     </main>
 </template>
@@ -39,14 +43,14 @@ export default {
         }
     },
     async created() {
-      await this.communitiesUserFollows();
-      this.unfollowedCommunities = this.$store.state.communities.filter(community => !this.alreadyFollowedCommunities.includes(community));
+        await this.communitiesUserFollows();
+        this.unfollowedCommunities = this.$store.state.communities.filter(community => !this.alreadyFollowedCommunities.includes(community));
     },
     computed: {
-      alreadyFollows() {
-        this.communitiesUserFollows();
-        this.unfollowedCommunities = this.$store.state.communities.filter(community => !this.alreadyFollowedCommunities.includes(community));
-      }
+        alreadyFollows() {
+            this.communitiesUserFollows();
+            this.unfollowedCommunities = this.$store.state.communities.filter(community => !this.alreadyFollowedCommunities.includes(community));
+        }
     },
     methods: {
         async communitiesUserFollows() {
@@ -71,7 +75,7 @@ export default {
              * @param params.callback - Function to run if the the request succeeds
              */
             const options = {
-                method: params.method, headers: {'Content-Type': 'application/json', 'Cache-Control': 'no-cache'}
+                method: params.method, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-cache' }
             };
             if (params.body) {
                 options.body = params.body;
@@ -80,10 +84,10 @@ export default {
             try {
                 let r = await fetch(url, options);
                 if (!r.ok) {
-                const res = await r.json();
-                throw new Error(res.error);
+                    const res = await r.json();
+                    throw new Error(res.error);
                 }
-                
+
                 params.callback();
                 const response = await r.json();
                 return response;

@@ -5,6 +5,7 @@
         <section>
             <header>
                 <h2>My Listings</h2>
+                <br>
             </header>
             <div>
                 <section v-if="$store.state.listings.length">

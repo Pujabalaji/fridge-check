@@ -1,7 +1,7 @@
 <!-- Reusable component representing a single food and its actions -->
 
 <template>
-  <article class="food">
+  <BCard class="food">
     <header v-if="!editing">
       <h3 class="name">
         {{ food.name }} ( x{{ food.quantity }} {{ food.unit }}) Expires on:
@@ -9,56 +9,45 @@
       </h3>
 
       <div class="actions">
-        <button @click="startEditing">✏️ Edit Quantity</button>
-        <button @click="deleteFood">🗑️ Delete</button>
-        <button v-if="enableCreateListing" @click="createListing">
+        <BButton @click="startEditing">✏️ Edit Quantity</BButton>
+        <BButton @click="deleteFood">🗑️ Delete</BButton>
+        <BButton v-if="enableCreateListing" @click="createListing">
           Create Listing
-        </button>
-        <button
-          v-else-if="$store.state.foodIdsWithListings.includes(food._id)"
-          @click="viewListing"
-        >
+        </BButton>
+        <BButton v-else-if="$store.state.foodIdsWithListings.includes(food._id)" @click="viewListing">
           View Listing
-        </button>
+        </BButton>
       </div>
     </header>
     <header v-else>
       <h3 class="name">
         {{ food.name }} ( x
-        <textarea
-          v-if="editing"
-          class="quantity"
-          :value="draft"
-          @input="draft = $event.target.value"
-        />{{ food.unit }}) Expires on: {{ food.expiration }}
+        <textarea v-if="editing" class="quantity" :value="draft" @input="draft = $event.target.value" />{{ food.unit }})
+        Expires on: {{ food.expiration }}
       </h3>
 
       <div class="actions">
-        <button v-if="editing" @click="submitEdit">✅ Save changes</button>
-        <button v-if="editing" @click="stopEditing">🚫 Discard changes</button>
-        <button @click="deleteFood">🗑️ Delete</button>
-        <button v-if="!food.prepared" @click="createListing">
+        <BButton v-if="editing" @click="submitEdit">✅ Save changes</BButton>
+        <BButton v-if="editing" @click="stopEditing">🚫 Discard changes</BButton>
+        <BButton @click="deleteFood">🗑️ Delete</BButton>
+        <BButton v-if="!food.prepared" @click="createListing">
           Create Listing
-        </button>
+        </BButton>
       </div>
     </header>
-    <BAlert
-      v-for="(status, alert, index) in alerts"
-      :key="index"
-      :variant="status === 'error' ? 'danger' : 'success'"
-      show
-    >
+    <BAlert v-for="(status, alert, index) in alerts" :key="index" :variant="status === 'error' ? 'danger' : 'success'"
+      show>
       {{ alert }}
     </BAlert>
-  </article>
+  </BCard>
 </template>
   
 <script>
-import { BAlert } from "bootstrap-vue";
+import { BAlert, BCard, BButton } from "bootstrap-vue";
 
 export default {
   name: "FoodComponent",
-  components: { BAlert },
+  components: { BAlert, BCard, BButton },
   props: {
     food: {
       type: Object,
@@ -209,13 +198,11 @@ export default {
   
 <style scoped>
 .food {
-  border: 1px solid #111;
-  padding: 20px;
-  position: relative;
-  font-family: "Helvetica Neue", Roboto, "Segoe UI", Calibri, sans-serif;
-  font-size: 12px;
-  font-weight: bold;
-  line-height: 16px;
-  background-color: #eee;
+  background-color: rgb(238, 238, 238);
+  margin-bottom: 0.5em;
+}
+
+.name {
+  font-size: 20px;
 }
 </style>

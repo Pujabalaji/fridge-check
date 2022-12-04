@@ -1,75 +1,61 @@
 <!-- Reusable component representing a single food and its actions -->
 
 <template>
-  <article class="listing">
-    <header v-if="!editing">
-      <div>
-        <h2>
-          {{ listing.name }} ( x{{ listing.quantity }} {{ listing.unit }})
-        </h2>
-        Price: {{ listing.price }}
-        <br />
-        <div v-if="listing.username !== $store.state.user?.username">
-          User: {{ listing.username }}
+  <article>
+    <BCard class="listing">
+      <header v-if="!editing">
+        <div>
+          <h2 class="name">
+            {{ listing.name }} ( x{{ listing.quantity }} {{ listing.unit }})
+          </h2>
+          Price: {{ listing.price }}
           <br />
-          Community: {{ listing.community }}
-          <br />
-          Contact info: {{ listing.email }}
+          <div v-if="listing.username !== $store.state.user?.username">
+            User: {{ listing.username }}
+            <br />
+            Community: {{ listing.community }}
+            <br />
+            Contact info: {{ listing.email }}
+            <br />
+          </div>
+          Expires on: {{ listing.expiration }}
           <br />
         </div>
-        Expires on: {{ listing.expiration }}
-        <br />
-      </div>
-      <div
-        v-if="listing.username === $store.state.user?.username"
-        class="actions"
-      >
-        <button @click="startEditing">✏️ Edit Quantity or Price</button>
-        <button @click="deleteListing">🗑️ Delete Listing</button>
-      </div>
-    </header>
-    <header v-else>
-      <h3 class="name">
-        {{ listing.name }} (x
-        <textarea
-          v-if="editing"
-          class="quantity"
-          :value="draft.quantity"
-          @input="draft.quantity = $event.target.value"
-        />
-        {{ listing.unit }}) Price:
-        <textarea
-          v-if="editing"
-          class="price"
-          :value="draft.price"
-          @input="draft.price = $event.target.value"
-        />
-        Expires on: {{ listing.expiration }}
-      </h3>
+        <div v-if="listing.username === $store.state.user?.username" class="actions">
+          <BButton @click="startEditing">✏️ Edit Quantity or Price</BButton>
+          <BButton @click="deleteListing">🗑️ Delete Listing</BButton>
+        </div>
+      </header>
+      <header v-else>
+        <h3 class="name">
+          {{ listing.name }} (x
+          <textarea v-if="editing" class="quantity" :value="draft.quantity"
+            @input="draft.quantity = $event.target.value" />
+          {{ listing.unit }}) Price:
+          <textarea v-if="editing" class="price" :value="draft.price" @input="draft.price = $event.target.value" />
+          Expires on: {{ listing.expiration }}
+        </h3>
 
-      <div class="actions">
-        <button v-if="editing" @click="submitEdit">✅ Save changes</button>
-        <button v-if="editing" @click="stopEditing">🚫 Discard changes</button>
-        <button @click="deleteListing">🗑️ Delete Listing</button>
-      </div>
-    </header>
-    <BAlert
-      v-for="(status, alert, index) in alerts"
-      :key="index"
-      :variant="status === 'error' ? 'danger' : 'success'"
-      show
-    >
+        <div class="actions">
+          <BButton v-if="editing" @click="submitEdit">✅ Save changes</BButton>
+          <BButton v-if="editing" @click="stopEditing">🚫 Discard changes</BButton>
+          <BButton @click="deleteListing">🗑️ Delete Listing</BButton>
+        </div>
+      </header>
+    </BCard>
+    <BAlert v-for="(status, alert, index) in alerts" :key="index" :variant="status === 'error' ? 'danger' : 'success'"
+      show>
       {{ alert }}
     </BAlert>
   </article>
 </template>
   
 <script>
-import { BAlert } from "bootstrap-vue";
+import { BAlert, BCard, BButton } from "bootstrap-vue";
 
 export default {
   name: "ListingComponent",
-  components: { BAlert },
+  components: { BAlert, BCard, BButton },
   props: {
     listing: {
       type: Object,
@@ -180,16 +166,14 @@ export default {
   },
 };
 </script>
-  
+
 <style scoped>
 .listing {
-  border: 1px solid #111;
-  padding: 20px;
-  position: relative;
-  font-family: "Helvetica Neue", Roboto, "Segoe UI", Calibri, sans-serif;
-  font-size: 12px;
-  font-weight: bold;
-  line-height: 16px;
-  background-color: #eee;
+  background-color: rgb(238, 238, 238);
+  margin-bottom: 0.5em;
+}
+
+.name {
+  font-size: 20px;
 }
 </style>

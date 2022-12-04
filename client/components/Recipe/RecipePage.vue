@@ -1,63 +1,55 @@
 <!-- Page for suggesting and searching recipes -->
 
 <template>
-  <main>
-    <div v-if="$store.state.username">
-      <h2>Suggested Recipes</h2>
-      <div class="container">
-        <div class="actions">
-          <section>
-            <h3>Quick Suggest:</h3>
-            <button @click="handleSuggestedClick">
-              Suggest any recipe that uses ingredients in my stockpile
-            </button>
-          </section>
-          <form @submit.prevent="submit">
-            <h3>Search Recipes by Name:</h3>
-            <input
-              type="text"
-              v-model="searchText"
-              placeholder="Search"
-              required
-            />
-            <button type="submit">Search</button>
-          </form>
+  <article>
+    <main v-if="$store.state.username">
+      <section>
+        <header>
+          <h2>Suggested Recipes</h2>
+        </header>
+        <div class="container">
+          <div class="actions">
+            <section>
+              <h3>Quick Suggest:</h3>
+              <BButton @click="handleSuggestedClick">
+                Suggest any recipe that uses ingredients in my stockpile
+              </BButton>
+            </section>
+            <form @submit.prevent="submit">
+              <h3>Search Recipes by Name:</h3>
+              <input type="text" v-model="searchText" placeholder="Search" required />
+              <BButton type="submit">Search</BButton>
+            </form>
+          </div>
+          <div class="recipes">
+            <section v-if="$store.state.displaySuggested">
+              <h3>Showing recipes using ingredients you have:</h3>
+              <div v-if="$store.state.recipes.length">
+                <RecipeComponent v-for="recipe in $store.state.recipes" :key="recipe._id" :recipe="recipe" />
+              </div>
+              <h4 v-else-if="loadingSuggested">Loading Recipes</h4>
+              <h4 v-else>No results found</h4>
+            </section>
+            <section v-else-if="$store.state.displayByName">
+              <h3>Showing recipes for "{{ $store.state.lastSearched }}":</h3>
+              <div v-if="$store.state.recipes.length">
+                <RecipeComponent v-for="recipe in $store.state.recipes" :key="recipe._id" :recipe="recipe" />
+              </div>
+              <h4 v-else-if="loadingNameSearch">Loading Recipes</h4>
+              <h4 v-else>No results found</h4>
+            </section>
+          </div>
         </div>
-        <div class="recipes">
-          <section v-if="$store.state.displaySuggested">
-            <h3>Showing recipes using ingredients you have:</h3>
-            <div v-if="$store.state.recipes.length">
-              <RecipeComponent
-                v-for="recipe in $store.state.recipes"
-                :key="recipe._id"
-                :recipe="recipe"
-              />
-            </div>
-            <h4 v-else-if="loadingSuggested">Loading Recipes</h4>
-            <h4 v-else>No results found</h4>
-          </section>
-          <section v-else-if="$store.state.displayByName">
-            <h3>Showing recipes for "{{ $store.state.lastSearched }}":</h3>
-            <div v-if="$store.state.recipes.length">
-              <RecipeComponent
-                v-for="recipe in $store.state.recipes"
-                :key="recipe._id"
-                :recipe="recipe"
-              />
-            </div>
-            <h4 v-else-if="loadingNameSearch">Loading Recipes</h4>
-            <h4 v-else>No results found</h4>
-          </section>
-        </div>
-      </div>
-    </div>
+      </section>
+    </main>
     <div v-else>
       <h2>
         <router-link to="/login">Sign in</router-link>
         to view recipe suggestions.
       </h2>
     </div>
-  </main>
+  </article>
+
 </template>
 
 <script>

@@ -6,28 +6,31 @@
             <header>
                 <h2>My Stockpile</h2>
             </header>
+            <br>
             <div class="row">
                 <div class="column">
-                    <h2>Expired</h2>
+                    <h3>Expired</h3>
                     <section v-if="$store.state.expired.length">
                         <FoodComponent v-for="food in $store.state.expired" :key="food._id" :food="food" />
                     </section>
                     <article v-else>
-                        <h3>No expired food in your fridge :)</h3>
+                        <h4>No expired food in your fridge :)</h4>
                     </article>
-                    <h2>Expiring</h2>
+                    <br>
+                    <h3>Expiring</h3>
                     <section v-if="$store.state.expiring.length">
                         <FoodComponent v-for="food in $store.state.expiring" :key="food._id" :food="food" />
                     </section>
                     <article v-else>
-                        <h3>No food about to expire :)</h3>
+                        <h4>No food about to expire :)</h4>
                     </article>
-                    <h2>Food not expiring soon</h2>
+                    <br>
+                    <h3>Food not expiring soon</h3>
                     <section v-if="$store.state.remainingFoods.length">
                         <FoodComponent v-for="food in $store.state.remainingFoods" :key="food._id" :food="food" />
                     </section>
                     <article v-else>
-                        <h3>There is no food in your stockpile.</h3>
+                        <h4>There is no food in your stockpile.</h4>
                     </article>
                 </div>
                 <div v-if="$store.state.currentFood" class="column">

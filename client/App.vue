@@ -65,6 +65,10 @@ form {
   margin-bottom: 1.5em;
 }
 
+card {
+  background-color: rgb(238, 238, 238);
+}
+
 button + .alert {
   margin-top: 1em;
   margin-bottom: 0.5em;

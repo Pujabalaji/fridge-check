@@ -1,7 +1,7 @@
 <!-- Reusable component representing recipe ingredient details -->
 
 <template>
-  <article>
+  <BCard class="ingredientDetails">
     <div class="container">
       <img :src="recipe.imageUrl" />
       <div class="column">
@@ -10,11 +10,12 @@
           This recipe uses {{ recipe.usedCount }} ingredients in your stockpile.
         </p>
         <p>{{ recipe.expiringCount }} of these items are expiring this week.</p>
-        <button @click="showDetails">Show recipe details</button>
+        <BButton @click="showDetails">Show recipe details</BButton>
       </div>
     </div>
     <h5>You have {{ recipe.usedCount }} ingredients:</h5>
     <IngredientMatchComponent v-for="ingredient in usedIngredients" :key="ingredient._id" :ingredient="ingredient" />
+    <br>
     <div v-if="missingCount">
       <h5>You need {{ missingCount }} ingredients:</h5>
       <div v-for="ingredient in missingIngredients" :key="ingredient._id" class="container">
@@ -22,7 +23,7 @@
           {{ ingredient.amount }} {{ ingredient.unit }} of
           {{ ingredient.name[0] }}
         </p>
-        <button @click="fetchListings(ingredient)">Show Listings</button>
+        <BButton @click="fetchListings(ingredient)">Show Listings</BButton>
         <div v-if="currentIngredientId == ingredient._id">
           <p v-if="listings.length">
             <ListingComponent v-for="listing in listings" :key="listing._id" :listing="listing" />
@@ -32,21 +33,26 @@
         </div>
       </div>
     </div>
+    <br>
     <h3> Want to make this recipe? </h3>
     <p> We suggest removing/adjusting the quantities of the following food items: </p>
     <FoodComponent v-for="ingredient in usedIngredients" :key="ingredient.stockpileMatches[0]._id"
       :food="ingredient.stockpileMatches[0]" />
-  </article>
+  </BCard>
 </template>
 
 <script>
 import IngredientMatchComponent from "@/components/Ingredient/IngredientMatchComponent.vue";
 import ListingComponent from "@/components/Listings/ListingComponent.vue";
 import FoodComponent from "@/components/Stockpile/FoodComponent.vue";
+import {
+  BCard,
+  BButton,
+} from "bootstrap-vue";
 
 export default {
   name: "IngredientDetailsComponent",
-  components: { IngredientMatchComponent, ListingComponent, FoodComponent },
+  components: { IngredientMatchComponent, ListingComponent, FoodComponent, BCard, BButton },
   props: {
     // Data from the stored recipe
     recipe: {
@@ -97,12 +103,8 @@ export default {
 </script>
 
 <style scoped>
-article {
-  border: 1px solid #111;
-  padding: 20px;
-  position: relative;
-  margin: 0.5em 0em;
-  background-color: #eee;
+.ingredientDetails {
+  background-color: rgb(250, 250, 250);
 }
 
 .container {
@@ -119,6 +121,7 @@ img {
   flex: 1;
   object-fit: contain;
   width: 12em;
+  margin-bottom: 1em;
 }
 
 .column {
