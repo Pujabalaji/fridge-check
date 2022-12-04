@@ -14,11 +14,10 @@
 
 <script>
 import FoodComponent from "@/components/Stockpile/FoodComponent.vue";
-import { BButton } from "bootstrap-vue";
 
 export default {
   name: "IngredientMatchComponent",
-  components: { FoodComponent, BButton },
+  components: { FoodComponent },
   props: {
     ingredient: {
       type: Object,

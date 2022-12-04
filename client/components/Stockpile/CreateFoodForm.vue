@@ -64,29 +64,8 @@
 </template>
   
 <script>
-import {
-  BForm,
-  BFormGroup,
-  BFormInput,
-  BFormSelect,
-  BFormCheckbox,
-  BButton,
-  BAlert,
-  BFormInvalidFeedback,
-} from "bootstrap-vue";
-
 export default {
   name: "CreateFoodForm",
-  components: {
-    BForm,
-    BFormGroup,
-    BFormInput,
-    BFormSelect,
-    BFormCheckbox,
-    BButton,
-    BAlert,
-    BFormInvalidFeedback,
-  },
   data() {
     return {
       name: "",

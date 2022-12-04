@@ -89,33 +89,8 @@
 </template>
 
 <script>
-import {
-  BForm,
-  BFormGroup,
-  BFormInput,
-  BButton,
-  BFormInvalidFeedback,
-  BFormCheckboxGroup,
-  BFormCheckbox,
-  BFormSelect,
-  BFormSelectOption,
-  BAlert,
-} from "bootstrap-vue";
-
 export default {
   name: "RegisterForm",
-  components: {
-    BForm,
-    BFormGroup,
-    BFormInput,
-    BButton,
-    BFormInvalidFeedback,
-    BFormCheckboxGroup,
-    BFormCheckbox,
-    BFormSelect,
-    BFormSelectOption,
-    BAlert,
-  },
   data() {
     return {
       username: "",

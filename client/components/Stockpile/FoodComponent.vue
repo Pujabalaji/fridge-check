@@ -9,45 +9,57 @@
       </h3>
 
       <div class="actions">
-        <BButton @click="startEditing">✏️ Edit Quantity</BButton>
-        <BButton @click="deleteFood">🗑️ Delete</BButton>
+        <BButton @click="startEditing"
+          ><BIconPencilFill /> Edit Quantity</BButton
+        >
+        <BButton @click="deleteFood"><BIconTrash /> Delete</BButton>
         <BButton v-if="enableCreateListing" @click="createListing">
-          Create Listing
+          <BIconClipboardPlus /> Create Listing
         </BButton>
-        <BButton v-else-if="$store.state.foodIdsWithListings.includes(food._id)" @click="viewListing">
-          View Listing
+        <BButton
+          v-else-if="$store.state.foodIdsWithListings.includes(food._id)"
+          @click="viewListing"
+        >
+          <BIconClipboard />View Listing
         </BButton>
       </div>
     </header>
     <header v-else>
       <h3 class="name">
         {{ food.name }} ( x
-        <textarea v-if="editing" class="quantity" :value="draft" @input="draft = $event.target.value" />{{ food.unit }})
-        Expires on: {{ food.expiration }}
+        <textarea
+          v-if="editing"
+          class="quantity"
+          :value="draft"
+          @input="draft = $event.target.value"
+        />{{ food.unit }}) Expires on: {{ food.expiration }}
       </h3>
 
       <div class="actions">
         <BButton v-if="editing" @click="submitEdit">✅ Save changes</BButton>
-        <BButton v-if="editing" @click="stopEditing">🚫 Discard changes</BButton>
+        <BButton v-if="editing" @click="stopEditing"
+          >🚫 Discard changes</BButton
+        >
         <BButton @click="deleteFood">🗑️ Delete</BButton>
         <BButton v-if="!food.prepared" @click="createListing">
           Create Listing
         </BButton>
       </div>
     </header>
-    <BAlert v-for="(status, alert, index) in alerts" :key="index" :variant="status === 'error' ? 'danger' : 'success'"
-      show>
+    <BAlert
+      v-for="(status, alert, index) in alerts"
+      :key="index"
+      :variant="status === 'error' ? 'danger' : 'success'"
+      show
+    >
       {{ alert }}
     </BAlert>
   </BCard>
 </template>
   
 <script>
-import { BAlert, BCard, BButton } from "bootstrap-vue";
-
 export default {
   name: "FoodComponent",
-  components: { BAlert, BCard, BButton },
   props: {
     food: {
       type: Object,
@@ -197,12 +209,16 @@ export default {
 </script>
   
 <style scoped>
+.actions {
+  display: flex;
+  justify-content: space-between;
+}
+
 .food {
   background-color: rgb(238, 238, 238);
-  margin-bottom: 0.5em;
 }
 
 .name {
-  font-size: 20px;
+  font-size: 1.25em;
 }
 </style>

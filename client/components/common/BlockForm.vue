@@ -41,25 +41,8 @@
 </template>
 
 <script>
-import {
-  BForm,
-  BFormGroup,
-  BFormInput,
-  BButton,
-  BAlert,
-  BFormInvalidFeedback,
-} from "bootstrap-vue";
-
 export default {
   name: "BlockForm",
-  components: {
-    BForm,
-    BFormGroup,
-    BFormInput,
-    BButton,
-    BAlert,
-    BFormInvalidFeedback,
-  },
   data() {
     /**
      * Options for submitting this form.

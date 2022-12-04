@@ -32,25 +32,8 @@
 </template>
 
 <script>
-import {
-  BForm,
-  BFormGroup,
-  BFormSelect,
-  BFormSelectOption,
-  BButton,
-  BAlert,
-} from "bootstrap-vue";
-
 export default {
   name: "ChangeHomeCommunityForm",
-  components: {
-    BForm,
-    BFormGroup,
-    BButton,
-    BFormSelect,
-    BFormSelectOption,
-    BAlert,
-  },
   data() {
     return {
       homeCommunity: this.$store.state.user.homeCommunity ?? "",

@@ -17,11 +17,10 @@
 
 <script>
 import NavBar from '@/components/common/NavBar.vue';
-import { BAlert } from "bootstrap-vue";
 
 export default {
   name: 'App',
-  components: {NavBar, BAlert},
+  components: {NavBar},
   beforeCreate() {
     // Sync stored username to current session
     fetch('/api/users/session', {

@@ -45,14 +45,10 @@
 import IngredientMatchComponent from "@/components/Ingredient/IngredientMatchComponent.vue";
 import ListingComponent from "@/components/Listings/ListingComponent.vue";
 import FoodComponent from "@/components/Stockpile/FoodComponent.vue";
-import {
-  BCard,
-  BButton,
-} from "bootstrap-vue";
 
 export default {
   name: "IngredientDetailsComponent",
-  components: { IngredientMatchComponent, ListingComponent, FoodComponent, BCard, BButton },
+  components: { IngredientMatchComponent, ListingComponent, FoodComponent },
   props: {
     // Data from the stored recipe
     recipe: {

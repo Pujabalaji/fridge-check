@@ -16,14 +16,8 @@
 </template>
 
 <script>
-import {
-    BCard,
-    BButton,
-} from "bootstrap-vue";
-
 export default {
     name: 'CommunityComponent',
-    components: { BCard, BButton },
     props: {
         communityName: String,
         alreadyFollows: Boolean

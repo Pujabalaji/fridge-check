@@ -21,41 +21,63 @@
           Expires on: {{ listing.expiration }}
           <br />
         </div>
-        <div v-if="listing.username === $store.state.user?.username" class="actions">
-          <BButton @click="startEditing">✏️ Edit Quantity or Price</BButton>
-          <BButton @click="deleteListing">🗑️ Delete Listing</BButton>
+        <div
+          v-if="listing.username === $store.state.user?.username"
+          class="actions"
+        >
+          <BButton @click="startEditing">
+            <BIconstack>
+              <BIconClipboard stacked/> <BIconPencil scale="0.50" shift-v="-1" stacked/>
+            </BIconstack>
+            Edit Quantity or Price</BButton
+          >
+          <BButton @click="deleteListing"
+            ><BIconClipboardX /> Delete Listing</BButton
+          >
         </div>
       </header>
       <header v-else>
         <h3 class="name">
           {{ listing.name }} (x
-          <textarea v-if="editing" class="quantity" :value="draft.quantity"
-            @input="draft.quantity = $event.target.value" />
+          <textarea
+            v-if="editing"
+            class="quantity"
+            :value="draft.quantity"
+            @input="draft.quantity = $event.target.value"
+          />
           {{ listing.unit }}) Price:
-          <textarea v-if="editing" class="price" :value="draft.price" @input="draft.price = $event.target.value" />
+          <textarea
+            v-if="editing"
+            class="price"
+            :value="draft.price"
+            @input="draft.price = $event.target.value"
+          />
           Expires on: {{ listing.expiration }}
         </h3>
 
         <div class="actions">
           <BButton v-if="editing" @click="submitEdit">✅ Save changes</BButton>
-          <BButton v-if="editing" @click="stopEditing">🚫 Discard changes</BButton>
+          <BButton v-if="editing" @click="stopEditing"
+            >🚫 Discard changes</BButton
+          >
           <BButton @click="deleteListing">🗑️ Delete Listing</BButton>
         </div>
       </header>
     </BCard>
-    <BAlert v-for="(status, alert, index) in alerts" :key="index" :variant="status === 'error' ? 'danger' : 'success'"
-      show>
+    <BAlert
+      v-for="(status, alert, index) in alerts"
+      :key="index"
+      :variant="status === 'error' ? 'danger' : 'success'"
+      show
+    >
       {{ alert }}
     </BAlert>
   </article>
 </template>
   
 <script>
-import { BAlert, BCard, BButton } from "bootstrap-vue";
-
 export default {
   name: "ListingComponent",
-  components: { BAlert, BCard, BButton },
   props: {
     listing: {
       type: Object,

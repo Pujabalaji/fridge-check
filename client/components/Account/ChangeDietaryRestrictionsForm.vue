@@ -30,25 +30,8 @@
 </template>
   
 <script>
-import {
-  BForm,
-  BFormGroup,
-  BFormCheckboxGroup,
-  BFormCheckbox,
-  BButton,
-  BAlert,
-} from "bootstrap-vue";
-
 export default {
   name: "ChangeDietaryRestrictionsForm",
-  components: {
-    BForm,
-    BFormGroup,
-    BFormCheckboxGroup,
-    BFormCheckbox,
-    BButton,
-    BAlert,
-  },
   data() {
     return {
       selectedOtherRestrictions:

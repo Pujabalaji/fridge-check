@@ -24,25 +24,8 @@
 </template>
   
 <script>
-import {
-  BForm,
-  BFormGroup,
-  BFormCheckboxGroup,
-  BFormCheckbox,
-  BButton,
-  BAlert,
-} from "bootstrap-vue";
-
 export default {
   name: "ChangeAllergiesForm",
-  components: {
-    BForm,
-    BFormGroup,
-    BFormCheckboxGroup,
-    BFormCheckbox,
-    BButton,
-    BAlert,
-  },
   data() {
     return {
       selectedAllergies: this.$store.state.user?.allergies,

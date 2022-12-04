@@ -19,12 +19,8 @@
 </template>
 
 <script>
-import {
-  BAlert,
-} from "bootstrap-vue";
 export default {
   name: 'InlineForm',
-  components: {BAlert},
   props: {
     placeholder: {
       type: String,

@@ -75,35 +75,8 @@
 </template>
   
 <script>
-import {
-  BForm,
-  BFormGroup,
-  BFormInput,
-  BInputGroup,
-  BFormInvalidFeedback,
-  BFormCheckboxGroup,
-  BFormCheckbox,
-  BFormSelect,
-  BFormSelectOption,
-  BButton,
-  BAlert,
-} from "bootstrap-vue";
-
 export default {
   name: "CreateListingForm",
-  components: {
-    BForm,
-    BFormGroup,
-    BFormInput,
-    BInputGroup,
-    BFormInvalidFeedback,
-    BFormCheckboxGroup,
-    BFormCheckbox,
-    BFormSelect,
-    BFormSelectOption,
-    BButton,
-    BAlert,
-  },
   data() {
     return {
       name: "",

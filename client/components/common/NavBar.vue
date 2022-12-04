@@ -19,24 +19,8 @@
 </template>
 
 <script>
-import {
-  BNavbar,
-  BNavbarBrand,
-  BNavbarToggle,
-  BCollapse,
-  BNavbarNav,
-  BNavItem,
-} from "bootstrap-vue";
 export default {
   name: "NavBar",
-  components: {
-    BNavbar,
-    BNavbarBrand,
-    BNavbarToggle,
-    BCollapse,
-    BNavbarNav,
-    BNavItem,
-  },
   computed: {
     links() {
       return [

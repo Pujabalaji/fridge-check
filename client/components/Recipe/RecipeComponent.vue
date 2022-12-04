@@ -19,11 +19,8 @@
 </template>
 
 <script>
-import { BCard, BButton } from "bootstrap-vue";
-
 export default {
   name: "RecipeComponent",
-  components: { BCard, BButton },
   props: {
     // Data from the stored recipe
     recipe: {
