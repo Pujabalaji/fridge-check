@@ -10,7 +10,7 @@
           This recipe uses {{ recipe.usedCount }} ingredients in your stockpile.
         </p>
         <p>{{ recipe.expiringCount }} of these items are expiring this week.</p>
-        <BButton @click="showDetails">Show recipe details</BButton>
+        <BButton @click="showDetails" variant="info">Show recipe details</BButton>
       </div>
     </div>
     <section>
@@ -33,7 +33,7 @@
           {{ ingredient.amount }} {{ ingredient.unit }} of
           {{ ingredient.name[0] }}
         </p>
-        <BButton @click="fetchListings(ingredient)"
+        <BButton @click="fetchListings(ingredient)" variant="info"
           ><BIconClipboard /> <span>View Listings</span></BButton
         >
         <div v-if="currentIngredientId == ingredient._id">
@@ -132,7 +132,7 @@ export default {
 
 <style scoped>
 .ingredientDetails {
-  background-color: rgb(250, 250, 250);
+  background-color: #d3f9d8;
 }
 
 .ingredient {

@@ -4,8 +4,8 @@
         <!-- v-if=this.doesFollow()  -->
         <BCard class="oneCommunity">
             {{ communityName }}
-            <BButton v-if="!alreadyFollows" @click="followRequest">Follow</BButton>
-            <BButton v-if="alreadyFollows" @click="unfollowRequest">Unfollow</BButton>
+            <BButton v-if="!alreadyFollows" @click="followRequest" variant="info">Follow</BButton>
+            <BButton v-if="alreadyFollows" @click="unfollowRequest" variant="info">Unfollow</BButton>
         </BCard>
         <section class="alerts">
             <article v-for="(status, alert, index) in alerts" :key="index" :class="status">
@@ -89,7 +89,7 @@ export default {
 
 <style scoped>
 .oneCommunity {
-    background-color: rgb(238, 238, 238);
+    background-color: #a5d8ff;
     margin-bottom: 0.5em;
 }
 </style>

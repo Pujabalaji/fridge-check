@@ -9,16 +9,17 @@
       </h3>
 
       <div class="actions">
-        <BButton @click="startEditing"
+        <BButton @click="startEditing" variant="info"
           ><BIconPencilFill /> <span>Edit Quantity</span></BButton
         >
-        <BButton @click="deleteFood"><BIconTrash /> <span>Delete</span> </BButton>
-        <BButton v-if="enableCreateListing" @click="createListing">
+        <BButton @click="deleteFood" variant="info"><BIconTrash /> <span>Delete</span> </BButton>
+        <BButton v-if="enableCreateListing" @click="createListing" variant="info">
           <BIconClipboardPlus /> <span>Create Listing</span>
         </BButton>
         <BButton
           v-else-if="$store.state.foodIdsWithListings.includes(food._id)"
           @click="viewListing"
+          variant="info"
         >
           <BIconClipboard /> <span>View Listing</span>
         </BButton>
@@ -36,21 +37,22 @@
       </h3>
 
       <div class="actions">
-        <BButton v-if="editing" @click="submitEdit"
+        <BButton v-if="editing" @click="submitEdit" variant="info"
           ><BIconCheck2 /> <span>Save changes</span>
         </BButton>
-        <BButton v-if="editing" @click="stopEditing"
+        <BButton v-if="editing" @click="stopEditing" variant="info"
           ><BIconX /> <span>Discard changes</span>
         </BButton>
-        <BButton @click="deleteFood"
+        <BButton @click="deleteFood" variant="info"
           ><BIconTrash /> <span>Delete</span>
         </BButton>
-        <BButton v-if="enableCreateListing" @click="createListing">
+        <BButton v-if="enableCreateListing" variant="info" @click="createListing">
           <span>Create Listing</span>
         </BButton>
         <BButton
           v-else-if="$store.state.foodIdsWithListings.includes(food._id)"
           @click="viewListing"
+          variant="info"
         >
           <BIconClipboard /> <span>View Listing</span>
         </BButton>
@@ -212,7 +214,7 @@ export default {
 }
 
 .food {
-  background-color: rgb(238, 238, 238);
+  background-color: #a5d8ff;
 }
 
 .name {

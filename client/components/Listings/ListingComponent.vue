@@ -25,14 +25,14 @@
           v-if="listing.username === $store.state.user?.username"
           class="actions"
         >
-          <BButton @click="startEditing">
+          <BButton @click="startEditing" variant="info">
             <BIconstack>
               <BIconClipboard stacked />
               <BIconPencil scale="0.50" shift-v="-1" stacked />
             </BIconstack>
             <span>Edit Quantity or Price</span>
           </BButton>
-          <BButton @click="deleteListing"
+          <BButton @click="deleteListing" variant="info"
             ><BIconClipboardX /> <span>Delete Listing</span> </BButton
           >
         </div>
@@ -57,13 +57,13 @@
         </h3>
 
         <div class="actions">
-          <BButton v-if="editing" @click="submitEdit"
+          <BButton v-if="editing" @click="submitEdit" variant="info"
             ><BIconCheck2 /> <span>Save changes</span>
           </BButton>
-          <BButton v-if="editing" @click="stopEditing"
+          <BButton v-if="editing" @click="stopEditing" variant="info"
             ><BIconX /> <span>Discard changes</span>
           </BButton>
-          <BButton @click="deleteListing"
+          <BButton @click="deleteListing" variant="info"
             ><BIconClipboardX /> <span>Delete Listing</span>
           </BButton>
         </div>
@@ -202,7 +202,7 @@ button {
 }
 
 .listing {
-  background-color: rgb(238, 238, 238);
+  background-color: #a5d8ff;
 }
 
 .name {

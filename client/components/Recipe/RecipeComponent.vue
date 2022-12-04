@@ -10,7 +10,7 @@
           This recipe uses {{ recipe.usedCount }} ingredients in your stockpile.
         </p>
         <p>{{ recipe.expiringCount }} of these items are expiring this week.</p>
-        <BButton @click="handleClick">
+        <BButton @click="handleClick" variant="info">
           Display additional ingredient information
         </BButton>
       </div>
@@ -39,7 +39,7 @@ export default {
 
 <style scoped>
 .recipe {
-  background-color: rgb(238, 238, 238);
+  background-color: #d3f9d8;
 }
 
 .container {

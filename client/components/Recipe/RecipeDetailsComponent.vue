@@ -31,7 +31,7 @@
       </ol>
     </section>
     <div class="center-button">
-      <BButton :href="recipe.source" target="_blank"
+      <BButton :href="recipe.source" target="_blank" variant="info"
         ><BIconBoxArrowUpRight /> <span>Open Recipe Source</span>
       </BButton>
     </div>
@@ -53,7 +53,7 @@ export default {
 
 <style scoped>
 .recipeDetails {
-  background-color: rgb(250, 250, 250);
+  background-color: #d3f9d8;
 }
 
 div {

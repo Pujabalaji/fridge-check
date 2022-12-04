@@ -11,7 +11,7 @@
         <div class="actions">
           <section>
             <h3>Quick Suggest:</h3>
-            <BButton @click="handleSuggestedClick">
+            <BButton @click="handleSuggestedClick" variant="primary">
               <span>
                 Suggest recipes that use ingredients in my stockpile
               </span>
