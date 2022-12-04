@@ -7,6 +7,7 @@ import RecipePage from './components/Recipe/RecipePage.vue';
 import IngredientDetailsPage from './components/Ingredient/IngredientDetailsPage.vue';
 import RecipeDetailsPage from './components/Recipe/RecipeDetailsPage.vue';
 import StockpilePage from './components/Stockpile/StockpilePage.vue';
+import CommunityPage from './components/Community/CommunityPage.vue';
 import MyListingsPage from './components/Listings/MyListingsPage.vue';
 import AllListingsTempPage from './components/Listings/AllListingsTempPage.vue';
 import NotFound from './NotFound.vue';
@@ -18,6 +19,7 @@ const routes = [
   { path: '/account', name: 'Account', component: AccountPage },
   { path: '/login', name: 'Login', component: LoginPage },
   { path: '/stockpile', name: 'Stockpile', component: StockpilePage },
+  { path: '/community', name: 'Community', component: CommunityPage },
   { path: '/recipe', name: 'Recipe', component: RecipePage },
   { path: '/recipe/ingredients', name: 'Ingredient Details', component: IngredientDetailsPage },
   { path: '/recipe/details', name: 'Recipe Details', component: RecipeDetailsPage },

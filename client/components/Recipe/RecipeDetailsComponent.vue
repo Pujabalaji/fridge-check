@@ -11,7 +11,6 @@
         <p v-if="recipe.cookTime >= 0">
           Cooking Time: {{ recipe.cookTime }} minutes
         </p>
-        <button>Make this recipe and update stockpile</button>
       </div>
     </div>
     <h5>Ingredients:</h5>

@@ -194,13 +194,32 @@ Vercel will automatically deploy the latest version of your code whenever a push
 
 ### `DELETE /api/listings/:listingId` - Delete a user’s listing
 
-### `GET /api/communities/session` - Get all the communities that the current user follows
+### `GET /api/follows/session` - Get all the communities that the current user follows
 
-### `GET /api/communities/listings` - Get all listings in communities that the currently user follows
+**Throws**
 
-### `POST /api/communities` - Follow a community
+- `403` if the user is not logged in
 
-### `DELETE /api/communities/:communityName` - Unfollow a community
+### `GET /api/follows/listings` - Get all listings in communities that the currently user follows
+
+**Throws**
+
+- `403` if the user is not logged in
+
+### `PUT /api/follows/:communityName` - Follow a community
+
+**Throws**
+
+- `403` if the user is not logged in
+- `400` if the user  trying to follow community with invalid name
+- `409` if the user ries to follow a community they already follow
+
+### `DELETE /api/follows/:communityName` - Unfollow a community
+
+**Throws**
+
+- `403` if the user is not logged in
+- `400` if the user  trying to follow community with invalid name
 
 ### `GET /api/recipes/suggested` - Gets all suggested recipes for current user based on their stockpile and dietary restrictions
 

@@ -14,40 +14,51 @@
       </div>
     </div>
     <h5>You have {{ recipe.usedCount }} ingredients:</h5>
-    <IngredientMatchComponent
-      v-for="ingredient in usedIngredients"
-      :key="ingredient._id"
-      :ingredient="ingredient"
-    />
+    <IngredientMatchComponent v-for="ingredient in usedIngredients" :key="ingredient._id" :ingredient="ingredient" />
     <div v-if="missingCount">
       <h5>You need {{ missingCount }} ingredients:</h5>
-      <div
-        v-for="ingredient in missingIngredients"
-        :key="ingredient._id"
-        class="container"
-      >
+      <div v-for="ingredient in missingIngredients" :key="ingredient._id" class="container">
         <p>
           {{ ingredient.amount }} {{ ingredient.unit }} of
           {{ ingredient.name[0] }}
         </p>
-        <button>Show Listings</button>
+        <button @click="fetchListings(ingredient)">Show Listings</button>
+        <div v-if="currentIngredientId == ingredient._id">
+          <p v-if="listings.length">
+            <ListingComponent v-for="listing in listings" :key="listing._id" :listing="listing" />
+          </p>
+          <p v-else>
+            No listings found </p>
+        </div>
       </div>
     </div>
+    <h3> Want to make this recipe? </h3>
+    <p> We suggest removing/adjusting the quantities of the following food items: </p>
+    <FoodComponent v-for="ingredient in usedIngredients" :key="ingredient.stockpileMatches[0]._id"
+      :food="ingredient.stockpileMatches[0]" />
   </article>
 </template>
 
 <script>
 import IngredientMatchComponent from "@/components/Ingredient/IngredientMatchComponent.vue";
+import ListingComponent from "@/components/Listings/ListingComponent.vue";
+import FoodComponent from "@/components/Stockpile/FoodComponent.vue";
 
 export default {
   name: "IngredientDetailsComponent",
-  components: { IngredientMatchComponent },
+  components: { IngredientMatchComponent, ListingComponent, FoodComponent },
   props: {
     // Data from the stored recipe
     recipe: {
       type: Object,
       required: true,
     },
+  },
+  data() {
+    return {
+      listings: [],
+      currentIngredientId: "",
+    };
   },
   computed: {
     usedIngredients() {
@@ -67,6 +78,19 @@ export default {
   methods: {
     showDetails() {
       this.$router.push({ path: "/recipe/details" });
+    },
+    async fetchListings(ingredient) {
+      this.listings = [];
+      let recipeIngredientNames = (ingredient.name !== ingredient.nameClean && ingredient.nameClean) ? [ingredient.name, ingredient.nameClean] : [ingredient.name];
+      this.currentIngredientId = ingredient._id;
+      const listingsResponse = await fetch('/api/follows/listings').then(async r => r.json());
+      const listings = [];
+      for (const listing of listingsResponse) {
+        if (recipeIngredientNames.some((recipeIngredientName) => (recipeIngredientName[0].includes(listing.name.toLowerCase()) || listing.name.toLowerCase().includes(recipeIngredientName[0])))) {
+          listings.push(listing);
+        }
+      }
+      this.listings = listings;
     },
   },
 };

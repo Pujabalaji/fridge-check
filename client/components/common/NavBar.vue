@@ -13,6 +13,12 @@
       <router-link v-if="$store.state.username" to="/stockpile">
         Stockpile
       </router-link>
+      <router-link
+        v-if="$store.state.username"
+        to="/community"
+      >
+        Communities
+      </router-link>
       <router-link v-if="$store.state.username" to="/recipe">
         Suggested Recipes
       </router-link>
