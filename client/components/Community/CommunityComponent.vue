@@ -1,19 +1,14 @@
 
 <template>
     <article>
-         <!-- v-if=this.doesFollow()  -->
-        <div class="oneCommunity">
+        <!-- v-if=this.doesFollow()  -->
+        <BCard class="oneCommunity">
             {{ communityName }}
-            <button v-if="!alreadyFollows" @click="followRequest">Follow</button>
-            <button v-if="alreadyFollows" @click="unfollowRequest">Unfollow</button>
-        </div>
-
+            <BButton v-if="!alreadyFollows" @click="followRequest">Follow</BButton>
+            <BButton v-if="alreadyFollows" @click="unfollowRequest">Unfollow</BButton>
+        </BCard>
         <section class="alerts">
-            <article
-                v-for="(status, alert, index) in alerts"
-                :key="index"
-                :class="status"
-            >
+            <article v-for="(status, alert, index) in alerts" :key="index" :class="status">
                 <p>{{ alert }}</p>
             </article>
         </section>
@@ -21,7 +16,6 @@
 </template>
 
 <script>
-
 export default {
     name: 'CommunityComponent',
     props: {
@@ -67,7 +61,7 @@ export default {
              * @param params.callback - Function to run if the the request succeeds
              */
             const options = {
-                method: params.method, headers: {'Content-Type': 'application/json', 'Cache-Control': 'no-cache'}
+                method: params.method, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-cache' }
             };
             if (params.body) {
                 options.body = params.body;
@@ -76,10 +70,10 @@ export default {
             try {
                 let r = await fetch(url, options);
                 if (!r.ok) {
-                const res = await r.json();
-                throw new Error(res.error);
+                    const res = await r.json();
+                    throw new Error(res.error);
                 }
-                
+
                 // this.$store.commit('refreshFollowees', true);
                 params.callback();
                 const response = await r.json();
@@ -95,12 +89,7 @@ export default {
 
 <style scoped>
 .oneCommunity {
-    border: 1px solid #111;
-    padding: 20px;
-    position: relative;
-    font-family: "Helvetica Neue", Roboto, "Segoe UI", Calibri, sans-serif;
-    font-size: 12px;
-    line-height: 16px;
-    background-color: #eee;
+    background-color: rgb(238, 238, 238);
+    margin-bottom: 0.5em;
 }
 </style>

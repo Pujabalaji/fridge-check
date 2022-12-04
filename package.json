@@ -3,13 +3,15 @@
     "version": "0.1.0",
     "private": true,
     "scripts": {
-        "serve": "cd client && vue-cli-service serve main.ts",
-        "build": "cd client && vue-cli-service build main.ts",
+        "serve": "cd client && vue-cli-service serve main.js",
+        "build": "cd client && vue-cli-service build main.js",
         "lint": "eslint . --fix --ext=.ts,.vue",
         "start": "ts-node api/index.ts",
-        "dev": "nodemon api/index.ts -e js,ts,json"
+        "dev": "nodemon api/index.ts -e js,ts,json --ignore client/"
     },
     "dependencies": {
+        "bootstrap": "^4.5.3",
+        "bootstrap-vue": "^2.23.1",
         "connect-history-api-fallback": "^1.6.0",
         "connect-mongo": "^4.6.0",
         "cookie-parser": "~1.4.3",
@@ -23,7 +25,7 @@
         "mongoose": "^6.6.2",
         "morgan": "~1.10.0",
         "nanoid": "^3.3.4",
-        "vue": "^2.7.13",
+        "vue": "^2.7.14",
         "vue-router": "^3.6.5",
         "vuex": "^3.6.2",
         "vuex-persistedstate": "^4.1.0"
@@ -40,6 +42,8 @@
         "eslint-config-xo-typescript": "^0.53.0",
         "eslint-plugin-vue": "^9.6.0",
         "nodemon": "^2.0.20",
+        "sass": "^1.56.1",
+        "sass-loader": "^10.4.1",
         "ts-node": "^10.6.0",
         "typescript": "^4.6.4",
         "vue-template-compiler": "^2.7.13"

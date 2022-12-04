@@ -1,6 +1,6 @@
 <!-- Reusable component representing recipe details -->
 <template>
-  <article>
+  <BCard class="recipeDetails">
     <div class="container">
       <img :src="recipe.imageUrl" />
       <div class="column">
@@ -27,7 +27,7 @@
       </li>
     </ol>
     <a :href="recipe.source" target="_blank">Open Recipe Source in new tab</a>
-  </article>
+  </BCard>
 </template>
 
 <script>
@@ -44,11 +44,7 @@ export default {
 </script>
 
 <style scoped>
-article {
-  border: 1px solid #111;
-  padding: 20px;
-  position: relative;
-  margin: 0.5em 0em;
+.recipeDetails {
   background-color: #eee;
 }
 
@@ -63,6 +59,7 @@ h4 {
 }
 
 img {
+  margin-bottom: 1em;
   flex: 1;
   object-fit: contain;
   width: 12em;

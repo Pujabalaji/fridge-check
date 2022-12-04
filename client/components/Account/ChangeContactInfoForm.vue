@@ -1,40 +1,45 @@
 <!-- Form for changing contact info (block style) -->
 
 <script>
-import BlockForm from '@/components/common/BlockForm.vue';
+import BlockForm from "@/components/common/BlockForm.vue";
 
 export default {
-  name: 'ChangeContactInfoForm',
+  name: "ChangeContactInfoForm",
   mixins: [BlockForm],
-  methods: {
-    enableSubmit() {
-      let status = "ok";
-      let errorToDisplay = "";
-      const content = this.fields[0].value;
-      const emailRegex = /^\S+$/;
-      if (!emailRegex.test(content)) {
-        errorToDisplay = "Email must be a nonempty string.";
-        status = "error";
-      }
-      return { status: status, errorToDisplay: errorToDisplay };
-    },
-  },
   data() {
     return {
-      url: '/api/users',
-      method: 'PATCH',
+      url: "/api/users",
+      method: "PATCH",
       hasBody: true,
       setUsername: true,
       fields: [
-        { id: 'email', label: 'Email', value: this.$store.state.user?.email ?? '' }
+        {
+          id: "email",
+          label: "Email",
+          value: this.$store.state.user?.email ?? "",
+          type: "email",
+          submitStatus: this.isValidEmail,
+        },
       ],
-      title: 'Change email',
+      title: "Change email",
       callback: () => {
-        const message = 'Successfully changed email!';
-        this.$set(this.alerts, message, 'success');
+        const message = "Successfully changed email!";
+        this.$set(this.alerts, message, "success");
         setTimeout(() => this.$delete(this.alerts, message), 3000);
-      }
+      },
     };
-  }
+  },
+  methods: {
+    isValidEmail(value) {
+      const emailRegex = /^\S+$/;
+      if (!emailRegex.test(value)) {
+        return {
+          status: "error",
+          errorToDisplay: "Email must be a nonempty alphanumeric string.",
+        };
+      }
+      return { status: "ok", errorToDisplay: "" };
+    },
+  },
 };
 </script>

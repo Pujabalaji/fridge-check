@@ -2,31 +2,39 @@
 
 <template>
   <main>
-    <div v-if="$store.state.username">
-      <h2>Suggested Recipes</h2>
+    <section v-if="$store.state.username">
+      <header>
+        <h2>Suggested Recipes</h2>
+      </header> <br>
       <div class="container">
         <div class="actions">
           <section>
             <h3>Quick Suggest:</h3>
-            <button @click="handleSuggestedClick">
+            <BButton @click="handleSuggestedClick">
               Suggest any recipe that uses ingredients in my stockpile
-            </button>
+            </BButton>
           </section>
-          <form @submit.prevent="submit">
-            <h3>Search Recipes by Name:</h3>
-            <input
-              type="text"
-              v-model="searchText"
-              placeholder="Search"
-              required
-            />
-            <button type="submit">Search</button>
-          </form>
+          <BForm @submit.prevent="submit">
+            <BFormGroup
+              id="search-recipe"
+              label="Search Recipes by Name"
+              label-for="search-recipe"
+            >
+              <BFormInput
+                id="search-recipe"
+                v-model="searchText"
+                type="text"
+                placeholder="Search"
+                required
+              />
+            </BFormGroup>
+            <BButton type="submit">Search</BButton>
+          </BForm>
         </div>
         <div class="recipes">
           <section v-if="$store.state.displaySuggested">
             <h3>Showing recipes using ingredients you have:</h3>
-            <div v-if="$store.state.recipes.length">
+            <div v-if="$store.state.recipes.length" class="recipe-container">
               <RecipeComponent
                 v-for="recipe in $store.state.recipes"
                 :key="recipe._id"
@@ -38,7 +46,7 @@
           </section>
           <section v-else-if="$store.state.displayByName">
             <h3>Showing recipes for "{{ $store.state.lastSearched }}":</h3>
-            <div v-if="$store.state.recipes.length">
+            <div v-if="$store.state.recipes.length" class="recipe-container">
               <RecipeComponent
                 v-for="recipe in $store.state.recipes"
                 :key="recipe._id"
@@ -50,7 +58,7 @@
           </section>
         </div>
       </div>
-    </div>
+    </section>
     <div v-else>
       <h2>
         <router-link to="/login">Sign in</router-link>
@@ -77,18 +85,18 @@ export default {
   },
   methods: {
     async handleSuggestedClick() {
-      this.$store.commit('updateShowSuggested', true);
-      this.$store.commit('updateShowByName', false);
+      this.$store.commit("updateShowSuggested", true);
+      this.$store.commit("updateShowByName", false);
       if (this.$store.state.username) {
         await this.fetchSuggestedRecipes();
       }
     },
     async submit() {
       this.loadingNameSearch = true;
-      this.$store.commit('updateShowByName', true);
-      this.$store.commit('updateShowSuggested', false);
+      this.$store.commit("updateShowByName", true);
+      this.$store.commit("updateShowSuggested", false);
       if (this.$store.state.lastSearched.length === 0) {
-        this.$store.commit('updateLastSearched', this.searchText);
+        this.$store.commit("updateLastSearched", this.searchText);
       }
 
       const url = `/api/recipes?recipeName=${this.searchText}`;
@@ -100,13 +108,13 @@ export default {
         }
 
         this.nameRecipes = res;
-        this.$store.commit('updateRecipes', res);
+        this.$store.commit("updateRecipes", res);
       } catch (e) {
         this.$set(this.alerts, e, "error");
         setTimeout(() => this.$delete(this.alerts, e), 3000);
       }
-      this.$store.commit('updateLastSearched', this.searchText);
-      this.searchText = '';
+      this.$store.commit("updateLastSearched", this.searchText);
+      this.searchText = "";
       this.loadingNameSearch = false;
     },
     async fetchSuggestedRecipes() {
@@ -118,7 +126,7 @@ export default {
         if (!r.ok) {
           throw new Error(res.error);
         }
-        this.$store.commit('updateRecipes', res);
+        this.$store.commit("updateRecipes", res);
       } catch (e) {
         this.$set(this.alerts, e, "error");
         setTimeout(() => this.$delete(this.alerts, e), 3000);
@@ -142,5 +150,15 @@ export default {
 
 .actions {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
 }
+
+.recipe-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+
 </style>

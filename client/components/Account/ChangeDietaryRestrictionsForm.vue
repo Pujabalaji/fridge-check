@@ -1,32 +1,32 @@
 <!-- Form for changing dietary restrictions (block style) -->
 <template>
-  <form @submit.prevent="submit">
+  <BForm @submit.prevent="submit">
     <h3>Change dietary restrictions</h3>
     <article>
-      <div>
-        Other dietary restrictions:
-        <span>
-          <input type="checkbox" id="vegetarian" v-model="vegetarianChecked" />
-          <label for="vegetarian">Vegetarian </label>
-        </span><span>
-          <input type="checkbox" id="vegan" v-model="veganChecked" />
-          <label for="vegan">Vegan </label>
-        </span>
-        <span>
-          <input type="checkbox" id="pescetarian" v-model="pescetarianChecked" />
-          <label for="pescetarian">Pescatarian </label>
-        </span>
-      </div>
+      <BFormGroup
+        id="other"
+        label="Other dietary restrictions"
+        label-for="other"
+      >
+        <BFormCheckboxGroup id="other" v-model="selectedOtherRestrictions">
+          <BFormCheckbox value="Vegetarian">Vegetarian</BFormCheckbox>
+          <BFormCheckbox value="Vegan">Vegan</BFormCheckbox>
+          <BFormCheckbox value="Pescetarian">Pescatarian</BFormCheckbox>
+        </BFormCheckboxGroup>
+      </BFormGroup>
     </article>
-    <button type="submit">
+    <BButton type="submit" variant="primary" block>
       Change dietary restrictions
-    </button>
-    <section class="alerts">
-      <article v-for="(status, alert, index) in alerts" :key="index" :class="status">
-        <p>{{ alert }}</p>
-      </article>
-    </section>
-  </form>
+    </BButton>
+    <BAlert
+      v-for="(status, alert, index) in alerts"
+      :key="index"
+      :variant="status === 'error' ? 'danger' : 'success'"
+      show
+    >
+      {{ alert }}
+    </BAlert>
+  </BForm>
 </template>
   
 <script>
@@ -34,36 +34,40 @@ export default {
   name: "ChangeDietaryRestrictionsForm",
   data() {
     return {
-      vegetarianChecked: this.$store.state.user?.otherDietaryRestrictions.includes("Vegetarian") ?? false,
-      veganChecked: this.$store.state.user?.otherDietaryRestrictions.includes("Vegan") ?? false,
-      pescetarianChecked: this.$store.state.user?.otherDietaryRestrictions.includes("Pescatarian") ?? false,
+      selectedOtherRestrictions:
+        this.$store.state.user?.otherDietaryRestrictions,
       alerts: {},
-      callback: null
-    }
+      callback: null,
+    };
   },
   methods: {
     async submit() {
-      let dietaryRestrictionsArray = [];
-      if (this.vegetarianChecked) {
-        dietaryRestrictionsArray.push('Vegetarian');
-      } if (this.veganChecked) {
-        dietaryRestrictionsArray.push("Vegan");
-      } if (this.pescetarianChecked) {
-        dietaryRestrictionsArray.push("Pescatarian");
-      }
       const options = {
-        method: 'PATCH',
+        method: "PATCH",
         headers: { "Content-Type": "application/json" },
         credentials: "same-origin", // Sends express-session credentials with request
-        body: JSON.stringify({ otherDietaryRestrictions: dietaryRestrictionsArray }),
+        body: JSON.stringify({
+          otherDietaryRestrictions: this.selectedOtherRestrictions,
+        }),
         callback: () => {
-          this.$set(this.alerts, "Successfully updated dietary restrictions", "success");
-          setTimeout(() => this.$delete(this.alerts, "Successfully updated dietary restrictions"), 3000);
+          this.$set(
+            this.alerts,
+            "Successfully updated dietary restrictions",
+            "success"
+          );
+          setTimeout(
+            () =>
+              this.$delete(
+                this.alerts,
+                "Successfully updated dietary restrictions"
+              ),
+            3000
+          );
         },
       };
 
       try {
-        const r = await fetch('/api/users', options);
+        const r = await fetch("/api/users", options);
         if (!r.ok) {
           const res = await r.json();
           throw new Error(res.error);
@@ -79,39 +83,3 @@ export default {
   },
 };
 </script>
-  
-<style scoped>
-form {
-  padding: 0.5rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  margin-bottom: 14px;
-  position: relative;
-  background-color: rgb(238, 238, 238);
-  box-shadow: 0 12px 12px rgba(0, 0, 0, 0.2);
-}
-
-article>div {
-  display: flex;
-  flex-direction: column;
-}
-
-form>article p {
-  margin: 0;
-}
-
-form h3,
-form>* {
-  margin: 0.3em 0;
-}
-
-form h3 {
-  margin-top: 0;
-}
-
-textarea {
-  font-family: inherit;
-  font-size: inherit;
-}
-</style>

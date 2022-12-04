@@ -3,16 +3,10 @@
 
 <template>
   <main>
-    <section>
-      <header>
-        <h2>Have an account? Log in: </h2>
-      </header>
+    <section class="column">
       <LoginForm />
     </section>
-    <section>
-      <header>
-        <h2>New to FridgeCheck? Create an account: </h2>
-      </header>
+    <section class="column">
       <RegisterForm />
     </section>
   </main>
@@ -30,3 +24,15 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+main {
+  display: flex;
+  gap: 5em;
+}
+
+.column {
+  flex: 1;
+}
+
+</style>

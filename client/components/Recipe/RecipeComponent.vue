@@ -1,7 +1,7 @@
 <!-- Reusable component representing a single recipe and its actions -->
 
 <template>
-  <article class="recipe">
+  <BCard class="recipe">
     <div class="container">
       <img :src="recipe.imageUrl" />
       <div class="column">
@@ -10,12 +10,12 @@
           This recipe uses {{ recipe.usedCount }} ingredients in your stockpile.
         </p>
         <p>{{ recipe.expiringCount }} of these items are expiring this week.</p>
-        <button @click="handleClick">
+        <BButton @click="handleClick">
           Display additional ingredient information
-        </button>
+        </BButton>
       </div>
     </div>
-  </article>
+  </BCard>
 </template>
 
 <script>
@@ -39,21 +39,12 @@ export default {
 
 <style scoped>
 .recipe {
-  border: 1px solid #111;
-  padding: 20px;
-  position: relative;
-  margin: 0.5em 0em;
-  background-color: #eee;
+  background-color: rgb(238, 238, 238);
 }
 
 .container {
   display: flex;
-  align-items: center;
   gap: 1em;
-}
-
-h4 {
-  margin-top: 0.25em;
 }
 
 img {
