@@ -7,7 +7,7 @@
       {{ ingredient.name[0] }} has
       {{ ingredient.stockpileMatches.length }} stockpile matches.
     </p>
-    <FoodComponent v-if="ingredient.stockpileMatches.length" :food="ingredient.stockpileMatches[0]" />
+    <FoodComponent v-if="ingredient.stockpileMatches.length" :food="ingredient.stockpileMatches[0]" class="match" />
     <BButton v-if="ingredient.stockpileMatches.length > 1">Show More</BButton>
   </div>
 </template>
@@ -26,3 +26,11 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+
+.match {
+  margin-bottom: 0.75em;
+}
+
+</style>
