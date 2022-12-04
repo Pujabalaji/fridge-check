@@ -24,21 +24,29 @@
         </p>
         <button @click="fetchListings(ingredient)">Show Listings</button>
         <div v-if="currentIngredientId == ingredient._id">
-          <ListingComponent v-if="listings.length" v-for="listing in listings" :key="listing._id" :listing="listing" />
-          <p v-else> No listings found </p>
+          <p v-if="listings.length">
+            <ListingComponent v-for="listing in listings" :key="listing._id" :listing="listing" />
+          </p>
+          <p v-else>
+            No listings found </p>
         </div>
       </div>
     </div>
+    <h3> Want to make this recipe? </h3>
+    <p> We suggest removing/adjusting the quantities of the following food items: </p>
+    <FoodComponent v-for="ingredient in usedIngredients" :key="ingredient.stockpileMatches[0]._id"
+      :food="ingredient.stockpileMatches[0]" />
   </article>
 </template>
 
 <script>
 import IngredientMatchComponent from "@/components/Ingredient/IngredientMatchComponent.vue";
 import ListingComponent from "@/components/Listings/ListingComponent.vue";
+import FoodComponent from "@/components/Stockpile/FoodComponent.vue";
 
 export default {
   name: "IngredientDetailsComponent",
-  components: { IngredientMatchComponent, ListingComponent },
+  components: { IngredientMatchComponent, ListingComponent, FoodComponent },
   props: {
     // Data from the stored recipe
     recipe: {
