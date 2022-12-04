@@ -4,7 +4,7 @@
     <main v-if="$store.state.username">
         <section>
             <header>
-                <h2>Communities</h2>
+                <h2>Communities</h2> <br>
                 <p>Follow communities to indicate you are willing to pickup items from a given location.
                     <br>
                     Listings you post will only be visible to those who have joined your home community as set in your

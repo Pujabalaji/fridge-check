@@ -5,7 +5,7 @@
     <section v-if="$store.state.username">
       <header>
         <h2>Suggested Recipes</h2>
-      </header>
+      </header> <br>
       <div class="container">
         <div class="actions">
           <section>

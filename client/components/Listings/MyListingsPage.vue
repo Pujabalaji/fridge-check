@@ -5,7 +5,7 @@
     <section>
       <header>
         <h2>My Listings</h2>
-      </header>
+      </header><br>
       <div v-if="$store.state.username">
         <section v-if="$store.state.listings.length" class="listing-container">
           <ListingComponent
