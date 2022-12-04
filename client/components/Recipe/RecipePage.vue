@@ -28,7 +28,7 @@
                 required
               />
             </BFormGroup>
-            <BButton type="submit">Search</BButton>
+            <BButton type="submit" variant="primary">Search</BButton>
           </BForm>
         </div>
         <div class="recipes">
