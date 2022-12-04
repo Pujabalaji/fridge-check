@@ -209,3 +209,9 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+article {
+  margin-bottom: 1em;
+}
+</style>

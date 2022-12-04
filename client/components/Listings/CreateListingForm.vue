@@ -57,10 +57,12 @@
         </BFormInvalidFeedback>
       </BFormGroup>
     </article>
-    <BButton type="submit" variant="primary" :disabled="!enableSubmit">
-      Create listing
-    </BButton>
-    <BButton type="reset" variant="danger">Cancel</BButton>
+    <div class="container">
+      <BButton type="submit" variant="primary" :disabled="!enableSubmit">
+        Create listing
+      </BButton>
+      <BButton type="reset" variant="danger">Cancel</BButton>
+    </div>
     <BAlert
       v-for="(status, alert, index) in alerts"
       :key="index"
@@ -202,3 +204,16 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.container {
+  display: flex;
+  gap: 1em;
+  padding-right: 0em;
+  padding-left: 0em;
+}
+
+.container > * {
+  flex: 1;
+}
+</style>
