@@ -20,6 +20,11 @@ const store = new Vuex.Store({
     listings: [],
     foodIdsWithListings: [],
     allListingsTemp: [],
+    selectedRecipe: null, // recipe user has selected to see further details from
+    recipes: [],
+    displaySuggested: false,
+    displayByName: false,
+    lastSearched: "",
   },
   mutations: {
     alert(state, payload) {
@@ -44,6 +49,13 @@ const store = new Vuex.Store({
        * @param user - new user to set
        */
       state.user = user;
+    },
+    setSelectedRecipe(state, recipe) {
+      /**
+       * Update the stored selected recipe to the specified one.
+       * @param recipe - new recipe to display details
+       */
+      state.selectedRecipe = recipe;
     },
     updateStockpile(state, stockpile) {
       /**
@@ -81,6 +93,21 @@ const store = new Vuex.Store({
     },
     clearCurrentFood(state) {
       state.currentFood = null;
+    },
+    updateRecipes(state, recipes) {
+      state.recipes = recipes;
+    },
+    clearRecipes(state) {
+      state.recipes = [];
+    },
+    updateShowSuggested(state, on) {
+      state.displaySuggested = on;
+    },
+    updateShowByName(state, on) {
+      state.displayByName = on;
+    },
+    updateLastSearched(state, text) {
+      state.lastSearched = text;
     }
   },
   actions: {

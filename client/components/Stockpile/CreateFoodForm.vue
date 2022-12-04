@@ -44,11 +44,7 @@
           Quantity must be an integer greater than 0
         </BFormInvalidFeedback>
         <BFormGroup id="unit" label="Units" label-for="unit">
-          <BFormSelect
-            id="unit"
-            v-model="unit"
-            :options="unitOptions"
-          />
+          <BFormSelect id="unit" v-model="unit" :options="unitOptions" />
         </BFormGroup>
         <BFormCheckbox
           id="prepared"
@@ -172,6 +168,29 @@ export default {
           );
         },
       };
+
+      try {
+        const r = await fetch("/api/foods", options);
+        if (!r.ok) {
+          const res = await r.json();
+          throw new Error(res.error);
+        }
+        const res = await r.json();
+        this.$store.dispatch("refreshStockpile");
+        options.callback();
+        this.name = "";
+        this.quantity = "";
+        this.expiration = "";
+        this.unit = "";
+        this.prepared = false;
+        this.$store.commit("clearRecipes");
+        this.$store.commit("updateShowSuggested", false);
+        this.$store.commit("updateShowByName", false);
+      } catch (e) {
+        console.log(e);
+        this.$set(this.alerts, e, "error");
+        setTimeout(() => this.$delete(this.alerts, e), 3000);
+      }
 
       try {
         const r = await fetch("/api/foods", options);
