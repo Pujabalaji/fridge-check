@@ -56,7 +56,7 @@ export default {
       homeCommunity: this.$store.state.user.homeCommunity ?? "",
       communityOptions: [
         { value: "Baker", text: "Baker" },
-        { value: "Burton Connor", text: "Burton Connor" },
+        { value: "Burton Conner", text: "Burton Conner" },
         { value: "East Campus", text: "East Campus" },
         { value: "MacGregor", text: "MacGregor" },
         { value: "Maseeh", text: "Maseeh" },

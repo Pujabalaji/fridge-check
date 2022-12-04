@@ -63,6 +63,16 @@ class UserCollection {
   }
 
   /**
+   * Find a user by username (case insensitive).
+   *
+   * @param {string[]} communities - The communities to search for users
+   * @return {Promise<Array<HydratedDocument<User>>>} - The users with the given home communities
+   */
+   static async findAllByHomeCommunities(communities: Array<string>): Promise<Array<HydratedDocument<User>>> {
+    return UserModel.find({ "homeCommunity": { "$in": communities } });
+  }
+
+  /**
    * Update user's information
    *
    * @param {string} userId - The userId of the user to update

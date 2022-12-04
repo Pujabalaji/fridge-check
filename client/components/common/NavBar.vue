@@ -43,8 +43,9 @@ export default {
         {to: '/', name: 'Home', visible: true},
         {to: '/listings', name: 'My Listings', visible: this.$store.state.username ? true : false},
         {to: '/recipe', name: 'Suggested Recipes', visible: this.$store.state.username ? true : false},
+        {to: '/community', name: 'Communities', visible: this.$store.state.username ? true: false},
         {to: '/account', name: 'Account', visible: this.$store.state.username ? true : false},
-        {to: '/login', name: 'Login', visible: this.$store.state.username ? false : true}
+        {to: '/login', name: 'Login', visible: this.$store.state.username ? false : true},
       ];
     }
   }
