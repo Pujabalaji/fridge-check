@@ -5,11 +5,8 @@
         <section>
             <header>
                 <h2>Communities</h2> <br>
-                <p>Follow communities to indicate you are willing to pickup items from a given location.
-                    <br>
-                    Listings you post will only be visible to those who have joined your home community as set in your
-                    Account page.
-                </p>
+                <p class="explanation">Follow communities to indicate you are willing to pickup items from a given location. When you search recipes and have missing ingredients, you will be able to view listings posted by people who live in the communities you follow.</p>
+                <p class = "explanation">Listings you post will only be visible to those who have joined your home community as set in your Account page.</p>
             </header>
         </section>
 
@@ -99,3 +96,11 @@ export default {
     }
 };
 </script>
+
+
+<style scoped>
+.explanation {
+  margin-bottom: 1em;
+}
+
+</style>
