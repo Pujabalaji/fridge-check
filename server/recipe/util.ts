@@ -44,7 +44,7 @@ const constructSuggestedRecipeResponse = (stockpile: Array<HydratedDocument<Food
 
   // Create recipe ingredients with match to stockpile
   let week = new Date();
-  week.setHours(0);
+  week.setHours(0, 0, 0, 0);
   week.setDate(week.getDate() + 7);
   let expiringCount = 0;
   const ingredients: RecipeIngredient[] = [];
@@ -101,7 +101,7 @@ const constructSuggestedRecipeResponse = (stockpile: Array<HydratedDocument<Food
 const constructQueryRecipeResponse = (stockpile: Array<HydratedDocument<Food>>, recipe: Record<any, any>): RecipeResponse => {
   // Create recipe ingredients
   let week = new Date();
-  week.setHours(0);
+  week.setHours(0, 0, 0, 0);
   week.setDate(week.getDate() + 7);
   let expiringCount = 0;
   let usedCount = 0;

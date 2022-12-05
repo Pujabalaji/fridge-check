@@ -17,6 +17,7 @@ class FoodCollection {
     const date = new Date();
     const [year, month, day] = expiration.split('-');
     const expirationDate = new Date(+year, +month - 1, +day);
+    expirationDate.setHours(0, 0, 0, 0);
     const food = new FoodModel({
       userId,
       dateCreated: date,
