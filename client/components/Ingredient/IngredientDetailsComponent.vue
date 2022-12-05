@@ -53,11 +53,13 @@
       We suggest removing/adjusting the quantities of the following food items:
     </p>
     <div class="container-food">
+      <div v-for="(ingredient, index) in usedIngredients" :key="index">
       <FoodComponent
-        v-for="ingredient in usedIngredients"
+        v-if="ingredient.stockpileMatches.length"
         :key="ingredient.stockpileMatches[0]._id"
         :food="ingredient.stockpileMatches[0]"
       />
+      </div>
     </div>
   </BCard>
 </template>
@@ -95,7 +97,7 @@ export default {
       );
     },
     missingCount() {
-      return this.recipe.ingredients.length - this.recipe.usedCount;
+      return this.missingIngredients.length;
     },
   },
   methods: {

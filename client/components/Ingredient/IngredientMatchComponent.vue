@@ -4,13 +4,13 @@
   <div>
     <p>
       {{ ingredient.amount }} {{ ingredient.unit }} of
-      {{ ingredient.name[0] }} has
-      {{ ingredient.stockpileMatches.length }} stockpile matches.
+      {{ ingredient.name[0] }}
     </p>
     <FoodComponent 
       v-if="ingredient.stockpileMatches.length" 
       :food="ingredient.stockpileMatches[0]"
     />
+    <BButton v-else variant="info" @click="$router.push({ name: 'Stockpile' })"><span>Search in Stockpile</span></BButton>
   </div>
 </template>
 
@@ -33,6 +33,12 @@ export default {
 
 .match {
   margin-bottom: 0.75em;
+}
+
+button {
+  display: flex;
+  gap: 0.25em;
+  align-items: center;
 }
 
 </style>
