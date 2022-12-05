@@ -40,7 +40,6 @@ router.beforeEach((to, from, next) => {
     }
 
     if (!router.app.$store.state.username) {
-      console.log('here');
       next({ name: 'Login' }); // Go to Login page if user navigates to Account and are not signed in
       return;
     }

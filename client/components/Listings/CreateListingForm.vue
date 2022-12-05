@@ -166,7 +166,6 @@ export default {
         this.expiration = "";
         this.price = "";
       } catch (e) {
-        console.log(e);
         this.$set(this.alerts, e, "error");
         setTimeout(() => this.$delete(this.alerts, e), 3000);
       }

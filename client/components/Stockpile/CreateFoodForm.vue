@@ -160,7 +160,6 @@ export default {
         this.$store.commit("updateShowSuggested", false);
         this.$store.commit("updateShowByName", false);
       } catch (e) {
-        console.log(e);
         this.$set(this.alerts, e, "error");
         setTimeout(() => this.$delete(this.alerts, e), 3000);
       }
