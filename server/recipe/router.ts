@@ -26,6 +26,7 @@ router.get(
   ],
   async (req: Request, res: Response) => {
     const today = new Date();
+    today.setHours(0);
     const userId = (req.session.userId as string) ?? '';
     const params: Record<string, string> = {
       addRecipeInformation: 'true',

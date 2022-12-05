@@ -44,6 +44,7 @@ const constructSuggestedRecipeResponse = (stockpile: Array<HydratedDocument<Food
 
   // Create recipe ingredients with match to stockpile
   let week = new Date();
+  week.setHours(0);
   week.setDate(week.getDate() + 7);
   let expiringCount = 0;
   const ingredients: RecipeIngredient[] = [];
