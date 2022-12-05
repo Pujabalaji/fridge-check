@@ -86,6 +86,7 @@ router.get(
   ],
   async (req: Request, res: Response) => {
     const today = new Date();
+    today.setHours(0);
     const params: Record<string, string> = {
       query: (req.query.recipeName as string),
       addRecipeInformation: 'true',
