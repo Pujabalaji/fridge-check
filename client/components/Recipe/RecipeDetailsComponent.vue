@@ -11,6 +11,9 @@
         <p v-if="recipe.cookTime >= 0">
           Cooking Time: {{ recipe.cookTime }} minutes
         </p>
+        <BButton :href="recipe.source" target="_blank" variant="info"
+          ><BIconBoxArrowUpRight /> <span>Open Recipe Source</span>
+        </BButton>
       </div>
     </div>
     <section>
@@ -30,11 +33,6 @@
         </li>
       </ol>
     </section>
-    <div class="center-button">
-      <BButton :href="recipe.source" target="_blank" variant="info"
-        ><BIconBoxArrowUpRight /> <span>Open Recipe Source</span>
-      </BButton>
-    </div>
   </BCard>
 </template>
 

@@ -72,6 +72,7 @@ const store = new Vuex.Store({
       state.foods = stockpile;
 
       const date = new Date();
+      date.setHours(0);
       var week = new Date();
       week.setDate(date.getDate() + 7);
 

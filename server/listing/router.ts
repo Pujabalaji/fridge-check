@@ -124,6 +124,7 @@ router.put(
         for (const listing of listings) {
             const foodDate = new Date(listing.foodId.expiration);
             const today = new Date();
+            today.setHours(0);
             if (foodDate < today) {
                 await ListingCollection.deleteOne(listing._id);
             }
