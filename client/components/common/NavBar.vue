@@ -4,8 +4,11 @@
 
 <template>
   <div>
-    <BNavbar type="dark" variant="dark">
-      <BNavbarBrand>FridgeCheck</BNavbarBrand>
+    <BNavbar type="dark">
+      <BNavbarBrand>
+        <img src="../../public/filled_fridge_logo.svg" width="40" height="40" class="logo" alt="🗄️✅">
+        FridgeCheck
+      </BNavbarBrand>
       <BNavbarToggle target="nav-collapse" />
       <BCollapse id="nav-collapse" is-nav>
         <BNavbarNav class="ml-auto">
@@ -36,3 +39,14 @@ export default {
 };
 </script>
 
+
+<style scoped>
+.logo {
+  filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(24deg) brightness(103%) contrast(103%);
+}
+
+.navbar {
+  background-color: #1971c2;
+}
+
+</style>

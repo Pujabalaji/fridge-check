@@ -66,13 +66,10 @@ main {
 
 form {
   padding: 0.5em;
-  background-color: rgb(238, 238, 238);
+  background-color: #a5d8ff;
   box-shadow: 0 12px 12px rgba(0, 0, 0, 0.2);
   margin-bottom: 1.5em;
-}
-
-card {
-  background-color: rgb(238, 238, 238);
+  border-radius: 5px;
 }
 
 button + .alert {

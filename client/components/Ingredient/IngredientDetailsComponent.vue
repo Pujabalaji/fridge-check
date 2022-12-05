@@ -10,34 +10,55 @@
           This recipe uses {{ recipe.usedCount }} ingredients in your stockpile.
         </p>
         <p>{{ recipe.expiringCount }} of these items are expiring this week.</p>
-        <BButton @click="showDetails">Show recipe details</BButton>
+        <BButton @click="showDetails" variant="info">Show recipe details</BButton>
       </div>
     </div>
-    <h5>You have {{ recipe.usedCount }} ingredients:</h5>
-    <IngredientMatchComponent v-for="ingredient in usedIngredients" :key="ingredient._id" :ingredient="ingredient" class="ingredient"/>
-    <br>
-    <div v-if="missingCount">
+    <section>
+      <h5>You have {{ recipe.usedCount }} ingredients:</h5>
+      <IngredientMatchComponent
+        v-for="ingredient in usedIngredients"
+        :key="ingredient._id"
+        :ingredient="ingredient"
+        class="ingredient"
+      />
+    </section>
+    <section v-if="missingCount">
       <h5>You need {{ missingCount }} ingredients:</h5>
-      <div v-for="ingredient in missingIngredients" :key="ingredient._id" class="containeringredient">
-        <p>
+      <div
+        v-for="ingredient in missingIngredients"
+        :key="ingredient._id"
+        class="container-ingredient"
+      >
+        <p class="no-margin">
           {{ ingredient.amount }} {{ ingredient.unit }} of
           {{ ingredient.name[0] }}
         </p>
-        <BButton @click="fetchListings(ingredient)">Show Listings</BButton>
+        <BButton @click="fetchListings(ingredient)" variant="info"
+          ><BIconClipboard /> <span>View Listings</span></BButton
+        >
         <div v-if="currentIngredientId == ingredient._id">
-          <p v-if="listings.length">
-            <ListingComponent v-for="listing in listings" :key="listing._id" :listing="listing" />
-          </p>
-          <p v-else>
-            No listings found </p>
+          <div v-if="listings.length">
+            <ListingComponent
+              v-for="listing in listings"
+              :key="listing._id"
+              :listing="listing"
+            />
+          </div>
+          <p v-else class="no-margin">No listings found</p>
         </div>
       </div>
+    </section>
+    <h3>Want to make this recipe?</h3>
+    <p>
+      We suggest removing/adjusting the quantities of the following food items:
+    </p>
+    <div class="container-food">
+      <FoodComponent
+        v-for="ingredient in usedIngredients"
+        :key="ingredient.stockpileMatches[0]._id"
+        :food="ingredient.stockpileMatches[0]"
+      />
     </div>
-    <br>
-    <h3> Want to make this recipe? </h3>
-    <p> We suggest removing/adjusting the quantities of the following food items: </p>
-    <FoodComponent v-for="ingredient in usedIngredients" :key="ingredient.stockpileMatches[0]._id"
-      :food="ingredient.stockpileMatches[0]" />
   </BCard>
 </template>
 
@@ -83,12 +104,23 @@ export default {
     },
     async fetchListings(ingredient) {
       this.listings = [];
-      let recipeIngredientNames = (ingredient.name !== ingredient.nameClean && ingredient.nameClean) ? [ingredient.name, ingredient.nameClean] : [ingredient.name];
+      let recipeIngredientNames =
+        ingredient.name !== ingredient.nameClean && ingredient.nameClean
+          ? [ingredient.name, ingredient.nameClean]
+          : [ingredient.name];
       this.currentIngredientId = ingredient._id;
-      const listingsResponse = await fetch('/api/follows/listings').then(async r => r.json());
+      const listingsResponse = await fetch("/api/follows/listings").then(
+        async (r) => r.json()
+      );
       const listings = [];
       for (const listing of listingsResponse) {
-        if (recipeIngredientNames.some((recipeIngredientName) => (recipeIngredientName[0].includes(listing.name.toLowerCase()) || listing.name.toLowerCase().includes(recipeIngredientName[0])))) {
+        if (
+          recipeIngredientNames.some(
+            (recipeIngredientName) =>
+              recipeIngredientName[0].includes(listing.name.toLowerCase()) ||
+              listing.name.toLowerCase().includes(recipeIngredientName[0])
+          )
+        ) {
           listings.push(listing);
         }
       }
@@ -100,30 +132,44 @@ export default {
 
 <style scoped>
 .ingredientDetails {
-  background-color: rgb(250, 250, 250);
+  background-color: #e7f5ff;
 }
 
 .ingredient {
   margin-bottom: 1em;
 }
 
+div {
+  margin-left: 0em;
+  margin-right: 0em;
+}
+
 .container {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 1em;
 }
 
-.containeringredient {
+.container-ingredient {
   padding-left: 5px;
   display: flex;
-  align-items: left;
+  align-items: center;
   gap: 1em;
   margin-bottom: 0.5em;
 }
 
+.container-food {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
 
-h4 {
-  margin-top: 0.25em;
+.no-margin {
+  margin-bottom: 0em;
+}
+
+h3 {
+  margin-top: 0.5em;
 }
 
 img {
@@ -135,5 +181,12 @@ img {
 
 .column {
   flex: 3;
+  margin-top: 1em;
+}
+
+button {
+  display: flex;
+  gap: 0.25em;
+  align-items: center;
 }
 </style>
