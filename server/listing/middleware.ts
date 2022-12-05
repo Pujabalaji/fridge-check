@@ -72,6 +72,17 @@ const isQuantityValid = async (req: Request, res: Response, next: NextFunction) 
     next();
 };
 
+const isQuantityValidNew = async (req: Request, res: Response, next: NextFunction) => {
+    const food = await FoodCollection.findOne(req.params.foodId);
+    if (!(food.quantity >= Number(req.body.quantity))) {
+        res.status(403).json({
+            error: 'You cannot list a higher quantity of a food than you have in your stockpile.'
+        });
+        return;
+    }
+    next();
+};
+
 const isValidListingModifier = async (req: Request, res: Response, next: NextFunction) => {
     const listing = await ListingCollection.findOne(req.params.listingId);
     const userId = listing.userId._id;
@@ -92,4 +103,5 @@ export {
     isFoodExists,
     isListingExistsFood,
     isQuantityValid,
+    isQuantityValidNew
 };

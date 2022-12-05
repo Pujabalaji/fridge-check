@@ -96,7 +96,7 @@ router.put(
         userValidator.isUserLoggedIn,
         listingValidator.isFoodExists,
         listingValidator.isValidFoodQuantity,
-        listingValidator.isQuantityValid
+        listingValidator.isQuantityValidNew
     ],
     async (req: Request, res: Response) => {
         const userId = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
