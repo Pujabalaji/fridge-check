@@ -40,24 +40,29 @@
       <header v-else>
         <h3 class="name">
           {{ listing.name }} (x
-          <textarea
+          <BFormInput
             v-if="editing"
             class="quantity"
-            :value="draft.quantity"
-            @input="draft.quantity = $event.target.value"
+            type="number"
+            min="0"
+            :max="listing.foodId.quantity"
+            step="0.01"
+            v-model="draft.quantity"
+            :state="isValidQuantity"
           />
           {{ listing.unit }}) Price:
-          <textarea
+          <BFormInput
             v-if="editing"
             class="price"
-            :value="draft.price"
-            @input="draft.price = $event.target.value"
+            type="text"
+            v-model="draft.price"
+            :state="isValidPrice"
           />
           Expires on: {{ listing.expiration }}
         </h3>
 
         <div class="actions">
-          <BButton v-if="editing" @click="submitEdit" variant="info"
+          <BButton v-if="editing" @click="submitEdit" variant="info" :disabled="!shouldSubmit"
             ><BIconCheck2 /> <span>Save changes</span>
           </BButton>
           <BButton v-if="editing" @click="stopEditing" variant="info"
@@ -67,6 +72,8 @@
             ><BIconClipboardX /> <span>Delete Listing</span>
           </BButton>
         </div>
+        <p v-if="!isValidQuantity" class="feedback">Quantity must be greater than 0 and less than what is in the stockpile. </p>
+        <p v-if="!isValidPrice" class="feedback">Price must contain at least one character. </p>
       </header>
     </BCard>
     <BAlert
@@ -95,6 +102,29 @@ export default {
       alerts: {}, // Displays success/error messages encountered during object modification
       draft: { quantity: this.listing.quantity, price: this.listing.price },
     };
+  },
+  computed: {
+    isValidQuantity() {
+      const quantityRegex =
+        /^(?=.*[1-9])\d*(?:\.\d{1,2})?$|^([1-9][0-9]*)\/[1-9][0-9]*|^[1-9][0-9]*$/;
+      if (!quantityRegex.test(this.draft.quantity)) {
+        return false;
+      }
+
+      if (this.draft.quantity > this.listing.foodId.quantity) {
+        return false;
+      }
+      return true;
+    },
+    isValidPrice() {
+      if (this.draft.price.length == 0) {
+        return false;
+      }
+      return true;
+    },
+    shouldSubmit() {
+      return this.isValidQuantity && this.isValidPrice;
+    }
   },
   methods: {
     startEditing() {
@@ -218,5 +248,17 @@ p + p,
 .user-info,
 .user-info + p {
   margin-top: -1em;
+}
+
+input {
+  display: inline;
+  width: 10em;
+}
+
+.feedback {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  color: red;
+  font-size: 80%;
 }
 </style>

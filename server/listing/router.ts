@@ -95,7 +95,8 @@ router.put(
     [
         userValidator.isUserLoggedIn,
         listingValidator.isFoodExists,
-        listingValidator.isValidFoodQuantity
+        listingValidator.isValidFoodQuantity,
+        listingValidator.isQuantityValid
     ],
     async (req: Request, res: Response) => {
         const userId = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
@@ -202,6 +203,7 @@ router.patch(
         listingValidator.isListingExists,
         listingValidator.isValidListingModifier,
         listingValidator.isValidFoodQuantity,
+        listingValidator.isQuantityValid
     ],
     async (req: Request, res: Response) => {
         const listing = await ListingCollection.updateOne(req.params.listingId, { quantity: req.body.quantity, price: req.body.price });
