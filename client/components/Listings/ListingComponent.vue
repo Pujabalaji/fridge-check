@@ -57,9 +57,10 @@
         </h3>
 
         <div class="actions">
-          <BButton v-if="editing" @click="submitEdit" variant="info"
+          <BButton v-if="editing" @click="submitEdit" variant="info" :disabled="!shouldSubmit"
             ><BIconCheck2 /> <span>Save changes</span>
           </BButton>
+          <p v-if="!shouldSubmit">Quantity must not be greater than the quantity of this food in your stockpile. </p>
           <BButton v-if="editing" @click="stopEditing" variant="info"
             ><BIconX /> <span>Discard changes</span>
           </BButton>
@@ -95,6 +96,11 @@ export default {
       alerts: {}, // Displays success/error messages encountered during object modification
       draft: { quantity: this.listing.quantity, price: this.listing.price },
     };
+  },
+  computed: {
+    shouldSubmit() {
+      return (this.draft.quantity <= this.listing.foodId.quantity);
+    }
   },
   methods: {
     startEditing() {
