@@ -136,6 +136,10 @@ Vercel will automatically deploy the latest version of your code whenever a push
 
 - A list of foods
 
+**Throws**
+
+- `403` if the user is not logged in
+
 ### `POST /api/foods` - Add food to current user’s stockpile
 
 **Body**
@@ -144,14 +148,15 @@ Vercel will automatically deploy the latest version of your code whenever a push
 - `quantity` _{number}_ - The food's quantity
 - `unit` _{string}_ - The unit associated with the quantity
 - `expiration` _{date}_ - The food's expiration date
+- `prepared` _{boolean}_ - True if the food is a prepared food, false otherwise
 
 **Throws**
 
 - `403` if the user is not logged in
 - `400` if the food name is empty or a stream of empty spaces
-- `400` if the food quantity is less than 1
+- `400` if the food quantity is less than or equal to 0
 - `400` if the food unit is not a valid string in the Unit enum
-- `400` if the expiration date is not the proper MM/DD/YYYY format
+- `400` if the expiration date is not the proper YYYY-MM-DD format
 - `413` if the expiration date is prior to today's date
 
 ### `PATCH /api/foods/:foodId` - Change quantity of a item or remove item
@@ -162,9 +167,9 @@ Vercel will automatically deploy the latest version of your code whenever a push
 
 **Throws**
 
-- `403` if the user is not logged in
-- `404` if the foodId is not valid
-- `400` if the food quantity is less than 1
+- `403` if the user is not logged in or if they are not the owner of the food
+- `404` if the foodId is not valid there is no food associated with that id
+- `400` if the food quantity is less than 0
 
 ### `DELETE /api/foods/:foodId` - Remove food item from stockpile
 
@@ -174,27 +179,87 @@ Vercel will automatically deploy the latest version of your code whenever a push
 
 **Throws**
 
-- `403` if the user is not logged in
-- `404` if the foodId is not valid
+- `403` if the user is not logged in or if they are not the owner of the food
+- `404` if the foodId is not valid or there is no food associated with that id
 
 ### `GET /api/listings` - Get all listings created by the current user
 
-### `PUT /api/listings/foodId` - Add listing to current user’s listings
+**Returns**
+
+- A list of listings
+
+**Throws**
+
+- `403` if the user is not logged in
+
+### `GET /api/listings/foods/:foodId?` - Get the listing for a given food or return null
+
+**Returns**
+
+- A listing or null
+
+**Throws**
+
+- `404` if the foodId is not valid or there is no food associated with that id
+
+### `PUT /api/listings/:foodId` - Add listing to current user’s listings
 
 **Body**
 
 - `price` _{string}_ - the price the food item is being sold for
+- `quantity` _{number}_ - the amount of food that is being listed
+
+**Returns**
+
+- A success message
+- The new listing
+
+**Throws**
+
+- `403` if the user is not logged in
+- `404` if the foodId is not valid or there is no food associated with that id
+- `400` if the quantity is less than or equal to 0 or invalid
 
 ### `PATCH /api/listings/:listingId` - Change quantity or price of a listing
 
 **Body** _(no need to add fields that are not being changed)_
 
-- `quantity` - The new quantity of food item in listing
-- `price` - The new price of the listing
+- `quantity`_{number}_ - The new quantity of food item in listing
+- `price` _{string}_ - The new price of the listing
 
-### `DELETE /api/listings/:listingId` - Delete a user’s listing
+**Returns**
+
+- A success message
+- The updated listing
+
+**Throws**
+
+- `403` if the user is not logged in or is not the owner of the listing
+- `404` if the listingId is not valid or there is no listing associated with that id
+- `400` if the quantity is less than or equal to 0 or invalid
+
+### `DELETE /api/listings/:foodId` - Delete a user’s listing
+
+**Returns**
+
+- A success message
+
+**Throws**
+
+- `403` if the user is not logged in or is not the owner of the food
+- `404` if there is no listing with the given foodId
+
+### `DELETE /api/listings/expired` - Delete all listings where the food is expired
+
+**Returns**
+
+- A success message
 
 ### `GET /api/follows/session` - Get all the communities that the current user follows
+
+**Returns**
+
+- The communities
 
 **Throws**
 
@@ -202,11 +267,19 @@ Vercel will automatically deploy the latest version of your code whenever a push
 
 ### `GET /api/follows/listings` - Get all listings in communities that the currently user follows
 
+**Returns**
+
+- The listings from current user's followed communities
+
 **Throws**
 
 - `403` if the user is not logged in
 
 ### `PUT /api/follows/:communityName` - Follow a community
+
+**Returns**
+
+- A success message
 
 **Throws**
 
@@ -220,7 +293,24 @@ Vercel will automatically deploy the latest version of your code whenever a push
 
 - `403` if the user is not logged in
 - `400` if the user  trying to follow community with invalid name
+- `404` if there is no follow between the current user and the community
 
 ### `GET /api/recipes/suggested` - Gets all suggested recipes for current user based on their stockpile and dietary restrictions
 
+**Returns**
+
+- A list of suggested recipes
+
+**Throws**
+
+- `403` if the user is not logged in
+
 ### `GET /api/recipes?name=name` - Gets recipes searching by given name and dietary restrictions
+
+**Returns**
+
+- A list of recipes queried by name
+
+**Throws**
+
+- `403` if the user is not logged in

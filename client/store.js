@@ -124,7 +124,7 @@ const store = new Vuex.Store({
       commit('updateStockpile', res);
       state.foodIdsWithListings = [];
       for (const food of res) {
-        const res1 = await fetch(`/api/listings/foods?foodId=${food._id}`).then(async r => r.json());
+        const res1 = await fetch(`/api/listings/foods/${food._id}`).then(async r => r.json());
         if (res1 !== "none") {
           state.foodIdsWithListings.push(food._id);
         }

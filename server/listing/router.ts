@@ -3,6 +3,7 @@ import express from 'express';
 import ListingCollection from './collection';
 import * as userValidator from '../user/middleware';
 import * as listingValidator from './middleware';
+import * as foodValidator from '../food/middleware';
 import * as util from './util';
 
 const router = express.Router();
@@ -49,17 +50,19 @@ router.get(
 /**
  * Get the listing for a given food or return null
  *
- * @name GET /api/listings/foods?foodId=foodId
+ * @name GET /api/listings/foods/:foodId
  *
  * @return {MyListingResponse | null} - A listing if one exists or null
- * @throws {403} - If the user is not logged in
- *
+ * @throws {404} - If the foodId is invalid or does not exist
  */
 router.get(
-    '/foods',
+    '/foods/:foodId?',
+    [
+      listingValidator.isFoodExists
+    ],
     async (req: Request, res: Response) => {
         try {
-            const listing = await ListingCollection.findOneByFoodId(req.query.foodId as string);
+            const listing = await ListingCollection.findOneByFoodId(req.params.foodId as string);
             const response = util.constructMyListingResponse(listing);
             res.status(200).json(response);
         } catch {
@@ -91,7 +94,6 @@ router.put(
     '/:foodId?',
     [
         userValidator.isUserLoggedIn,
-        listingValidator.isValidFoodName,
         listingValidator.isFoodExists,
         listingValidator.isValidFoodQuantity
     ],
@@ -171,6 +173,7 @@ router.delete(
     [
         userValidator.isUserLoggedIn,
         listingValidator.isListingExistsFood,
+        foodValidator.isValidFoodModifier,
     ],
     async (req: Request, res: Response) => {
         await ListingCollection.deleteOneByFoodId(req.params.foodId);

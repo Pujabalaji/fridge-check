@@ -11,7 +11,8 @@ import * as util from './util';
 const router = express.Router();
 
 /**
- * Get the signed in user
+ * Gets all suggested recipes for current user based 
+ * on their stockpile and dietary restrictions
  *
  * @name GET /api/recipes/suggested
  *
@@ -70,7 +71,7 @@ router.get(
 );
 
 /**
- * Sign in user.
+ * Gets recipes searching by given name and dietary restrictions
  *
  * @name GET /api/recipes?recipeName=name
  *

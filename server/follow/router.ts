@@ -95,7 +95,8 @@ const router = express.Router();
     '/:communityName?',
     [
         userValidator.isUserLoggedIn,
-        followValidator.isValidCommunityName
+        followValidator.isValidCommunityName,
+        followValidator.isFollowExists
     ],
     async (req: Request, res: Response) => {
       const currUser = (req.session.userId as string) ?? '';
