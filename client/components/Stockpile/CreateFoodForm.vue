@@ -4,7 +4,7 @@
     <h3>Create a Food:</h3>
     <article>
       <BFormGroup id="name" label="Name" label-for="name">
-        <BFormInput id="name" v-model="name" type="text" :state="isValidName" />
+        <BFormInput id="name" v-model="name" type="text" :state="!showErrors || isValidName ? null : false" />
         <BFormInvalidFeedback>
           Food name must be a nonempty string
         </BFormInvalidFeedback>
@@ -14,7 +14,7 @@
           id="expiration"
           v-model="expiration"
           type="date"
-          :state="isValidDate"
+          :state="!showErrors || isValidDate ? null : false"
         />
         <BFormInvalidFeedback>
           Date must be a mm/dd/yyyy format.
@@ -27,7 +27,7 @@
           type="number"
           min="0"
           step="0.01"
-          :state="isValidQuantity"
+          :state="!showErrors || isValidQuantity ? null : false"
         />
         <BFormInvalidFeedback>
           Quantity must be a number greater than zero with up to two decimal
@@ -49,7 +49,7 @@
         >Is this leftovers of a food you made?</BFormCheckbox
       >
     </article>
-    <BButton type="submit" variant="primary" :disabled="!enableSubmit">
+    <BButton type="submit" variant="primary">
       Create food
     </BButton>
     <BAlert
@@ -88,6 +88,7 @@ export default {
       alerts: {},
       callback: null,
       refreshFoods: true,
+      showErrors: false,
     };
   },
   computed: {
@@ -121,6 +122,11 @@ export default {
       /**
        * Submits a form with the specified options from data().
        */
+      if (!this.enableSubmit) {
+        this.showErrors = true;
+        return;
+      }
+
       const options = {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -156,6 +162,7 @@ export default {
         this.expiration = "";
         this.unit = "";
         this.prepared = false;
+        this.showErrors = false;
         this.$store.commit("clearRecipes");
         this.$store.commit("updateShowSuggested", false);
         this.$store.commit("updateShowByName", false);
