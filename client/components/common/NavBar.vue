@@ -77,7 +77,7 @@ export default {
       ];
     },
     dropdown() {
-      return [{ to: "/account", name: "Account" }];
+      return [{ to: "/account", name: "Settings" }];
     },
   },
   methods: {

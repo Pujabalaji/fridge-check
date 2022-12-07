@@ -8,7 +8,7 @@ import {Schema, model} from 'mongoose';
 
 export const allergies = ["Peanut", "Tree Nut", "Seafood"] as const;
 export type Allergy = typeof allergies[number];
-export const otherRestrictions = ["Vegetarian", "Vegan", "Pescatarian"] as const;
+export const otherRestrictions = ["Vegetarian", "Vegan", "Pescetarian"] as const;
 export type OtherRestriction = typeof otherRestrictions[number];
 export const communities = ["Baker", "Burton Conner", "East Campus", "MacGregor", "Maseeh", "McCormick", "New House", "New Vassar", "Next House", "Random", "Simmons", "Off-campus Cambridge", "Off-campus Boston"] as const;
 export type Community = typeof communities[number];
