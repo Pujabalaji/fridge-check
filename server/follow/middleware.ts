@@ -37,6 +37,21 @@ import { communities, Community } from '../user/model';
   }
 
   /**
+   * Checks if name of community in req.params is a valid community name
+   */
+   const isValidFoodName = async (req: Request, res: Response, next: NextFunction) => {
+    const name = req.query.foodName as string;
+    if (!name.trim()) {
+      res.status(400).json({
+        error: `Food name must have a length greater than 0.`
+      });
+      return;
+    }
+    next();
+    
+  }
+
+  /**
  * Checks if current user already follows the user in req.params
  */
 const isRepeatFollow = async (req: Request, res: Response, next: NextFunction) => {
@@ -56,5 +71,6 @@ const isRepeatFollow = async (req: Request, res: Response, next: NextFunction) =
 export {
     isFollowExists,
     isValidCommunityName,
-    isRepeatFollow
+    isRepeatFollow,
+    isValidFoodName,
 };

@@ -29,6 +29,7 @@ export default {
       return [
         {to: '/', name: 'Stockpile', visible: this.$store.state.username ? true : false},
         {to: '/listings', name: 'My Listings', visible: this.$store.state.username ? true : false},
+        {to: '/alllistings', name: 'All Listings', visible: this.$store.state.username ? true : false},
         {to: '/recipe', name: 'Suggested Recipes', visible: this.$store.state.username ? true : false},
         {to: '/community', name: 'Communities', visible: this.$store.state.username ? true: false},
         {to: '/account', name: 'Account', visible: this.$store.state.username ? true : false},

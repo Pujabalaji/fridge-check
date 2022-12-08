@@ -1,5 +1,5 @@
 
-import type {Request, Response, NextFunction} from 'express';
+import type { Request, Response, NextFunction } from 'express';
 import express from 'express';
 import FollowCollection from './collection';
 import ListingCollection from '../listing/collection';
@@ -18,18 +18,18 @@ const router = express.Router();
  * @return {FollowResponse[]} - A list of all the current user's follows
  * @throws {403} - If the user is not logged in
  */
- router.get(
-    '/session',
-    [
-      userValidator.isUserLoggedIn
-    ],
-    async (req: Request, res: Response) => {
-        const curUserId = (req.session.userId as string) ?? '';
-        const follows = await FollowCollection.findAllFollowsByUserId(curUserId);
-        const response = follows.map(constructFollowResponse);
-        res.status(200).json(response);
-    }
-  );
+router.get(
+  '/session',
+  [
+    userValidator.isUserLoggedIn
+  ],
+  async (req: Request, res: Response) => {
+    const curUserId = (req.session.userId as string) ?? '';
+    const follows = await FollowCollection.findAllFollowsByUserId(curUserId);
+    const response = follows.map(constructFollowResponse);
+    res.status(200).json(response);
+  }
+);
 
 /**
  * Get all listings in communities that the current user follows
@@ -39,20 +39,33 @@ const router = express.Router();
  * @return {FreetResponse[]} - A list of all the freets of the current user's followings
  * @throws {403} - If the user is not logged in
  */
- router.get(
-    '/listings',
-    [
-      userValidator.isUserLoggedIn
-    ],
-    async (req: Request, res: Response) => {
-        const curUserId = (req.session.userId as string) ?? '';
-        const follows = await FollowCollection.findAllFollowsByUserId(curUserId);
-        const communityNames = await follows.map(follow => follow.communityName);
-        const listings = await ListingCollection.findAllListingsByCommunity(communityNames);
-        const response = listings.map(constructListingResponse);
-        res.status(200).json(response);
+router.get(
+  '/listings',
+  [
+    userValidator.isUserLoggedIn
+  ],
+  async (req: Request, res: Response, next: NextFunction) => {
+    const curUserId = (req.session.userId as string) ?? '';
+    const follows = await FollowCollection.findAllFollowsByUserId(curUserId);
+    const communityNames = await follows.map(follow => follow.communityName);
+    const listings = await ListingCollection.findAllListingsByCommunity(communityNames);
+    console.log(listings);
+    if (req.query.foodNames && req.query.foodNames.length > 0) {
+      console.log(req.query.foodNames);
+      const foods: string[]=[];
+      for (var food of req.query.foodNames as Array<string>){
+        foods.push(food.trim().toLowerCase())
+      }
+      const matchingListings = await listings.filter(listing => foods.includes(listing.foodId.name.toLowerCase()));
+      console.log(matchingListings);
+      const response = matchingListings.map(constructListingResponse);
+      res.status(200).json(response);
+    } else {
+      const response = listings.map(constructListingResponse);
+      res.status(200).json(response);
     }
-  );
+  }
+);
 
 /**
  * Follow a community
@@ -65,22 +78,22 @@ const router = express.Router();
  * @throws {400} - If the user is trying to follow community with invalid name
  * @throws {409} - If the user tries to follow a community they already follow
  */
- router.put(
-    '/:communityName?',
-    [
-      userValidator.isUserLoggedIn,
-      followValidator.isRepeatFollow,
-      followValidator.isValidCommunityName
-    ],
-    async (req: Request, res: Response) => {
-      const curUserId = (req.session.userId as string) ?? '';
-      const communityName = req.params.communityName;
-      await FollowCollection.addOne(curUserId, communityName);
-      res.status(200).json({
-        message: 'Your follow was added successfully.'
-      });
-    }
-  );
+router.put(
+  '/:communityName?',
+  [
+    userValidator.isUserLoggedIn,
+    followValidator.isRepeatFollow,
+    followValidator.isValidCommunityName
+  ],
+  async (req: Request, res: Response) => {
+    const curUserId = (req.session.userId as string) ?? '';
+    const communityName = req.params.communityName;
+    await FollowCollection.addOne(curUserId, communityName);
+    res.status(200).json({
+      message: 'Your follow was added successfully.'
+    });
+  }
+);
 
 /**
  * Delete a follow
@@ -91,21 +104,21 @@ const router = express.Router();
  * @throws {403} - If the user is not logged in
  * @throws {404} - If there is no follow between current user and username 
  */
- router.delete(
-    '/:communityName?',
-    [
-        userValidator.isUserLoggedIn,
-        followValidator.isValidCommunityName,
-        followValidator.isFollowExists
-    ],
-    async (req: Request, res: Response) => {
-      const currUser = (req.session.userId as string) ?? '';
-      const communityName = (req.params.communityName);
-      await FollowCollection.deleteOne(currUser, communityName);
-      res.status(200).json({
-        message: 'Your follow was deleted successfully.'
-      });
-    }
-  );
-    
-  export {router as followRouter};
+router.delete(
+  '/:communityName?',
+  [
+    userValidator.isUserLoggedIn,
+    followValidator.isValidCommunityName,
+    followValidator.isFollowExists
+  ],
+  async (req: Request, res: Response) => {
+    const currUser = (req.session.userId as string) ?? '';
+    const communityName = (req.params.communityName);
+    await FollowCollection.deleteOne(currUser, communityName);
+    res.status(200).json({
+      message: 'Your follow was deleted successfully.'
+    });
+  }
+);
+
+export { router as followRouter };
