@@ -2,7 +2,6 @@ import type { HydratedDocument } from 'mongoose';
 import type { Food } from '../food/model';
 import UserCollection from '../user/collection';
 import { FoodResponse } from '../food/util';
-import * as foodUtils from '../food/util';
 
 type RecipeIngredient = {
   _id: number;
@@ -10,7 +9,7 @@ type RecipeIngredient = {
   amount: number;
   unit: string;
   status: string; // either 'used' or 'missing'
-  stockpileMatches: FoodResponse[];
+  stockpileMatches: string[];
 }
 
 type RecipeResponse = {
@@ -52,13 +51,13 @@ const constructSuggestedRecipeResponse = (stockpile: Array<HydratedDocument<Food
   recipe.extendedIngredients.forEach((ingredient: Record<any, any>) => {
     // name contains both name and nameClean, if they differ
     const recipeIngredientNames: string[] = (ingredient.name !== ingredient.nameClean && ingredient.nameClean) ? [ingredient.name, ingredient.nameClean] : [ingredient.name];
-    let stockpileMatches: FoodResponse[] = [];
+    let stockpileMatches: string[] = [];
     if (usedIds.has(ingredient.id)) {
       stockpile.forEach((stockpileIngredient) => {
         const lowerStockpileName = stockpileIngredient.name.toLowerCase();
         let foundMatch = false;
         if (recipeIngredientNames.some((recipeIngredientName) => recipeIngredientName.includes(lowerStockpileName) || lowerStockpileName.includes(recipeIngredientName))) {
-          stockpileMatches.push(foodUtils.constructFoodResponse(stockpileIngredient));
+          stockpileMatches.push(stockpileIngredient._id.toString());
           if (!foundMatch && stockpileIngredient.expiration <= week) {
             expiringCount += 1;
           }
@@ -110,14 +109,14 @@ const constructQueryRecipeResponse = (stockpile: Array<HydratedDocument<Food>>, 
   recipe.extendedIngredients.forEach((ingredient: Record<any, any>) => {
     // name contains both name and nameClean, if they differ
     const recipeIngredientNames: string[] = (ingredient.name !== ingredient.nameClean && ingredient.nameClean) ? [ingredient.name, ingredient.nameClean] : [ingredient.name];
-    let stockpileMatches: FoodResponse[] = [];
+    let stockpileMatches: string[] = [];
 
     stockpile.forEach((stockpileIngredient) => {
       const lowerStockpileName = stockpileIngredient.name.toLowerCase();
       let foundMatch = false;
 
       if (recipeIngredientNames.some((recipeIngredientName) => recipeIngredientName.includes(lowerStockpileName))) {
-        stockpileMatches.push(foodUtils.constructFoodResponse(stockpileIngredient));
+        stockpileMatches.push(stockpileIngredient._id.toString());
        
         if (!foundMatch) {
           usedCount += 1;

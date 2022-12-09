@@ -8,7 +8,7 @@
     </p>
     <FoodComponent 
       v-if="ingredient.stockpileMatches.length" 
-      :food="ingredient.stockpileMatches[0]"
+      :food="$store.state.foods[ingredient.stockpileMatches[0]]"
     />
     <BButton v-else variant="info" @click="$router.push({ name: 'Stockpile' })"><span>Search in Stockpile</span></BButton>
   </div>

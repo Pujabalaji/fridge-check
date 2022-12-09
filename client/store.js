@@ -69,7 +69,7 @@ const store = new Vuex.Store({
       state.expired = [];
       state.expiring = [];
       state.remainingFoods = [];
-      state.foods = stockpile;
+      state.foods = {};
 
       const date = new Date();
       date.setHours(0, 0, 0, 0);
@@ -78,6 +78,7 @@ const store = new Vuex.Store({
 
       for (const food of stockpile) {
         var foodDate = new Date(food.rawExpiration);
+        state.foods[food._id] = food;
         if (foodDate <= date) {
           state.expired.push(food);
         } else if (foodDate <= week) {
