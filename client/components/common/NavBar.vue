@@ -41,12 +41,12 @@ export default {
 
 
 <style scoped>
-.logo {
+/* .logo {
   filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(24deg) brightness(103%) contrast(103%);
-}
+} */
 
 .navbar {
-  background-color: #1971c2;
+  background-color: #0b7285;
 }
 
 </style>
