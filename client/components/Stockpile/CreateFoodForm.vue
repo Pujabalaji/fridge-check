@@ -73,7 +73,7 @@ export default {
       quantity: "",
       unit: "",
       unitOptions: [
-        { value: "", text: "" },
+        { value: "", text: "None" },
         { value: "sticks", text: "Sticks" },
         { value: "oz", text: "Oz" },
         { value: "g", text: "g" },
