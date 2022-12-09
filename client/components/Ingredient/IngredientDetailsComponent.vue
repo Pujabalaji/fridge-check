@@ -55,9 +55,9 @@
     <div class="container-food">
       <div v-for="(ingredient, index) in usedIngredients" :key="index">
       <FoodComponent
-        v-if="ingredient.stockpileMatches.length"
-        :key="ingredient.stockpileMatches[0]"
-        :food="$store.state.foods[ingredient.stockpileMatches[0]]"
+        v-if="ingredient.stockpileMatches.some(item => item in $store.state.foods)"
+        :key="ingredient.stockpileMatches.find(item => item in $store.state.foods)"
+        :food="$store.state.foods[ingredient.stockpileMatches.find(item => item in $store.state.foods)]"
       />
       </div>
     </div>
