@@ -17,7 +17,7 @@
           >
             <p>User: {{ listing.username }}</p>
             <p>Community: {{ listing.community }}</p>
-            <p>Contact info: {{ listing.email }}</p>
+            <p>Email {{ listing.email }} to claim</p>
           </div>
           <p>Expires on: {{ listing.expiration }}</p>
         </div>

@@ -38,7 +38,7 @@
           :state="isValidEmail"
         />
         <BFormInvalidFeedback>
-          Email must be a nonempty alphanumeric string.
+          Email must be a nonempty alphanumeric string, containing an '@' and '.' followed by a domain name.
         </BFormInvalidFeedback>
       </BFormGroup>
       <BFormGroup id="home" label="Home Community" label-for="home">

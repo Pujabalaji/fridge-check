@@ -35,7 +35,7 @@ export default {
       if (!emailRegex.test(value)) {
         return {
           status: "error",
-          errorToDisplay: "Email must be a nonempty alphanumeric string.",
+          errorToDisplay: "Email must be a nonempty alphanumeric string, containing an '@' and '.' followed by a domain name.",
         };
       }
       return { status: "ok", errorToDisplay: "" };
