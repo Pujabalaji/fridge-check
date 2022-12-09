@@ -8,6 +8,11 @@
           <BFormCheckbox value="Peanut">Peanuts</BFormCheckbox>
           <BFormCheckbox value="Tree Nut">Tree Nuts</BFormCheckbox>
           <BFormCheckbox value="Seafood">Seafood</BFormCheckbox>
+          <BFormCheckbox value="Shellfish">Shellfish</BFormCheckbox>
+          <BFormCheckbox value="Soy">Soy</BFormCheckbox>
+          <BFormCheckbox value="Dairy">Dairy</BFormCheckbox>
+          <BFormCheckbox value="Egg">Egg</BFormCheckbox>
+          <BFormCheckbox value="Gluten">Gluten</BFormCheckbox>
         </BFormCheckboxGroup>
       </BFormGroup>
     </article>
@@ -57,6 +62,9 @@ export default {
         }
         const res = await r.json();
         this.$store.commit("setUser", res.user ? res.user : null);
+        this.$store.commit("clearRecipes");
+        this.$store.commit("updateShowSuggested", false);
+        this.$store.commit("updateShowByName", false);
         options.callback();
       } catch (e) {
         this.$set(this.alerts, e, "error");

@@ -6,7 +6,7 @@ import {Schema, model} from 'mongoose';
  * DO NOT implement operations here ---> use collection file
  */
 
-export const allergies = ["Peanut", "Tree Nut", "Seafood"] as const;
+export const allergies = ["Peanut", "Tree Nut", "Seafood", "Shellfish", "Soy", "Dairy", "Egg", "Gluten"] as const;
 export type Allergy = typeof allergies[number];
 export const otherRestrictions = ["Vegetarian", "Vegan", "Pescatarian"] as const;
 export type OtherRestriction = typeof otherRestrictions[number];
