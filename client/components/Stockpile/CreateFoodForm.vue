@@ -40,24 +40,19 @@
       <BFormGroup id="unit" label="Units" label-for="unit">
         <BFormSelect id="unit" v-model="unit" :options="unitOptions" />
       </BFormGroup>
-      <BFormCheckbox
-        id="prepared"
-        v-model="prepared"
-        name="prepared"
-        :value="true"
-        :unchecked-value="false"
-        >Is this leftovers of a food you made?</BFormCheckbox
-      >
+      <BFormGroup id="prepared" label="Is this leftovers of a meal you made or purchased?" :state="isValidPreparedFoodCheck">
+        <BFormRadio v-model="prepared" :prepared="prepared" name="prepared" value="true">Yes</BFormRadio>
+        <BFormRadio v-model="prepared" :prepared="prepared" name="prepared" value="false">No</BFormRadio>
+        <BFormInvalidFeedback :state="isValidPreparedFoodCheck">
+          You must indicate whether or not this is a prepared food
+        </BFormInvalidFeedback>
+      </BFormGroup>
     </article>
     <BButton type="submit" variant="primary">
       Create food
     </BButton>
-    <BAlert
-      v-for="(status, alert, index) in alerts"
-      :key="index"
-      :variant="status === 'error' ? 'danger' : 'success'"
-      show
-    >
+    <BAlert v-for="(status, alert, index) in alerts" :key="index" :variant="status === 'error' ? 'danger' : 'success'"
+      show>
       {{ alert }}
     </BAlert>
   </BForm>
@@ -73,7 +68,7 @@ export default {
       quantity: "",
       unit: "",
       unitOptions: [
-        { value: "", text: "" },
+        { value: "", text: "None" },
         { value: "sticks", text: "Sticks" },
         { value: "oz", text: "Oz" },
         { value: "g", text: "g" },
@@ -84,7 +79,7 @@ export default {
         { value: "quarts", text: "Quarts" },
         { value: "gallons", text: "Gallons" },
       ],
-      prepared: false,
+      prepared: "",
       alerts: {},
       callback: null,
       refreshFoods: true,
@@ -113,8 +108,11 @@ export default {
       }
       return true;
     },
+    isValidPreparedFoodCheck() {
+      return this.prepared !== "";
+    },
     enableSubmit() {
-      return this.isValidName && this.isValidDate && this.isValidQuantity;
+      return this.isValidName && this.isValidDate && this.isValidQuantity && this.isValidPreparedFoodCheck;
     },
   },
   methods: {
@@ -161,7 +159,7 @@ export default {
         this.quantity = "";
         this.expiration = "";
         this.unit = "";
-        this.prepared = false;
+        this.prepared = "";
         this.showErrors = false;
         this.$store.commit("clearRecipes");
         this.$store.commit("updateShowSuggested", false);

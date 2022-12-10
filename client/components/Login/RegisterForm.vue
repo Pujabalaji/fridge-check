@@ -60,6 +60,11 @@
           <BFormCheckbox value="Peanut">Peanuts</BFormCheckbox>
           <BFormCheckbox value="Tree Nut">Tree Nuts</BFormCheckbox>
           <BFormCheckbox value="Seafood">Seafood</BFormCheckbox>
+          <BFormCheckbox value="Shellfish">Shellfish</BFormCheckbox>
+          <BFormCheckbox value="Soy">Soy</BFormCheckbox>
+          <BFormCheckbox value="Dairy">Dairy</BFormCheckbox>
+          <BFormCheckbox value="Egg">Egg</BFormCheckbox>
+          <BFormCheckbox value="Gluten">Gluten</BFormCheckbox>
         </BFormCheckboxGroup>
       </BFormGroup>
       <BFormGroup

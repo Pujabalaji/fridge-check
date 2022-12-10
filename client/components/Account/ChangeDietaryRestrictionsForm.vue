@@ -74,6 +74,9 @@ export default {
         }
         const res = await r.json();
         this.$store.commit("setUser", res.user ? res.user : null);
+        this.$store.commit("clearRecipes");
+        this.$store.commit("updateShowSuggested", false);
+        this.$store.commit("updateShowByName", false);
         options.callback();
       } catch (e) {
         this.$set(this.alerts, e, "error");
