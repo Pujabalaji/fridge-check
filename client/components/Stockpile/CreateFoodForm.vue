@@ -4,19 +4,31 @@
     <h3>Create a Food:</h3>
     <article>
       <BFormGroup id="name" label="Name" label-for="name">
-        <BFormInput id="name" v-model="name" type="text" :state="isValidName" />
+        <BFormInput id="name" v-model="name" type="text" :state="!showErrors || isValidName ? null : false" />
         <BFormInvalidFeedback>
           Food name must be a nonempty string
         </BFormInvalidFeedback>
       </BFormGroup>
       <BFormGroup id="expiration" label="Expiration" label-for="expiration">
-        <BFormInput id="expiration" v-model="expiration" type="date" :state="isValidDate" />
+        <BFormInput
+          id="expiration"
+          v-model="expiration"
+          type="date"
+          :state="!showErrors || isValidDate ? null : false"
+        />
         <BFormInvalidFeedback>
           Date must be a mm/dd/yyyy format.
         </BFormInvalidFeedback>
       </BFormGroup>
       <BFormGroup id="quantity" label="Quantity" label-for="quantity">
-        <BFormInput id="quantity" v-model="quantity" type="number" min="0" step="0.01" :state="isValidQuantity" />
+        <BFormInput
+          id="quantity"
+          v-model="quantity"
+          type="number"
+          min="0"
+          step="0.01"
+          :state="!showErrors || isValidQuantity ? null : false"
+        />
         <BFormInvalidFeedback>
           Quantity must be a number greater than zero with up to two decimal
           places
@@ -36,7 +48,7 @@
         </BFormInvalidFeedback>
       </BFormGroup>
     </article>
-    <BButton type="submit" variant="primary" :disabled="!enableSubmit">
+    <BButton type="submit" variant="primary">
       Create food
     </BButton>
     <BAlert v-for="(status, alert, index) in alerts" :key="index" :variant="status === 'error' ? 'danger' : 'success'"
@@ -71,6 +83,7 @@ export default {
       alerts: {},
       callback: null,
       refreshFoods: true,
+      showErrors: false,
     };
   },
   computed: {
@@ -107,6 +120,11 @@ export default {
       /**
        * Submits a form with the specified options from data().
        */
+      if (!this.enableSubmit) {
+        this.showErrors = true;
+        return;
+      }
+
       const options = {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -142,6 +160,7 @@ export default {
         this.expiration = "";
         this.unit = "";
         this.prepared = "";
+        this.showErrors = false;
         this.$store.commit("clearRecipes");
         this.$store.commit("updateShowSuggested", false);
         this.$store.commit("updateShowByName", false);

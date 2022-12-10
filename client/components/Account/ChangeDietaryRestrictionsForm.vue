@@ -11,7 +11,7 @@
         <BFormCheckboxGroup id="other" v-model="selectedOtherRestrictions">
           <BFormCheckbox value="Vegetarian">Vegetarian</BFormCheckbox>
           <BFormCheckbox value="Vegan">Vegan</BFormCheckbox>
-          <BFormCheckbox value="Pescetarian">Pescatarian</BFormCheckbox>
+          <BFormCheckbox value="Pescetarian">Pescetarian</BFormCheckbox>
         </BFormCheckboxGroup>
       </BFormGroup>
     </article>

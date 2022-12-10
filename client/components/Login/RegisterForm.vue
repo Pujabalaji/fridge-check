@@ -8,7 +8,7 @@
           id="new-username"
           v-model="username"
           type="text"
-          :state="isValidUsername"
+          :state="!showErrors || isValidUsername ? null : false"
         />
         <BFormInvalidFeedback>
           Username must be a nonempty alphanumeric string
@@ -19,7 +19,7 @@
           id="new-password"
           v-model="password"
           type="password"
-          :state="isValidPassword"
+          :state="!showErrors || isValidPassword ? null : false"
         />
         <BFormInvalidFeedback>
           Password must be a nonempty string.
@@ -35,7 +35,7 @@
           id="email"
           v-model="email"
           type="email"
-          :state="isValidEmail"
+          :state="!showErrors || isValidEmail ? null : false"
         />
         <BFormInvalidFeedback>
           Email must be a nonempty alphanumeric string.
@@ -46,7 +46,7 @@
           id="home"
           v-model="homeCommunity"
           :options="communityOptions"
-          :state="isValidCommunity"
+          :state="!showErrors || isValidCommunity ? null : false"
         >
           <template #first>
             <BFormSelectOption value="" disabled>
@@ -75,11 +75,11 @@
         <BFormCheckboxGroup id="other" v-model="selectedOtherRestrictions">
           <BFormCheckbox value="Vegetarian">Vegetarian</BFormCheckbox>
           <BFormCheckbox value="Vegan">Vegan</BFormCheckbox>
-          <BFormCheckbox value="Pescetarian">Pescatarian</BFormCheckbox>
+          <BFormCheckbox value="Pescetarian">Pescetarian</BFormCheckbox>
         </BFormCheckboxGroup>
       </BFormGroup>
     </article>
-    <BButton type="submit" variant="primary" :disabled="!enableSubmit" block>
+    <BButton type="submit" variant="primary" block>
       Create account
     </BButton>
     <BAlert
@@ -122,6 +122,7 @@ export default {
       ],
       alerts: {},
       callback: null,
+      showErrors: false,
     };
   },
   computed: {
@@ -163,6 +164,11 @@ export default {
       /**
        * Submits a form with the specified options from data().
        */
+      if (!this.enableSubmit) {
+        this.showErrors = true;
+        return;
+      }
+
       const options = {
         method: "POST",
         headers: { "Content-Type": "application/json" },
