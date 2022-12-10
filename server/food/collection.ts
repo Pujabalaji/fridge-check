@@ -18,6 +18,10 @@ class FoodCollection {
     const [year, month, day] = expiration.split('-');
     const expirationDate = new Date(+year, +month - 1, +day);
     expirationDate.setHours(0, 0, 0, 0);
+    const user = await UserCollection.findOneByUserId(userId);
+    user.numFood+=1;
+    await user.save();
+    console.log(user);
     const food = new FoodModel({
       userId,
       dateCreated: date,
@@ -80,8 +84,13 @@ class FoodCollection {
    * @param {string} foodId - The foodId of food to delete
    * @return {Promise<Boolean>} - true if the food has been deleted, false otherwise
    */
-  static async deleteOne(foodId: Types.ObjectId | string): Promise<boolean> {
+  static async deleteOne(foodId: Types.ObjectId | string, userId: Types.ObjectId | string, thrownAway: Boolean): Promise<boolean> {
     const food = await FoodModel.deleteOne({ _id: foodId });
+    const user = await UserCollection.findOneByUserId(userId);
+    if (thrownAway){
+      user.thrownAway+=1;
+      await user.save();
+    }
     return food !== null;
   }
 

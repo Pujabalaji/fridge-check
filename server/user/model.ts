@@ -22,6 +22,8 @@ export type User = {
   allergies: Array<Allergy>;
   otherDietaryRestrictions: Array<OtherRestriction>;
   homeCommunity: Community;
+  thrownAway: number;
+  numFood:number;
 };
 
 // Mongoose schema definition for interfacing with a MongoDB table
@@ -55,6 +57,14 @@ const UserSchema = new Schema({
     type: String,
     enum: communities,
     required: true
+  },
+  thrownAway: {
+    type: Number,
+    default:0 
+  },
+  numFood: {
+    type: Number,
+    default:0 
   }
 
 });

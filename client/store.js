@@ -26,6 +26,7 @@ const store = new Vuex.Store({
     displaySuggested: false,
     displayByName: false,
     lastSearched: "",
+    percentDiscarded: null,
   },
   mutations: {
     alert(state, payload) {
@@ -53,6 +54,7 @@ const store = new Vuex.Store({
        * @param user - new user to set
        */
       state.user = user;
+      state.percentDiscarded = Math.round((user.thrownAway/user.numFood)*1000)/10
     },
     setSelectedRecipe(state, recipe) {
       /**
@@ -139,6 +141,14 @@ const store = new Vuex.Store({
     async refreshAllListings({ commit, state }) {
       const listings = await fetch('/api/listings/temp').then(async r => r.json());
       commit('updateAllListings', listings);
+    },
+    async refreshUser({ commit, state }) {
+      fetch('/api/users/session', {
+        credentials: 'same-origin' // Sends express-session credentials with request
+      }).then(res => res.json()).then(res => {
+        const user = res.user;
+        commit('setUser', user ? user : null);
+      });
     }
   },
   // Store data across page refreshes, only discard on browser close

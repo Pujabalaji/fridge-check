@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import AccountPage from './components/Account/AccountPage.vue';
+import StatsPage from './components/Account/StatsPage.vue';
 import LoginPage from './components/Login/LoginPage.vue';
 import RecipePage from './components/Recipe/RecipePage.vue';
 import IngredientDetailsPage from './components/Ingredient/IngredientDetailsPage.vue';
@@ -21,6 +22,7 @@ const routes = [
   { path: '/recipe/ingredients', name: 'Ingredient Details', component: IngredientDetailsPage },
   { path: '/recipe/details', name: 'Recipe Details', component: RecipeDetailsPage },
   { path: '/listings', name: 'My Listings', component: MyListingsPage },
+  { path: '/stats', name: 'My Stats', component: StatsPage },
   { path: '*', name: 'Not Found', component: NotFound },
 ];
 

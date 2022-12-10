@@ -32,6 +32,7 @@ export default {
         {to: '/recipe', name: 'Suggested Recipes', visible: this.$store.state.username ? true : false},
         {to: '/community', name: 'Communities', visible: this.$store.state.username ? true: false},
         {to: '/account', name: 'Account', visible: this.$store.state.username ? true : false},
+        {to: '/stats', name: 'Stats', visible: this.$store.state.username ? true : false},
         {to: '/login', name: 'Login', visible: this.$store.state.username ? false : true},
       ];
     }

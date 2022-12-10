@@ -10,6 +10,8 @@ type UserResponse = {
   allergies: Array<Allergy>;
   otherDietaryRestrictions: Array<OtherRestriction>;
   homeCommunity: Community;
+  thrownAway: number;
+  numFood:number;
 };
 
 /**
@@ -29,11 +31,7 @@ const constructUserResponse = (user: HydratedDocument<User>): UserResponse => {
   delete userCopy.password;
   return {
     ...userCopy,
-    _id: userCopy._id.toString(),
-    email: userCopy.email,
-    allergies: userCopy.allergies,
-    otherDietaryRestrictions: userCopy.otherDietaryRestrictions,
-    homeCommunity: userCopy.homeCommunity,
+    _id: userCopy._id.toString()
   };
 };
 
