@@ -35,9 +35,9 @@ router.get(
     },
     [
         userValidator.isUserLoggedIn,
-        // foodValidator.isValidFoodName
+        foodValidator.isValidFoodQuery
     ],
-    async (req: Request, res: Response, next: NextFunction) => {
+    async (req: Request, res: Response) => {
         const userId = (req.session.userId as string) ?? '';
         const food = (req.query.foodName as string) ?? '';
         const stockpile = await FoodCollection.findAllByName(userId, food);

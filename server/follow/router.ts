@@ -4,6 +4,7 @@ import express from 'express';
 import FollowCollection from './collection';
 import ListingCollection from '../listing/collection';
 import * as userValidator from '../user/middleware';
+import * as foodValidator from '../food/middleware';
 import { constructFollowResponse } from './util';
 import * as followValidator from '../follow/middleware';
 import { constructListingResponse } from '..//listing/util';
@@ -45,25 +46,31 @@ router.get(
     userValidator.isUserLoggedIn
   ],
   async (req: Request, res: Response, next: NextFunction) => {
+    if (req.query.foodName) {
+      next();
+      return;
+    }
     const curUserId = (req.session.userId as string) ?? '';
     const follows = await FollowCollection.findAllFollowsByUserId(curUserId);
     const communityNames = await follows.map(follow => follow.communityName);
     const listings = await ListingCollection.findAllListingsByCommunity(communityNames);
-    console.log(listings);
-    if (req.query.foodNames && req.query.foodNames.length > 0) {
-      console.log(req.query.foodNames);
-      const foods: string[]=[];
-      for (var food of req.query.foodNames as Array<string>){
-        foods.push(food.trim().toLowerCase())
-      }
-      const matchingListings = await listings.filter(listing => foods.includes(listing.foodId.name.toLowerCase()));
-      console.log(matchingListings);
-      const response = matchingListings.map(constructListingResponse);
-      res.status(200).json(response);
-    } else {
-      const response = listings.map(constructListingResponse);
-      res.status(200).json(response);
-    }
+    const response = listings.map(constructListingResponse);
+    res.status(200).json(response);
+  },
+  [
+    userValidator.isUserLoggedIn,
+    foodValidator.isValidFoodQuery
+  ],
+  async (req: Request, res: Response, next: NextFunction) => {
+    const curUserId = (req.session.userId as string) ?? '';
+    const follows = await FollowCollection.findAllFollowsByUserId(curUserId);
+    const communityNames = await follows.map(follow => follow.communityName);
+    const listings = await ListingCollection.findAllListingsByCommunity(communityNames);
+    const food = req.query.foodName as string;
+    let re = new RegExp(`${food}`, 'i');
+    const matchingListings = await listings.filter(listing => re.test(listing.foodId.name));
+    const response = matchingListings.map(constructListingResponse);
+    res.status(200).json(response);
   }
 );
 

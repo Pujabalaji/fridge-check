@@ -1,4 +1,4 @@
-import type { Request, Response } from 'express';
+import type { NextFunction, Request, Response } from 'express';
 import express from 'express';
 import ListingCollection from './collection';
 import * as userValidator from '../user/middleware';
@@ -39,10 +39,27 @@ router.get(
     [
         userValidator.isUserLoggedIn
     ],
-    async (req: Request, res: Response) => {
+    async (req: Request, res: Response, next: NextFunction) => {
+        if (req.query.foodName) {
+            next();
+            return;
+        }
         const userId = (req.session.userId as string) ?? '';
         const myListings = await ListingCollection.findAllByUser(userId);
         const response = myListings.map(util.constructMyListingResponse);
+        res.status(200).json(response);
+    },
+    [
+        userValidator.isUserLoggedIn,
+        foodValidator.isValidFoodQuery
+    ],
+    async (req: Request, res: Response) => {
+        const userId = (req.session.userId as string) ?? '';
+        const myListings = await ListingCollection.findAllByUser(userId);
+        const food = req.query.foodName as string;
+        let re = new RegExp(`${food}`, 'i');
+        const matchingListings = await myListings.filter(listing => re.test(listing.foodId.name));
+        const response = matchingListings.map(util.constructMyListingResponse);
         res.status(200).json(response);
     }
 );
@@ -58,7 +75,7 @@ router.get(
 router.get(
     '/foods/:foodId?',
     [
-      listingValidator.isFoodExists
+        listingValidator.isFoodExists
     ],
     async (req: Request, res: Response) => {
         try {
@@ -117,7 +134,7 @@ router.put(
  *
  * @return {string} - A success message
  */
- router.delete(
+router.delete(
     '/expired',
     async (req: Request, res: Response) => {
         const listings = await ListingCollection.findAll();

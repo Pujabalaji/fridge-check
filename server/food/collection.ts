@@ -67,7 +67,7 @@ class FoodCollection {
    * @return {Promise<HydratedDocument<Food>[]>} - An array of all of the foods
    */
    static async findAllByName(userId: string, food:string): Promise<Array<HydratedDocument<Food>>> {
-    let re = new RegExp(`${food}`, 'i');
+    let re = new RegExp(`${food}`, 'gi');
     console.log(re);
     return FoodModel.find({ userId: userId, name:{ $regex: re }}).sort({ expiration: 1 }).populate('userId');
   }

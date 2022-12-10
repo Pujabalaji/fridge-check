@@ -4,14 +4,14 @@
 import InlineForm from '@/components/common/InlineForm.vue';
 
 export default {
-    name: 'GetListingsForm',
+    name: 'GetMyListingsForm',
     mixins: [InlineForm],
     data() {
         return { value: this.$store.state.listingFilter };
     },
     methods: {
         async submit() {
-            const url = this.value ? `/api/follows/listings?foodName=${this.value}` : '/api/follows/listings';
+            const url = this.value ? `/api/listings?foodName=${this.value}` : '/api/listings';
             try {
                 const r = await fetch(url);
                 const res = await r.json();
@@ -19,12 +19,12 @@ export default {
                     throw new Error(res.error);
                 }
                 this.$store.commit('updateListingFilter', this.value);
-                this.$store.commit('updateAllListings', res);
+                this.$store.commit('updateMyListings', res);
             } catch (e) {
                 if (this.value === this.$store.state.listingFilter) {
                     this.$store.commit('updateListingFilter', null);
                     this.value = null;
-                    this.$store.dispatch('refreshAllListings');
+                    this.$store.dispatch('refreshMyListings');
                 } else {
                     this.value = this.$store.state.listingFilter;
                 }

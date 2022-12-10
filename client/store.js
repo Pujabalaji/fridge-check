@@ -146,7 +146,7 @@ const store = new Vuex.Store({
       commit('updateMyListings', listings);
     },
     async refreshAllListings({ commit, state }) {
-      const url = state.listingsFilters? `/api/follows/listings?foodNames[]=${state.listingsFilters}`:'/api/follows/listings';
+      const url = state.listingFilter? `/api/follows/listings?foodName=${state.listingFilter}`:'/api/follows/listings';
       const res = await fetch(url).then(async r => r.json());
       commit('updateAllListings', res);
     }

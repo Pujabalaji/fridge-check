@@ -11,7 +11,7 @@
         <div v-if="$store.state.username" class="container">
             <div>
                 <GetFoodsForm ref="GetFoodsForm" value="foodName" placeholder="🔍 Filter by food name (optional)"
-                    button="🔄 Get foods" />
+                    button="Get foods" />
                 <h3>Expired</h3>
                 <section v-if="$store.state.expired.length" class="food-container">
                     <FoodComponent v-for="food in $store.state.expired" :key="food._id" :food="food" />

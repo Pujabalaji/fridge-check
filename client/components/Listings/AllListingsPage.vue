@@ -10,12 +10,10 @@
             </header>
         </section>
         <section>
-            <header>
-                <div class="right">
-                    <GetListingsForm ref="GetListingsForm" value="foodNames"
-                        placeholder="🔍 Filter by food name (optional)" button="🔄 Get listings" />
-                </div>
-            </header>
+                <section>
+                    <GetListingsForm ref="GetListingsForm" value="foodName"
+                        placeholder="🔍 Filter by food name (optional)" button="Get listings" />
+                </section>
             <section v-if="$store.state.allListings.length">
                 <ListingComponent v-for="listing in $store.state.allListings" :key="listing._id" :listing="listing" />
             </section>

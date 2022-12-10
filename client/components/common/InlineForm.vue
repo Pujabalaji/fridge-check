@@ -2,20 +2,14 @@
 <!-- This is just an example; feel free to define any reusable components you want! -->
 
 <template>
-  <form @submit.prevent="submit">
-    <input v-model="value" type="text" :placeholder="placeholder" />
-    <button type="submit">
-      {{ button }}
-    </button>
-    <BAlert
-      v-for="(status, alert, index) in alerts"
-      :key="index"
-      :variant="status === 'error' ? 'danger' : 'success'"
-      show
-    >
+  <BForm @submit.prevent="submit">
+    <BFormInput v-model="value" type="text" :placeholder="placeholder" />
+    <BButton type="submit" variant="primary"> {{ button }} </BButton>
+    <BAlert v-for="(status, alert, index) in alerts" :key="index" :variant="status === 'error' ? 'danger' : 'success'"
+      show>
       {{ alert }}
     </BAlert>
-  </form>
+  </BForm>
 </template>
 
 <script>
@@ -32,7 +26,7 @@ export default {
     }
   },
   data() {
-    return {value: '', alerts: {}};
+    return { value: '', alerts: {} };
   }
 };
 </script>
