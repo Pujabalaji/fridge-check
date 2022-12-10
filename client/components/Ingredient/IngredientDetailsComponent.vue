@@ -33,19 +33,7 @@
           {{ ingredient.amount }} {{ ingredient.unit }} of
           {{ ingredient.name[0] }}
         </p>
-        <BButton @click="fetchListings(ingredient)" variant="info"
-          ><BIconClipboard /> <span>View Listings</span></BButton
-        >
-        <div v-if="currentIngredientId == ingredient._id">
-          <div v-if="listings.length">
-            <ListingComponent
-              v-for="listing in listings"
-              :key="listing._id"
-              :listing="listing"
-            />
-          </div>
-          <p v-else class="no-margin">No listings found</p>
-        </div>
+        <FoodListingsComponent :ingredient="ingredient"/>
       </div>
     </section>
     <h3>Want to make this recipe?</h3>
@@ -66,12 +54,12 @@
 
 <script>
 import IngredientMatchComponent from "@/components/Ingredient/IngredientMatchComponent.vue";
-import ListingComponent from "@/components/Listings/ListingComponent.vue";
 import FoodComponent from "@/components/Stockpile/FoodComponent.vue";
+import FoodListingsComponent from "@/components/Listings/FoodListingsComponent.vue"
 
 export default {
   name: "IngredientDetailsComponent",
-  components: { IngredientMatchComponent, ListingComponent, FoodComponent },
+  components: { IngredientMatchComponent, FoodComponent, FoodListingsComponent },
   props: {
     // Data from the stored recipe
     recipe: {
