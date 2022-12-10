@@ -40,10 +40,10 @@
       <BFormGroup id="unit" label="Units" label-for="unit">
         <BFormSelect id="unit" v-model="unit" :options="unitOptions" />
       </BFormGroup>
-      <BFormGroup id="prepared" label="Is this leftovers of a meal you made or purchased?" :state="isValidPreparedFoodCheck">
+      <BFormGroup id="prepared" label="Is this leftovers of a meal you made or purchased?">
         <BFormRadio v-model="prepared" :prepared="prepared" name="prepared" value="true">Yes</BFormRadio>
         <BFormRadio v-model="prepared" :prepared="prepared" name="prepared" value="false">No</BFormRadio>
-        <BFormInvalidFeedback :state="isValidPreparedFoodCheck">
+        <BFormInvalidFeedback :state="!showErrors || isValidPreparedFoodCheck ? null : false">
           You must indicate whether or not this is a prepared food
         </BFormInvalidFeedback>
       </BFormGroup>
