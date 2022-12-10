@@ -10,25 +10,13 @@
         </BFormInvalidFeedback>
       </BFormGroup>
       <BFormGroup id="expiration" label="Expiration" label-for="expiration">
-        <BFormInput
-          id="expiration"
-          v-model="expiration"
-          type="date"
-          :state="isValidDate"
-        />
+        <BFormInput id="expiration" v-model="expiration" type="date" :state="isValidDate" />
         <BFormInvalidFeedback>
           Date must be a mm/dd/yyyy format.
         </BFormInvalidFeedback>
       </BFormGroup>
       <BFormGroup id="quantity" label="Quantity" label-for="quantity">
-        <BFormInput
-          id="quantity"
-          v-model="quantity"
-          type="number"
-          min="0"
-          step="0.01"
-          :state="isValidQuantity"
-        />
+        <BFormInput id="quantity" v-model="quantity" type="number" min="0" step="0.01" :state="isValidQuantity" />
         <BFormInvalidFeedback>
           Quantity must be a number greater than zero with up to two decimal
           places
@@ -40,24 +28,19 @@
       <BFormGroup id="unit" label="Units" label-for="unit">
         <BFormSelect id="unit" v-model="unit" :options="unitOptions" />
       </BFormGroup>
-      <BFormCheckbox
-        id="prepared"
-        v-model="prepared"
-        name="prepared"
-        :value="true"
-        :unchecked-value="false"
-        >Is this leftovers of a food you made?</BFormCheckbox
-      >
+      <BFormGroup id="prepared" label="Is this leftovers of a meal you made or purchased?" :state="isValidPreparedFoodCheck">
+        <BFormRadio v-model="prepared" :prepared="prepared" name="prepared" value="true">Yes</BFormRadio>
+        <BFormRadio v-model="prepared" :prepared="prepared" name="prepared" value="false">No</BFormRadio>
+        <BFormInvalidFeedback :state="isValidPreparedFoodCheck">
+          You must indicate whether or not this is a prepared food
+        </BFormInvalidFeedback>
+      </BFormGroup>
     </article>
     <BButton type="submit" variant="primary" :disabled="!enableSubmit">
       Create food
     </BButton>
-    <BAlert
-      v-for="(status, alert, index) in alerts"
-      :key="index"
-      :variant="status === 'error' ? 'danger' : 'success'"
-      show
-    >
+    <BAlert v-for="(status, alert, index) in alerts" :key="index" :variant="status === 'error' ? 'danger' : 'success'"
+      show>
       {{ alert }}
     </BAlert>
   </BForm>
@@ -84,7 +67,7 @@ export default {
         { value: "quarts", text: "Quarts" },
         { value: "gallons", text: "Gallons" },
       ],
-      prepared: false,
+      prepared: "",
       alerts: {},
       callback: null,
       refreshFoods: true,
@@ -112,8 +95,11 @@ export default {
       }
       return true;
     },
+    isValidPreparedFoodCheck() {
+      return this.prepared !== "";
+    },
     enableSubmit() {
-      return this.isValidName && this.isValidDate && this.isValidQuantity;
+      return this.isValidName && this.isValidDate && this.isValidQuantity && this.isValidPreparedFoodCheck;
     },
   },
   methods: {
@@ -155,7 +141,7 @@ export default {
         this.quantity = "";
         this.expiration = "";
         this.unit = "";
-        this.prepared = false;
+        this.prepared = "";
         this.$store.commit("clearRecipes");
         this.$store.commit("updateShowSuggested", false);
         this.$store.commit("updateShowByName", false);
