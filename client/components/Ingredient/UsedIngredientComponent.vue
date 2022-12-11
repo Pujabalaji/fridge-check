@@ -1,4 +1,4 @@
-<!-- Reusable component showing ingredient matches -->
+<!-- Reusable component showing used ingredients -->
 
 <template>
   <div>

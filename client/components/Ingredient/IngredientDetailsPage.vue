@@ -2,24 +2,120 @@
 
 <template>
   <main>
-    <div v-if="$store.state.username">
     <h2>Showing ingredient details:</h2>
-      <IngredientDetailsComponent :recipe="this.$store.state.selectedRecipe" />
-    </div>
-    <div v-else>
-      <h2>
-        <router-link to="/login">Sign in</router-link>
-        to view recipe suggestions.
-      </h2>
-    </div>
+    <BCard class="ingredientDetails">
+      <div class="container-details">
+        <img :src="recipe.imageUrl" />
+        <div class="column">
+          <h4>{{ recipe.name }}</h4>
+          <p>
+            This recipe uses {{ recipe.usedCount }} ingredients in your
+            stockpile.
+          </p>
+          <p>
+            {{ recipe.expiringCount }} of these items are expiring this week.
+          </p>
+          <BButton @click="showDetails" variant="info"
+            >Show recipe details</BButton
+          >
+        </div>
+      </div>
+      <section>
+        <h5>You have {{ recipe.usedCount }} ingredients:</h5>
+        <UsedIngredientComponent
+          v-for="ingredient in usedIngredients"
+          :key="ingredient._id"
+          :ingredient="ingredient"
+          class="ingredient"
+        />
+      </section>
+      <section v-if="missingCount">
+        <h5>You need {{ missingCount }} ingredients:</h5>
+        <MissingIngredientComponent
+          v-for="ingredient in missingIngredients"
+          :key="ingredient._id"
+          :ingredient="ingredient"
+          class="ingredient"
+        />
+      </section>
+    </BCard>
   </main>
 </template>
 
 <script>
-import IngredientDetailsComponent from "@/components/Ingredient/IngredientDetailsComponent.vue";
+import UsedIngredientComponent from "@/components/Ingredient/UsedIngredientComponent.vue";
+import MissingIngredientComponent from "@/components/Ingredient/MissingIngredientComponent.vue";
 
 export default {
   name: "IngredientDetailsPage",
-  components: { IngredientDetailsComponent },
+  components: { UsedIngredientComponent, MissingIngredientComponent },
+  data() {
+    return {
+      listings: [],
+      currentIngredientId: "",
+    };
+  },
+  computed: {
+    recipe() {
+      return this.$store.state.selectedRecipe;
+    },
+    usedIngredients() {
+      return this.recipe.ingredients.filter(
+        (ingredient) => ingredient.status === "used"
+      );
+    },
+    missingIngredients() {
+      return this.recipe.ingredients.filter(
+        (ingredient) => ingredient.status === "missing"
+      );
+    },
+    missingCount() {
+      return this.missingIngredients.length;
+    },
+  },
+  methods: {
+    showDetails() {
+      this.$router.push({ path: "/recipe/details" });
+    },
+  },
 };
 </script>
+
+<style scoped>
+.ingredientDetails {
+  background-color: #e7f5ff;
+}
+
+.ingredient {
+  margin-bottom: 1em;
+}
+
+div {
+  margin-left: 0em;
+  margin-right: 0em;
+}
+
+.container-details {
+  display: flex;
+  align-items: flex-start;
+  gap: 1em;
+}
+
+img {
+  flex: 1;
+  object-fit: contain;
+  width: 12em;
+  margin-bottom: 1em;
+}
+
+.column {
+  flex: 3;
+  margin-top: 1em;
+}
+
+button {
+  display: flex;
+  gap: 0.25em;
+  align-items: center;
+}
+</style>
