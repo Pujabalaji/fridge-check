@@ -133,6 +133,6 @@ export default {
 }
 
 .navbar {
-  background-color: #1971c2;
+  background-color: #0b7285;
 }
 </style>
