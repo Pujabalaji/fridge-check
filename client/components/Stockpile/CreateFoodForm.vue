@@ -1,58 +1,87 @@
 <!-- Form for creating a food (block style) -->
 <template>
-  <BForm @submit.prevent="submit">
-    <h3>Create a Food:</h3>
+  <BForm @submit.prevent="submit" @reset.prevent="reset">
+    <h3>Add a Food:</h3>
     <article>
       <BFormGroup id="name" label="Name" label-for="name">
-        <BFormInput id="name" v-model="name" type="text" :state="!showErrors || isValidName ? null : false" />
+        <BFormInput
+          id="name"
+          v-model="name"
+          type="text"
+          :state="!showErrors || isValidName ? null : false"
+        />
         <BFormInvalidFeedback>
           Food name must be a nonempty string
         </BFormInvalidFeedback>
       </BFormGroup>
-      <BFormGroup id="expiration" label="Expiration" label-for="expiration">
-        <BFormInput
-          id="expiration"
-          v-model="expiration"
-          type="date"
-          :state="!showErrors || isValidDate ? null : false"
-        />
-        <BFormInvalidFeedback>
-          Date must be a mm/dd/yyyy format.
-        </BFormInvalidFeedback>
-      </BFormGroup>
-      <BFormGroup id="quantity" label="Quantity" label-for="quantity">
-        <BFormInput
-          id="quantity"
-          v-model="quantity"
-          type="number"
-          min="0"
-          step="0.01"
-          :state="!showErrors || isValidQuantity ? null : false"
-        />
-        <BFormInvalidFeedback>
-          Quantity must be a number greater than zero with up to two decimal
-          places
-        </BFormInvalidFeedback>
-      </BFormGroup>
-      <BFormInvalidFeedback>
-        Quantity must be an integer greater than 0
-      </BFormInvalidFeedback>
-      <BFormGroup id="unit" label="Units" label-for="unit">
-        <BFormSelect id="unit" v-model="unit" :options="unitOptions" />
-      </BFormGroup>
-      <BFormGroup id="prepared" label="Is this leftovers of a meal you made or purchased?">
-        <BFormRadio v-model="prepared" :prepared="prepared" name="prepared" value="true">Yes</BFormRadio>
-        <BFormRadio v-model="prepared" :prepared="prepared" name="prepared" value="false">No</BFormRadio>
-        <BFormInvalidFeedback :state="!showErrors || isValidPreparedFoodCheck ? null : false">
-          You must indicate whether or not this is a prepared food
-        </BFormInvalidFeedback>
+      <div class="form-row">
+        <BFormGroup id="expiration" label="Expiration" label-for="expiration">
+          <BFormInput
+            id="expiration"
+            v-model="expiration"
+            type="date"
+            :state="!showErrors || isValidDate ? null : false"
+          />
+          <BFormInvalidFeedback>
+            Date must be a mm/dd/yyyy format.
+          </BFormInvalidFeedback>
+        </BFormGroup>
+        <BFormGroup id="quantity" label="Quantity" label-for="quantity">
+          <BFormInput
+            id="quantity"
+            v-model="quantity"
+            type="number"
+            min="0"
+            step="0.01"
+            :state="!showErrors || isValidQuantity ? null : false"
+          />
+          <BFormInvalidFeedback>
+            Quantity must be a number greater than zero with up to two decimal
+            places
+          </BFormInvalidFeedback>
+        </BFormGroup>
+        <BFormGroup id="unit" label="Units" label-for="unit">
+          <BFormSelect id="unit" v-model="unit" :options="unitOptions" />
+        </BFormGroup>
+      </div>
+      <BFormGroup
+        id="prepared"
+        label="Is this leftovers of a meal you made or purchased?"
+        label-cols="5"
+      >
+        <BFormRadioGroup>
+          <BFormRadio
+            v-model="prepared"
+            :prepared="prepared"
+            name="prepared"
+            value="true"
+            >Yes</BFormRadio
+          >
+          <BFormRadio
+            v-model="prepared"
+            :prepared="prepared"
+            name="prepared"
+            value="false"
+            >No</BFormRadio
+          >
+          <BFormInvalidFeedback
+            :state="!showErrors || isValidPreparedFoodCheck ? null : false"
+          >
+            You must indicate whether or not this is a prepared food
+          </BFormInvalidFeedback>
+        </BFormRadioGroup>
       </BFormGroup>
     </article>
-    <BButton type="submit" variant="primary">
-      Create food
-    </BButton>
-    <BAlert v-for="(status, alert, index) in alerts" :key="index" :variant="status === 'error' ? 'danger' : 'success'"
-      show>
+    <div class="container-buttons">
+      <BButton type="submit" variant="primary"> Create food </BButton>
+      <BButton type="reset" variant="danger"> Cancel </BButton>
+    </div>
+    <BAlert
+      v-for="(status, alert, index) in alerts"
+      :key="index"
+      :variant="status === 'error' ? 'danger' : 'success'"
+      show
+    >
       {{ alert }}
     </BAlert>
   </BForm>
@@ -112,10 +141,24 @@ export default {
       return this.prepared !== "";
     },
     enableSubmit() {
-      return this.isValidName && this.isValidDate && this.isValidQuantity && this.isValidPreparedFoodCheck;
+      return (
+        this.isValidName &&
+        this.isValidDate &&
+        this.isValidQuantity &&
+        this.isValidPreparedFoodCheck
+      );
     },
   },
   methods: {
+    reset() {
+      this.name = "";
+      this.quantity = "";
+      this.expiration = "";
+      this.unit = "";
+      this.prepared = "";
+      this.showErrors = false;
+      this.$emit('hide');
+    },
     async submit() {
       /**
        * Submits a form with the specified options from data().
@@ -155,12 +198,7 @@ export default {
         const res = await r.json();
         this.$store.dispatch("refreshStockpile");
         options.callback();
-        this.name = "";
-        this.quantity = "";
-        this.expiration = "";
-        this.unit = "";
-        this.prepared = "";
-        this.showErrors = false;
+        reset();
         this.$store.commit("clearRecipes");
         this.$store.commit("updateShowSuggested", false);
         this.$store.commit("updateShowByName", false);
@@ -176,5 +214,35 @@ export default {
 <style scoped>
 article {
   margin-bottom: 1em;
+}
+
+.form-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1em;
+}
+
+.form-row > * {
+  flex: 1;
+}
+
+div {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.custom-radio {
+  margin-right: 0.5em;
+}
+
+.container-buttons {
+  display: flex;
+  gap: 1em;
+  padding-right: 0em;
+  padding-left: 0em;
+}
+
+.container-buttons > * {
+  flex: 1;
 }
 </style>

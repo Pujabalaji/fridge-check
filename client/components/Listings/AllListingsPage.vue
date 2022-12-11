@@ -14,7 +14,7 @@
                     <GetListingsForm ref="GetListingsForm" value="foodName"
                         placeholder="Search" button="Get listings" label="Filter Listings by Food Name"/>
                 </section>
-            <section v-if="$store.state.allListings.length">
+            <section v-if="$store.state.allListings.length" class="listing-container">
                 <ListingComponent v-for="listing in $store.state.allListings" :key="listing._id" :listing="listing" />
             </section>
             <article v-else>
@@ -51,5 +51,11 @@ section {
 
 .column {
     flex: 1;
+}
+
+.listing-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
 }
 </style>
