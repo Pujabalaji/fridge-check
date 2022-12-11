@@ -54,9 +54,6 @@ const store = new Vuex.Store({
        * @param user - new user to set
        */
       state.user = user;
-      if (user && user.numFood > 0) {
-        state.percentDiscarded = Math.round((user.thrownAway / user.numFood) * 1000) / 10
-      }
     },
     setSelectedRecipe(state, recipe) {
       /**
