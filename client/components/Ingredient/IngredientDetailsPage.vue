@@ -22,7 +22,7 @@
       </div>
       <section>
         <h5>You have {{ recipe.usedCount }} ingredients:</h5>
-        <IngredientMatchComponent
+        <UsedIngredientComponent
           v-for="ingredient in usedIngredients"
           :key="ingredient._id"
           :ingredient="ingredient"
@@ -31,19 +31,12 @@
       </section>
       <section v-if="missingCount">
         <h5>You need {{ missingCount }} ingredients:</h5>
-        <div
+        <MissingIngredientComponent
           v-for="ingredient in missingIngredients"
           :key="ingredient._id"
-          class="container-ingredient"
-        >
-          <details>
-            <summary>
-              {{ ingredient.amount }} {{ ingredient.unit }} of
-              {{ ingredient.name[0] }}
-            </summary>
-            <FoodListingsComponent :ingredient="ingredient" />
-          </details>
-        </div>
+          :ingredient="ingredient"
+          class="ingredient"
+        />
       </section>
     </BCard>
   </main>
@@ -124,9 +117,5 @@ button {
   display: flex;
   gap: 0.25em;
   align-items: center;
-}
-
-details {
-  width: 100%;
 }
 </style>

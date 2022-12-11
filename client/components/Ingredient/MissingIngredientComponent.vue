@@ -2,11 +2,13 @@
 
 <template>
   <div class="listing-container">
-    <p>
-      {{ ingredient.amount }} {{ ingredient.unit }} of
-      {{ ingredient.name[0] }}
-    </p>
-    <FoodListingsComponent :ingredient="ingredient" />
+    <details>
+      <summary>
+        {{ ingredient.amount }} {{ ingredient.unit }} of
+        {{ ingredient.name[0] }}
+      </summary>
+      <FoodListingsComponent :ingredient="ingredient" />
+    </details>
   </div>
 </template>
 
@@ -65,5 +67,9 @@ button {
 p {
   margin-bottom: 0em;
   flex-shrink: 0;
+}
+
+details {
+  width: 100%;
 }
 </style>
