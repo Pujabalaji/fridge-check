@@ -82,7 +82,7 @@ export default {
       ];
     },
     dropdown() {
-      return [{ to: "/account", name: "Settings" }];
+      return [{ to: "/account", name: "Settings" }, {to: '/stats', name: 'Stats'}];
     },
   },
   methods: {

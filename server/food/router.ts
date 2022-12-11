@@ -98,7 +98,8 @@ router.delete(
         foodValidator.isValidFoodModifier
     ],
     async (req: Request, res: Response) => {
-        await Promise.all([FoodCollection.deleteOne(req.params.foodId), ListingCollection.deleteOneByFoodId(req.params.foodId)]);
+        const userId = (req.session.userId as string) ?? ''; 
+        await Promise.all([FoodCollection.deleteOne(req.params.foodId, userId, req.body.thrownAway), ListingCollection.deleteOneByFoodId(req.params.foodId)]);
         res.status(200).json({
             message: 'Your food was deleted successfully.'
         });
