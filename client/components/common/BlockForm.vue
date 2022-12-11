@@ -16,7 +16,7 @@
           :id="field.id"
           v-model="field.value"
           :type="field.type"
-          :state="field.submitStatus(field.value).status == 'ok'"
+          :state="!showErrors || field.submitStatus(field.value).status == 'ok' ? null : false"
         />
         <BFormInvalidFeedback>
           {{ field.submitStatus(field.value).errorToDisplay }}
@@ -26,7 +26,7 @@
     <article v-else>
       <p>{{ content }}</p>
     </article>
-    <BButton type="submit" variant="primary" :disabled="!shouldSubmit" block>
+    <BButton type="submit" variant="primary" block>
       {{ title }}
     </BButton>
     <BAlert
@@ -57,6 +57,7 @@ export default {
       fields: [],
       title: "",
       content: "",
+      showErrors: false,
     };
   },
   computed: {
@@ -71,6 +72,11 @@ export default {
       /**
        * Submits a form with the specified options from data().
        */
+      if (!this.shouldSubmit) {
+        this.showErrors = true;
+        return;
+      }
+
       const options = {
         method: this.method,
         headers: { "Content-Type": "application/json" },
@@ -108,6 +114,8 @@ export default {
         this.fields.forEach((field) => {
           field.value = "";
         });
+
+        this.showErrors = false;
 
         if (this.callback) {
           this.callback();
