@@ -1,4 +1,4 @@
-<!-- Reusable component showing ingredient matches -->
+<!-- Reusable component showing used ingredients -->
 
 <template>
   <div>
@@ -7,7 +7,6 @@
       {{ ingredient.amount }} {{ ingredient.unit }} of
       {{ ingredient.name[0] }}
     </p>
-    <FoodListingsComponent :ingredient="ingredient" />
     </div>
     <FoodComponent
       v-if="
@@ -31,7 +30,7 @@ import FoodComponent from "@/components/Stockpile/FoodComponent.vue";
 import FoodListingsComponent from "@/components/Listings/FoodListingsComponent.vue";
 
 export default {
-  name: "IngredientMatchComponent",
+  name: "UsedIngredientComponent",
   components: { FoodComponent, FoodListingsComponent },
   props: {
     ingredient: {

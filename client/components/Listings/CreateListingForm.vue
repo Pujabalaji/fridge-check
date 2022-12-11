@@ -57,7 +57,7 @@
         </BFormInvalidFeedback>
       </BFormGroup>
     </article>
-    <div class="container">
+    <div class="container-buttons">
       <BButton type="submit" variant="primary">
         Create listing
       </BButton>

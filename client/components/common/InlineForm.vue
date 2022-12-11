@@ -3,7 +3,8 @@
 
 <template>
   <BForm @submit.prevent="submit">
-    <BFormGroup :label="label" label-for="search-input">
+    <h5>{{label}}</h5>
+    <BFormGroup>
       <BInputGroup>
         <BFormInput id="search-input" v-model="value" type="text" :placeholder="placeholder" />
         <BInputGroupAppend>
@@ -52,10 +53,6 @@ button {
   display: flex;
   gap: 0.25em;
   align-items: center;
-}
-
-form {
-  padding: 0.5em;
 }
 
 </style>

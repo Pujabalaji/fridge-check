@@ -61,19 +61,25 @@ body {
 }
 
 main {
-  padding: 1em 5em;
+  padding: 2em 15em;
 }
 
 form {
-  padding: 0.5em;
+  padding: 1em;
   background-color: #a5d8ff;
   box-shadow: 0 12px 12px rgba(0, 0, 0, 0.2);
   margin-bottom: 1.5em;
+  border: 1px solid #0000003F;
   border-radius: 5px;
 }
 
 button + .alert {
   margin-top: 1em;
   margin-bottom: 0.5em;
+}
+
+.col {
+  display: flex;
+  align-items: center;
 }
 </style>

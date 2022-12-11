@@ -16,7 +16,7 @@ const store = new Vuex.Store({
     expired: [],  // foods that have expired for current user
     expiring: [], // foods that will expire within a week for current user
     remainingFoods: [], // foods that have not expired and will not expire in a week for current user
-    foods: [],  // all foods of current user
+    foods: {},  // all foods of current user
     currentFood: null, // the food, if any, that the current user has selected to create a listing from
     listings: [],
     foodIdsWithListings: [],
@@ -62,6 +62,12 @@ const store = new Vuex.Store({
        * @param recipe - new recipe to display details
        */
       state.selectedRecipe = recipe;
+    },
+    clearStockpile(state, stockpile) {
+      state.expired = [];
+      state.expiring = [];
+      state.remainingFoods = [];
+      state.foods = {};
     },
     updateStockpile(state, stockpile) {
       /**
@@ -130,6 +136,7 @@ const store = new Vuex.Store({
       /**
        * Request the server for the currently available foods of current user.
        */
+      commit('clearStockpile');
       const url = state.stockpileFilter? `/api/foods?foodName=${state.stockpileFilter}`:'/api/foods';
       const res = await fetch(url).then(async r => r.json());
       commit('updateStockpile', res);
@@ -142,10 +149,12 @@ const store = new Vuex.Store({
       }
     },
     async refreshMyListings({ commit, state }) {
+      commit('updateMyListings', []);
       const listings = await fetch('/api/listings').then(async r => r.json());
       commit('updateMyListings', listings);
     },
     async refreshAllListings({ commit, state }) {
+      commit('updateAllListings', []);
       const url = state.listingFilter? `/api/follows/listings?foodName=${state.listingFilter}`:'/api/follows/listings';
       const res = await fetch(url).then(async r => r.json());
       commit('updateAllListings', res);
