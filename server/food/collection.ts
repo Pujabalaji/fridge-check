@@ -21,7 +21,6 @@ class FoodCollection {
     const user = await UserCollection.findOneByUserId(userId);
     user.numFood+=1;
     await user.save();
-    console.log(user);
     const food = new FoodModel({
       userId,
       dateCreated: date,

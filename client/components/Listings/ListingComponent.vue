@@ -7,7 +7,7 @@
         <div>
           <header>
             <h2 class="name">
-              {{ listing.name }} ( x{{ listing.quantity }} {{ listing.unit }})
+              {{ listing.name + quantityUnitText }}
             </h2>
           </header>
           <p>Price: {{ listing.price }}</p>
@@ -106,6 +106,9 @@ export default {
     };
   },
   computed: {
+    quantityUnitText() {
+      return " (x"+this.listing.quantity+((this.listing.unit) ? (" " + this.listing.unit) : "")+")";
+    },
     isValidQuantity() {
       const quantityRegex =
         /^(?=.*[1-9])\d*(?:\.\d{1,2})?$|^([1-9][0-9]*)\/[1-9][0-9]*|^[1-9][0-9]*$/;
