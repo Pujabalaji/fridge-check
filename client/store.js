@@ -63,6 +63,12 @@ const store = new Vuex.Store({
        */
       state.selectedRecipe = recipe;
     },
+    clearStockpile(state, stockpile) {
+      state.expired = [];
+      state.expiring = [];
+      state.remainingFoods = [];
+      state.foods = {};
+    },
     updateStockpile(state, stockpile) {
       /**
        * Update the stored stockpile for the user.
@@ -130,6 +136,7 @@ const store = new Vuex.Store({
       /**
        * Request the server for the currently available foods of current user.
        */
+      commit('clearStockpile');
       const url = state.stockpileFilter? `/api/foods?foodName=${state.stockpileFilter}`:'/api/foods';
       const res = await fetch(url).then(async r => r.json());
       commit('updateStockpile', res);
@@ -142,10 +149,12 @@ const store = new Vuex.Store({
       }
     },
     async refreshMyListings({ commit, state }) {
+      commit('updateMyListings', []);
       const listings = await fetch('/api/listings').then(async r => r.json());
       commit('updateMyListings', listings);
     },
     async refreshAllListings({ commit, state }) {
+      commit('updateAllListings', []);
       const url = state.listingFilter? `/api/follows/listings?foodName=${state.listingFilter}`:'/api/follows/listings';
       const res = await fetch(url).then(async r => r.json());
       commit('updateAllListings', res);
