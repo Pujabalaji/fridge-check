@@ -9,18 +9,25 @@
       </h3>
 
       <div class="actions">
-        <BButton @click="startEditing" variant="info"
-          ><BIconPencilFill /> <span>Edit Quantity</span></BButton
-        >
-        <BButton @click="deleteFood" variant="info"><BIconTrash /> <span>Delete</span> </BButton>
+        <BButton @click="startEditing" variant="info">
+          <BIconPencilFill /> <span>Edit Quantity</span>
+        </BButton>
+        <BButton @click="callDeleteFood" variant="info">
+          <BIconTrash /> <span>Delete</span>
+        </BButton>
+        <BModal id="bv-modal-deletefood" hide-header-close hide-footer>
+          <h4>
+            Are you sure you want to delete this food?
+          </h4>
+          <div class="buttons">
+            <BButton class="danger" @click="deleteFood">Yes, delete</BButton>
+            <BButton @click="$bvModal.hide('bv-modal-deletefood')">No, cancel</BButton>
+          </div>
+        </BModal>
         <BButton v-if="enableCreateListing" @click="createListing" variant="info">
           <BIconClipboardPlus /> <span>Create Listing</span>
         </BButton>
-        <BButton
-          v-else-if="$store.state.foodIdsWithListings.includes(food._id)"
-          @click="viewListing"
-          variant="info"
-        >
+        <BButton v-else-if="$store.state.foodIdsWithListings.includes(food._id)" @click="viewListing" variant="info">
           <BIconClipboard /> <span>View Listing</span>
         </BButton>
       </div>
@@ -28,42 +35,29 @@
     <header v-else>
       <h3 class="name">
         {{ food.name }} ( x
-        <textarea
-          v-if="editing"
-          class="quantity"
-          :value="draft"
-          @input="draft = $event.target.value"
-        />{{ food.unit }}) Expires on: {{ food.expiration }}
+        <textarea v-if="editing" class="quantity" :value="draft" @input="draft = $event.target.value" />{{ food.unit }})
+        Expires on: {{ food.expiration }}
       </h3>
-
       <div class="actions">
-        <BButton v-if="editing" @click="submitEdit" variant="info"
-          ><BIconCheck2 /> <span>Save changes</span>
+        <BButton v-if="editing" @click="submitEdit" variant="info">
+          <BIconCheck2 /> <span>Save changes</span>
         </BButton>
-        <BButton v-if="editing" @click="stopEditing" variant="info"
-          ><BIconX /> <span>Discard changes</span>
+        <BButton v-if="editing" @click="stopEditing" variant="info">
+          <BIconX /> <span>Discard changes</span>
         </BButton>
-        <BButton @click="deleteFood" variant="info"
-          ><BIconTrash /> <span>Delete</span>
+        <BButton @click="callDeleteFood" variant="info">
+          <BIconTrash /> <span>Delete</span>
         </BButton>
         <BButton v-if="enableCreateListing" variant="info" @click="createListing">
           <span>Create Listing</span>
         </BButton>
-        <BButton
-          v-else-if="$store.state.foodIdsWithListings.includes(food._id)"
-          @click="viewListing"
-          variant="info"
-        >
+        <BButton v-else-if="$store.state.foodIdsWithListings.includes(food._id)" @click="viewListing" variant="info">
           <BIconClipboard /> <span>View Listing</span>
         </BButton>
       </div>
     </header>
-    <BAlert
-      v-for="(status, alert, index) in alerts"
-      :key="index"
-      :variant="status === 'error' ? 'danger' : 'success'"
-      show
-    >
+    <BAlert v-for="(status, alert, index) in alerts" :key="index" :variant="status === 'error' ? 'danger' : 'success'"
+      show>
       {{ alert }}
     </BAlert>
   </BCard>
@@ -100,10 +94,16 @@ export default {
       this.editing = false;
       this.draft = this.food.quantity;
     },
+    callDeleteFood() {
+      console.log("called correct func");
+      this.$bvModal.show('bv-modal-deletefood');
+    },
     async deleteFood() {
       /**
        * Deletes this food and any associated listings.
        */
+      console.log("skipped to deleteFood");
+      this.$bvModal.hide('bv-modal-deletefood');
       const params = {
         method: "DELETE",
         callback: () => {
@@ -224,6 +224,17 @@ export default {
 button {
   display: flex;
   gap: 0.25em;
+  align-items: center;
+}
+
+.danger {
+  border-color: red;
+  background-color: red;
+}
+
+.buttons {
+  gap: 0.25em;
+  display: flex;
   align-items: center;
 }
 </style>
