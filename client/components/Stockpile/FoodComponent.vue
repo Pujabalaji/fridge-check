@@ -41,7 +41,7 @@
         <BButton v-if="enableCreateListing" @click="createListing" variant="info">
           <BIconClipboardPlus /> <span>Create Listing</span>
         </BButton>
-        <BButton v-else-if="$store.state.foodIdsWithListings.includes(food._id)" @click="viewListing" variant="info">
+        <BButton v-else-if="$store.state.foodIdsWithListings.includes(food._id) && showListingButton" @click="viewListing" variant="info">
           <BIconClipboard /> <span>View Listing</span>
         </BButton>
       </div>
