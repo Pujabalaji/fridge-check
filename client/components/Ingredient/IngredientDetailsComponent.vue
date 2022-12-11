@@ -2,7 +2,7 @@
 
 <template>
   <BCard class="ingredientDetails">
-    <div class="container">
+    <div class="container-details">
       <img :src="recipe.imageUrl" />
       <div class="column">
         <h4>{{ recipe.name }}</h4>
@@ -33,45 +33,19 @@
           {{ ingredient.amount }} {{ ingredient.unit }} of
           {{ ingredient.name[0] }}
         </p>
-        <BButton @click="fetchListings(ingredient)" variant="info"
-          ><BIconClipboard /> <span>View Listings</span></BButton
-        >
-        <div v-if="currentIngredientId == ingredient._id">
-          <div v-if="listings.length">
-            <ListingComponent
-              v-for="listing in listings"
-              :key="listing._id"
-              :listing="listing"
-            />
-          </div>
-          <p v-else class="no-margin">No listings found</p>
-        </div>
+        <FoodListingsComponent :ingredient="ingredient"/>
       </div>
     </section>
-    <h3>Want to make this recipe?</h3>
-    <p>
-      We suggest removing/adjusting the quantities of the following food items:
-    </p>
-    <div class="container-food">
-      <div v-for="(ingredient, index) in usedIngredients" :key="index">
-      <FoodComponent
-        v-if="ingredient.stockpileMatches.length"
-        :key="ingredient.stockpileMatches[0]._id"
-        :food="ingredient.stockpileMatches[0]"
-      />
-      </div>
-    </div>
   </BCard>
 </template>
 
 <script>
 import IngredientMatchComponent from "@/components/Ingredient/IngredientMatchComponent.vue";
-import ListingComponent from "@/components/Listings/ListingComponent.vue";
-import FoodComponent from "@/components/Stockpile/FoodComponent.vue";
+import FoodListingsComponent from "@/components/Listings/FoodListingsComponent.vue"
 
 export default {
   name: "IngredientDetailsComponent",
-  components: { IngredientMatchComponent, ListingComponent, FoodComponent },
+  components: { IngredientMatchComponent, FoodListingsComponent },
   props: {
     // Data from the stored recipe
     recipe: {
@@ -146,32 +120,22 @@ div {
   margin-right: 0em;
 }
 
-.container {
+.container-details {
   display: flex;
   align-items: flex-start;
   gap: 1em;
 }
 
 .container-ingredient {
-  padding-left: 5px;
   display: flex;
   align-items: center;
   gap: 1em;
   margin-bottom: 0.5em;
 }
 
-.container-food {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5em;
-}
-
 .no-margin {
   margin-bottom: 0em;
-}
-
-h3 {
-  margin-top: 0.5em;
+  flex-shrink: 0;
 }
 
 img {

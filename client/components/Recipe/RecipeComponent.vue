@@ -2,7 +2,7 @@
 
 <template>
   <BCard class="recipe">
-    <div class="container">
+    <div class="container-recipe">
       <img :src="recipe.imageUrl" />
       <div class="column">
         <h4>{{ recipe.name }}</h4>
@@ -42,7 +42,7 @@ export default {
   background-color: #e7f5ff;
 }
 
-.container {
+.container-recipe {
   display: flex;
   gap: 1em;
 }

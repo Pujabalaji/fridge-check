@@ -7,8 +7,8 @@
         </header>
         <header v-else>
             <h2>My Stockpile</h2>
-        </header><br>
-        <div v-if="$store.state.username" class="container">
+        </header> <br>
+        <div v-if="$store.state.username" class="container-page">
             <div>
                 <GetFoodsForm ref="GetFoodsForm" value="foodName" placeholder="Search"
                     button="Get foods" label="Filter Stockpile by Food Name"/>
@@ -69,13 +69,13 @@ export default {
 </script>
   
 <style scoped>
-.container {
+.container-page {
     display: flex;
     justify-content: space-between;
     gap: 1em;
 }
 
-.container>* {
+.container-page>* {
     flex: 1;
 }
 

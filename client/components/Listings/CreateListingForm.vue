@@ -186,14 +186,14 @@ export default {
 </script>
 
 <style scoped>
-.container {
+.container-buttons {
   display: flex;
   gap: 1em;
   padding-right: 0em;
   padding-left: 0em;
 }
 
-.container > * {
+.container-buttons > * {
   flex: 1;
 }
 </style>

@@ -13,11 +13,11 @@
           ><BIconPencilFill /> <span>Edit Quantity</span></BButton
         >
         <BButton @click="deleteFood" variant="info"><BIconTrash /> <span>Delete</span> </BButton>
-        <BButton v-if="enableCreateListing" @click="createListing" variant="info">
+        <BButton v-if="enableCreateListing && showListingButton" @click="createListing" variant="info">
           <BIconClipboardPlus /> <span>Create Listing</span>
         </BButton>
         <BButton
-          v-else-if="$store.state.foodIdsWithListings.includes(food._id)"
+          v-else-if="$store.state.foodIdsWithListings.includes(food._id) && showListingButton"
           @click="viewListing"
           variant="info"
         >
@@ -46,11 +46,11 @@
         <BButton @click="deleteFood" variant="info"
           ><BIconTrash /> <span>Delete</span>
         </BButton>
-        <BButton v-if="enableCreateListing" variant="info" @click="createListing">
+        <BButton v-if="enableCreateListing && showListingButton" variant="info" @click="createListing">
           <span>Create Listing</span>
         </BButton>
         <BButton
-          v-else-if="$store.state.foodIdsWithListings.includes(food._id)"
+          v-else-if="$store.state.foodIdsWithListings.includes(food._id) && showListingButton"
           @click="viewListing"
           variant="info"
         >
@@ -77,6 +77,10 @@ export default {
       type: Object,
       required: true,
     },
+    showListingButton:  {
+      type: Boolean,
+      default: true,
+    }
   },
   data() {
     return {

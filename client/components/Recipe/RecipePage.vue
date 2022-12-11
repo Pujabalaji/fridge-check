@@ -7,7 +7,7 @@
         <h2>Suggested Recipes</h2>
       </header>
       <br />
-      <div class="container">
+      <div class="container-page">
         <div class="actions">
           <section>
             <h3>Quick Suggest:</h3>
@@ -109,7 +109,7 @@ export default {
 </script>
 
 <style scoped>
-.container {
+.container-page {
   display: flex;
   justify-content: space-between;
   gap: 1em;
