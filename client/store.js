@@ -149,6 +149,14 @@ const store = new Vuex.Store({
       const url = state.listingFilter? `/api/follows/listings?foodName=${state.listingFilter}`:'/api/follows/listings';
       const res = await fetch(url).then(async r => r.json());
       commit('updateAllListings', res);
+    },
+    async refreshUser({ commit, state }) {
+      fetch('/api/users/session', {
+        credentials: 'same-origin' // Sends express-session credentials with request
+      }).then(res => res.json()).then(res => {
+        const user = res.user;
+        commit('setUser', user ? user : null);
+      });
     }
   },
   // Store data across page refreshes, only discard on browser close
