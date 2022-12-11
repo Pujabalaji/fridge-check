@@ -26,7 +26,7 @@ const store = new Vuex.Store({
     displaySuggested: false,
     displayByName: false,
     lastSearched: "",
-    percentDiscarded: null,
+    percentDiscarded: 0,
   },
   mutations: {
     alert(state, payload) {
@@ -54,7 +54,9 @@ const store = new Vuex.Store({
        * @param user - new user to set
        */
       state.user = user;
-      state.percentDiscarded = Math.round((user.thrownAway/user.numFood)*1000)/10
+      if (user && user.numFood > 0) {
+        state.percentDiscarded = Math.round((user.thrownAway / user.numFood) * 1000) / 10
+      }
     },
     setSelectedRecipe(state, recipe) {
       /**
