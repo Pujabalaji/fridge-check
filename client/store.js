@@ -16,7 +16,7 @@ const store = new Vuex.Store({
     expired: [],  // foods that have expired for current user
     expiring: [], // foods that will expire within a week for current user
     remainingFoods: [], // foods that have not expired and will not expire in a week for current user
-    foods: [],  // all foods of current user
+    foods: {},  // all foods of current user
     currentFood: null, // the food, if any, that the current user has selected to create a listing from
     listings: [],
     foodIdsWithListings: [],

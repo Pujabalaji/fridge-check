@@ -10,26 +10,31 @@
       <div class="container-page">
         <div class="actions">
           <section>
-            <h3>Quick Suggest:</h3>
+            <h4>Quick Suggest:</h4>
             <BButton @click="handleSuggestedClick" variant="primary">
               <span>
                 Suggest recipes that use ingredients in my stockpile
               </span>
             </BButton>
           </section>
-          <GetRecipesForm
-            ref="GetRecipesForm"
-            value=""
-            placeholder="Search"
-            button="Get Recipes"
-            label="Search Recipes by Name"
-            @loading="val => loadingNameSearch=val"
-          />
+          <section>
+            <h4>Search Recipes by Name:</h4>
+            <GetRecipesForm
+              ref="GetRecipesForm"
+              value=""
+              placeholder="Search"
+              button="Get Recipes"
+              @loading="val => loadingNameSearch=val"
+            />
+          </section>
         </div>
         <div class="recipes">
           <section v-if="$store.state.displaySuggested">
             <h3>Showing recipes using ingredients you have:</h3>
-            <div v-if="$store.state.recipes.length" class="recipe-container">
+            <div v-if="showAddStockpile">
+              <h4>Add items to your <router-link to="/stockpile">stockpile</router-link> to get suggested recipes</h4>
+            </div>
+            <div v-else-if="$store.state.recipes.length" class="recipe-container">
               <RecipeComponent
                 v-for="recipe in $store.state.recipes"
                 :key="recipe._id"
@@ -78,14 +83,17 @@ export default {
       searchText: "",
       loadingSuggested: false,
       loadingNameSearch: false,
+      showAddStockpile: false,
     };
   },
   methods: {
     async handleSuggestedClick() {
       this.$store.commit("updateShowSuggested", true);
       this.$store.commit("updateShowByName", false);
-      if (this.$store.state.username) {
+      if (this.$store.state.username && Object.keys(this.$store.state.foods).length !== 0) {
         await this.fetchSuggestedRecipes();
+      } else if (this.$store.state.username) {
+        this.showAddStockpile = true;
       }
     },
     async fetchSuggestedRecipes() {
@@ -142,4 +150,6 @@ button {
   flex-direction: column;
   gap: 0.5em;
 }
+
+
 </style>
