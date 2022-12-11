@@ -155,6 +155,7 @@ div {
 
 .no-margin {
   margin-bottom: 0em;
+  flex-shrink: 0;
 }
 
 h3 {
