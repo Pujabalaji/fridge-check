@@ -20,12 +20,14 @@ const store = new Vuex.Store({
     currentFood: null, // the food, if any, that the current user has selected to create a listing from
     listings: [],
     foodIdsWithListings: [],
-    allListingsTemp: [],
+    allListings: [],
     selectedRecipe: null, // recipe user has selected to see further details from
     recipes: [],
     displaySuggested: false,
     displayByName: false,
     lastSearched: "",
+    listingFilter: null,
+    stockpileFilter: null,
   },
   mutations: {
     alert(state, payload) {
@@ -69,8 +71,9 @@ const store = new Vuex.Store({
       state.expired = [];
       state.expiring = [];
       state.remainingFoods = [];
-      state.foods = stockpile;
-
+      if (!state.stockpileFilter){
+        state.foods = {};
+      }
       const date = new Date();
       date.setHours(0, 0, 0, 0);
       var week = new Date();
@@ -78,6 +81,7 @@ const store = new Vuex.Store({
 
       for (const food of stockpile) {
         var foodDate = new Date(food.rawExpiration);
+        Vue.set(state.foods, food._id, food);
         if (foodDate <= date) {
           state.expired.push(food);
         } else if (foodDate <= week) {
@@ -91,7 +95,7 @@ const store = new Vuex.Store({
       state.listings = listings;
     },
     updateAllListings(state, listings) {
-      state.allListingsTemp = listings;
+      state.allListings = listings;
     },
     enableCreateListing(state, food) {
       state.currentFood = food;
@@ -113,14 +117,20 @@ const store = new Vuex.Store({
     },
     updateLastSearched(state, text) {
       state.lastSearched = text;
-    }
+    },
+    updateListingFilter(state, filters) {
+      state.listingFilter = filters;
+    },
+    updateStockpileFilter(state, filter) {
+      state.stockpileFilter = filter;
+    },
   },
   actions: {
     async refreshStockpile({ commit, state }) {
       /**
        * Request the server for the currently available foods of current user.
        */
-      const url = '/api/foods';
+      const url = state.stockpileFilter? `/api/foods?foodName=${state.stockpileFilter}`:'/api/foods';
       const res = await fetch(url).then(async r => r.json());
       commit('updateStockpile', res);
       state.foodIdsWithListings = [];
@@ -130,15 +140,23 @@ const store = new Vuex.Store({
           state.foodIdsWithListings.push(food._id);
         }
       }
-
     },
     async refreshMyListings({ commit, state }) {
       const listings = await fetch('/api/listings').then(async r => r.json());
       commit('updateMyListings', listings);
     },
     async refreshAllListings({ commit, state }) {
-      const listings = await fetch('/api/listings/temp').then(async r => r.json());
-      commit('updateAllListings', listings);
+      const url = state.listingFilter? `/api/follows/listings?foodName=${state.listingFilter}`:'/api/follows/listings';
+      const res = await fetch(url).then(async r => r.json());
+      commit('updateAllListings', res);
+    },
+    async refreshUser({ commit, state }) {
+      fetch('/api/users/session', {
+        credentials: 'same-origin' // Sends express-session credentials with request
+      }).then(res => res.json()).then(res => {
+        const user = res.user;
+        commit('setUser', user ? user : null);
+      });
     }
   },
   // Store data across page refreshes, only discard on browser close

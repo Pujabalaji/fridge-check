@@ -4,24 +4,38 @@
   <BCard class="food">
     <header v-if="!editing">
       <h3 class="name">
-        {{ food.name }} ( x{{ food.quantity }} {{ food.unit }}) Expires on:
-        {{ food.expiration }}
+        {{ food.name + quantityUnitText }}
       </h3>
+      <p>
+        Expires on: {{ food.expiration }}
+      </p>
 
       <div class="actions">
         <BButton @click="startEditing" variant="info">
           <BIconPencilFill /> <span>Edit Quantity</span>
         </BButton>
+        <BButton @click="callThrowAway" variant="info">
+          <BIconTrash /> <span>Throw Away</span>
+        </BButton>
         <BButton @click="callDeleteFood" variant="info">
-          <BIconTrash /> <span>Delete</span>
+          <img src="../../public/apple-core.svg" width="25" height="25" /> <span>Eaten</span>
         </BButton>
         <BModal id="bv-modal-deletefood" hide-backdrop hide-header-close hide-footer>
           <h4>
-            Are you sure you want to delete this food?
+            Are you sure you want to remove this food from your stockpile?
           </h4>
           <div class="buttons">
             <BButton class="danger" @click="deleteFood">Yes, delete</BButton>
             <BButton @click="$bvModal.hide('bv-modal-deletefood')">No, cancel</BButton>
+          </div>
+        </BModal>
+        <BModal id="bv-modal-throwaway" hide-backdrop hide-header-close hide-footer>
+          <h4>
+            Are you sure you want to remove this food from your stockpile?
+          </h4>
+          <div class="buttons">
+            <BButton class="danger" @click="throwAway">Yes, delete</BButton>
+            <BButton @click="$bvModal.hide('bv-modal-throwaway')">No, cancel</BButton>
           </div>
         </BModal>
         <BButton v-if="enableCreateListing" @click="createListing" variant="info">
@@ -45,13 +59,17 @@
         <BButton v-if="editing" @click="stopEditing" variant="info">
           <BIconX /> <span>Discard changes</span>
         </BButton>
+        <BButton @click="callThrowAway" variant="info">
+          <BIconTrash /> <span>Throw Away</span>
+        </BButton>
         <BButton @click="callDeleteFood" variant="info">
-          <BIconTrash /> <span>Delete</span>
+          <img src="../../public/apple-core.svg" width="25" height="25" /> <span>Eaten</span>
         </BButton>
         <BButton v-if="enableCreateListing" variant="info" @click="createListing">
           <span>Create Listing</span>
         </BButton>
-        <BButton v-else-if="$store.state.foodIdsWithListings.includes(food._id)" @click="viewListing" variant="info">
+        <BButton v-else-if="$store.state.foodIdsWithListings.includes(food._id) && showListingButton"
+          @click="viewListing" variant="info">
           <BIconClipboard /> <span>View Listing</span>
         </BButton>
       </div>
@@ -71,15 +89,49 @@ export default {
       type: Object,
       required: true,
     },
+    showListingButton: {
+      type: Boolean,
+      default: true,
+    },
   },
   data() {
     return {
       editing: false, // Whether or not this object is in edit mode
       alerts: {}, // Displays success/error messages encountered during object modification
       draft: this.food.quantity,
+      thrownAway: false,
     };
   },
   methods: {
+    callDeleteFood() {
+      this.$bvModal.show('bv-modal-deletefood');
+    },
+    callThrowAway() {
+      this.$bvModal.show('bv-modal-throwaway');
+    },
+    async deleteFood() {
+      /**
+       * Deletes this food and any associated listings.
+       */
+      this.$bvModal.hide('bv-modal-deletefood');
+      const params = {
+        method: "DELETE",
+        callback: () => {
+          this.$store.commit("alert", {
+            message: "Successfully deleted food!",
+            status: "success",
+          });
+        },
+        body: JSON.stringify({ thrownAway: this.thrownAway }),
+      };
+      const r = this.request(params);
+      this.$store.commit("clearRecipes");
+      this.$store.commit("updateShowSuggested", false);
+      this.$store.commit("updateShowByName", false);
+      if (this.$store.state.foodIdsWithListings.includes(this.food._id)) {
+        this.$store.dispatch("refreshMyListings");
+      }
+    },
     startEditing() {
       /**
        * Enables edit mode on this object.
@@ -94,31 +146,13 @@ export default {
       this.editing = false;
       this.draft = this.food.quantity;
     },
-    callDeleteFood() {
-      this.$bvModal.show('bv-modal-deletefood');
-    },
-    async deleteFood() {
+    throwAway() {
       /**
-       * Deletes this food and any associated listings.
+       * Marks food as thrown away and deletes food 
        */
-      console.log("skipped to deleteFood");
-      this.$bvModal.hide('bv-modal-deletefood');
-      const params = {
-        method: "DELETE",
-        callback: () => {
-          this.$store.commit("alert", {
-            message: "Successfully deleted food!",
-            status: "success",
-          });
-        },
-      };
-      const r = this.request(params);
-      this.$store.commit("clearRecipes");
-      this.$store.commit("updateShowSuggested", false);
-      this.$store.commit("updateShowByName", false);
-      if (this.$store.state.foodIdsWithListings.includes(this.food._id)) {
-        this.$store.dispatch("refreshMyListings");
-      }
+      this.thrownAway = true;
+      this.$bvModal.hide('bv-modal-throwaway');
+      this.deleteFood();
     },
     async createListing() {
       this.$store.commit("enableCreateListing", this.food);
@@ -189,6 +223,9 @@ export default {
     },
   },
   computed: {
+    quantityUnitText() {
+      return " (x" + this.food.quantity + ((this.food.unit) ? (" " + this.food.unit) : "") + ")";
+    },
     enableCreateListing() {
       const foodsExpiredOrListingExists = [];
       for (const foodId of this.$store.state.foodIdsWithListings) {
@@ -207,6 +244,10 @@ export default {
 </script>
   
 <style scoped>
+p {
+  margin-bottom: 10px;
+}
+
 .actions {
   display: flex;
   gap: 1em;

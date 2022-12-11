@@ -7,14 +7,14 @@
         <div>
           <header>
             <h2 class="name">
-              {{ listing.name }} ( x{{ listing.quantity }} {{ listing.unit }})
+              {{ listing.name + quantityUnitText }}
             </h2>
           </header>
           <p>Price: {{ listing.price }}</p>
           <div v-if="listing.username !== $store.state.user?.username" class="user-info">
             <p>User: {{ listing.username }}</p>
             <p>Community: {{ listing.community }}</p>
-            <p>Contact info: {{ listing.email }}</p>
+            <p>Email {{ listing.email }} to claim</p>
           </div>
           <p>Expires on: {{ listing.expiration }}</p>
         </div>
@@ -93,6 +93,9 @@ export default {
     };
   },
   computed: {
+    quantityUnitText() {
+      return " (x"+this.listing.quantity+((this.listing.unit) ? (" " + this.listing.unit) : "")+")";
+    },
     isValidQuantity() {
       const quantityRegex =
         /^(?=.*[1-9])\d*(?:\.\d{1,2})?$|^([1-9][0-9]*)\/[1-9][0-9]*|^[1-9][0-9]*$/;

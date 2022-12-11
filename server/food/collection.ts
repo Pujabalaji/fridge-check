@@ -18,6 +18,9 @@ class FoodCollection {
     const [year, month, day] = expiration.split('-');
     const expirationDate = new Date(+year, +month - 1, +day);
     expirationDate.setHours(0, 0, 0, 0);
+    const user = await UserCollection.findOneByUserId(userId);
+    user.numFood+=1;
+    await user.save();
     const food = new FoodModel({
       userId,
       dateCreated: date,
@@ -61,6 +64,17 @@ class FoodCollection {
   }
 
   /**
+   * Get all the foods in by given author
+   *
+   * @param {string} userId - The userId of the author of the foods
+   * @return {Promise<HydratedDocument<Food>[]>} - An array of all of the foods
+   */
+   static async findAllByName(userId: string, food:string): Promise<Array<HydratedDocument<Food>>> {
+    let re = new RegExp(`${food}`, 'gi');
+    return FoodModel.find({ userId: userId, name:{ $regex: re }}).sort({ expiration: 1 }).populate('userId');
+  }
+
+  /**
    * Update a food with the new quantity
    *
    * @param {string} foodId - The id of the food to be updated
@@ -80,8 +94,13 @@ class FoodCollection {
    * @param {string} foodId - The foodId of food to delete
    * @return {Promise<Boolean>} - true if the food has been deleted, false otherwise
    */
-  static async deleteOne(foodId: Types.ObjectId | string): Promise<boolean> {
+  static async deleteOne(foodId: Types.ObjectId | string, userId: Types.ObjectId | string, thrownAway: Boolean): Promise<boolean> {
     const food = await FoodModel.deleteOne({ _id: foodId });
+    const user = await UserCollection.findOneByUserId(userId);
+    if (thrownAway){
+      user.thrownAway+=1;
+      await user.save();
+    }
     return food !== null;
   }
 

@@ -6,6 +6,7 @@
   <div>
     <BNavbar type="dark">
       <BNavbarBrand>
+      <router-link class="link" to="/">
         <img
           src="../../public/filled_fridge_logo.svg"
           width="40"
@@ -14,6 +15,7 @@
           alt="🗄️✅"
         />
         FridgeCheck
+      </router-link>
       </BNavbarBrand>
       <BNavbarToggle target="nav-collapse" />
       <BCollapse id="nav-collapse" is-nav>
@@ -60,6 +62,11 @@ export default {
           visible: this.$store.state.username ? true : false,
         },
         {
+          to: '/alllistings', 
+          name: 'All Listings', 
+          visible: this.$store.state.username ? true : false
+        },
+        {
           to: "/recipe",
           name: "Suggested Recipes",
           visible: this.$store.state.username ? true : false,
@@ -77,7 +84,7 @@ export default {
       ];
     },
     dropdown() {
-      return [{ to: "/account", name: "Settings" }];
+      return [{ to: "/account", name: "Settings" }, {to: '/stats', name: 'Stats'}];
     },
   },
   methods: {
@@ -122,12 +129,17 @@ export default {
 
 
 <style scoped>
-.logo {
+/* .logo {
   filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(24deg) brightness(103%)
     contrast(103%);
-}
+} */
 
 .navbar {
-  background-color: #1971c2;
+  background-color: #0b7285;
+}
+
+.link {
+  color: rgb(255, 255, 255);
+  text-decoration: none;
 }
 </style>

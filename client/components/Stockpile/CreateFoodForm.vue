@@ -72,6 +72,7 @@ export default {
         { value: "sticks", text: "Sticks" },
         { value: "oz", text: "Oz" },
         { value: "g", text: "g" },
+        { value: "lbs", text: "lbs" },
         { value: "tsps", text: "Tsp" },
         { value: "tbsps", text: "Tbsp" },
         { value: "cups", text: "Cups" },

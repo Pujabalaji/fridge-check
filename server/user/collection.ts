@@ -1,6 +1,8 @@
 import type {HydratedDocument, Types} from 'mongoose';
 import type {User, Community, Allergy, OtherRestriction} from './model';
 import UserModel from './model';
+import FollowModel from '../follow/model';
+import FollowCollection from '../follow/collection';
 
 /**
  * This file contains a class with functionality to interact with users stored
@@ -24,7 +26,9 @@ class UserCollection {
    */
   static async addOne(username: string, password: string, email: string, allergies: Array<Allergy>, otherDietaryRestrictions: Array<OtherRestriction>, homeCommunity: Community): Promise<HydratedDocument<User>> {
     const user = new UserModel({username, password, email, allergies, otherDietaryRestrictions, homeCommunity});
+    const follow = new FollowModel({follower: user, communityName: homeCommunity}); // user automatically follows home community
     await user.save(); // Saves user to MongoDB
+    await follow.save(); // save follow to MongoDB
     return user;
   }
 
@@ -102,6 +106,13 @@ class UserCollection {
     }
 
     if (userDetails.homeCommunity) {
+      const followExists = await FollowCollection.findOne(user._id, userDetails.homeCommunity);
+
+      if (followExists == null) {
+        const follow = new FollowModel({follower: user, communityName: userDetails.homeCommunity});
+        await follow.save();
+      }
+
       user.homeCommunity = userDetails.homeCommunity;
     }
 

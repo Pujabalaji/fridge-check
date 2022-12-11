@@ -56,5 +56,5 @@ const isRepeatFollow = async (req: Request, res: Response, next: NextFunction) =
 export {
     isFollowExists,
     isValidCommunityName,
-    isRepeatFollow
+    isRepeatFollow,
 };
