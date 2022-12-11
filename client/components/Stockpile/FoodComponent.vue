@@ -6,9 +6,9 @@
             <h3 class="name">
                 {{ food.name }} ( x{{ food.quantity }} {{ food.unit }} )
             </h3>
-            <div>
+            <p>
                 Expires on: {{ food.expiration }}
-            </div>
+            </p>
 
             <div class="actions">
                 <BButton @click="startEditing" variant="info">
@@ -18,7 +18,7 @@
                     <BIconTrash /> <span>Throw Away</span>
                 </BButton>
                 <BButton @click="deleteFood" variant="info">
-                    <BIconTrash /> <span>Eaten</span>
+                    <img src="../../public/apple-core.svg" width="25" height="25" /> <span>Eaten</span>
                 </BButton>
                 <BButton v-if="enableCreateListing" @click="createListing" variant="info">
                     <BIconClipboardPlus /> <span>Create Listing</span>
@@ -36,9 +36,9 @@
                         food.unit
                 }})
             </h3>
-            <div>
+            <p>
                 Expires on: {{ food.expiration }}
-            </div>
+            </p>
 
             <div class="actions">
                 <BButton v-if="editing" @click="submitEdit" variant="info">
@@ -217,6 +217,9 @@ export default {
 </script>
   
 <style scoped>
+p {
+    margin-bottom: 10px;
+}
 .actions {
     display: flex;
     gap: 1em;
