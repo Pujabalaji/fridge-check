@@ -1,16 +1,22 @@
 <template>
-  <div>
-    <BButton @click="fetchListings(ingredient)" variant="info"
+  <div class="listings-component">
+    <BButton
+      v-if="!showingListings"
+      @click="fetchListings(ingredient)"
+      variant="info"
       ><BIconClipboard /> <span>View Listings</span></BButton
     >
-    <div v-if="currentIngredientId == ingredient._id && listings.length" class="listings">
-      <ListingComponent
-        v-for="listing in listings"
-        :key="listing._id"
-        :listing="listing"
-      />
-    </div>
-    <p v-else-if="currentIngredientId == ingredient._id" class="no-margin">
+    <BButton v-else @click="hideListings" variant="info">
+      <BIconClipboardMinus /> <span>Hide Listings</span>
+    </BButton>
+    <BContainer v-if="showingListings && listings.length">
+      <BRow cols="3">
+        <BCol v-for="listing in listings" :key="listing._id" class="column">
+          <ListingComponent :listing="listing" />
+        </BCol>
+      </BRow>
+    </BContainer>
+    <p v-else-if="showingListings" class="no-margin">
       No listings found
     </p>
   </div>
@@ -31,17 +37,24 @@ export default {
   data() {
     return {
       listings: [],
-      currentIngredientId: "",
+      showingListings: false,
     };
   },
   methods: {
+    hideListings() {
+      this.showingListings = false;
+    },
     async fetchListings(ingredient) {
+      if (this.listings.length) {
+        this.showingListings = true;
+        return;
+      }
+
       this.listings = [];
       let recipeIngredientNames =
         ingredient.name !== ingredient.nameClean && ingredient.nameClean
           ? [ingredient.name, ingredient.nameClean]
           : [ingredient.name];
-      this.currentIngredientId = ingredient._id;
       const listingsResponse = await fetch("/api/follows/listings").then(
         async (r) => r.json()
       );
@@ -58,6 +71,7 @@ export default {
         }
       }
       this.listings = listings;
+      this.showingListings = true;
     },
   },
 };
@@ -70,23 +84,17 @@ button {
   align-items: center;
 }
 
-div {
+.listings-component {
   display: flex;
   align-items: center;
   gap: 1em;
 }
 
-.listings {
-  flex-wrap: wrap;
-  gap: 0em;
-}
-
-.listings > * {
-  flex: 33.33%;
-  padding: 0.5em;
-}
-
 .no-margin {
   margin-bottom: 0em;
+}
+
+.column {
+  padding: 0.5em;
 }
 </style>

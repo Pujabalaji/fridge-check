@@ -141,7 +141,6 @@ div {
 }
 
 .container-ingredient {
-  padding-left: 5px;
   display: flex;
   align-items: center;
   gap: 1em;

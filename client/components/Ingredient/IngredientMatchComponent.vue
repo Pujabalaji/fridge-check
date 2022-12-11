@@ -2,10 +2,13 @@
 
 <template>
   <div>
+    <div class="listing-container">
     <p>
       {{ ingredient.amount }} {{ ingredient.unit }} of
       {{ ingredient.name[0] }}
     </p>
+    <FoodListingsComponent :ingredient="ingredient" />
+    </div>
     <FoodComponent
       v-if="
         ingredient.stockpileMatches.some((item) => item in $store.state.foods)
@@ -15,6 +18,7 @@
           ingredient.stockpileMatches.find((item) => item in $store.state.foods)
         ]
       "
+      :showListingButton="false"
     />
     <BButton v-else variant="info" @click="$router.push({ name: 'Stockpile' })"
       ><span>Search in Stockpile</span></BButton
@@ -24,10 +28,11 @@
 
 <script>
 import FoodComponent from "@/components/Stockpile/FoodComponent.vue";
+import FoodListingsComponent from "@/components/Listings/FoodListingsComponent.vue";
 
 export default {
   name: "IngredientMatchComponent",
-  components: { FoodComponent },
+  components: { FoodComponent, FoodListingsComponent },
   props: {
     ingredient: {
       type: Object,
@@ -86,9 +91,20 @@ export default {
   margin-bottom: 0em;
 }
 
+.listing-container {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+  margin-bottom: 0.5em;
+}
+
 button {
   display: flex;
   gap: 0.25em;
   align-items: center;
+}
+
+p {
+  margin-bottom: 0em;
 }
 </style>
