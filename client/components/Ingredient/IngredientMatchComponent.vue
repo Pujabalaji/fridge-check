@@ -106,5 +106,6 @@ button {
 
 p {
   margin-bottom: 0em;
+  flex-shrink: 0;
 }
 </style>

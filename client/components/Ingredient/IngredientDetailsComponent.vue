@@ -41,30 +41,16 @@
         <FoodListingsComponent :ingredient="ingredient"/> -->
       </div>
     </section>
-    <h3>Want to make this recipe?</h3>
-    <p>
-      We suggest removing/adjusting the quantities of the following food items:
-    </p>
-    <div class="container-food">
-      <div v-for="(ingredient, index) in usedIngredients" :key="index">
-      <FoodComponent
-        v-if="ingredient.stockpileMatches.some(item => item in $store.state.foods)"
-        :key="ingredient.stockpileMatches.find(item => item in $store.state.foods)"
-        :food="$store.state.foods[ingredient.stockpileMatches.find(item => item in $store.state.foods)]"
-      />
-      </div>
-    </div>
   </BCard>
 </template>
 
 <script>
 import IngredientMatchComponent from "@/components/Ingredient/IngredientMatchComponent.vue";
-import FoodComponent from "@/components/Stockpile/FoodComponent.vue";
 import FoodListingsComponent from "@/components/Listings/FoodListingsComponent.vue"
 
 export default {
   name: "IngredientDetailsComponent",
-  components: { IngredientMatchComponent, FoodComponent, FoodListingsComponent },
+  components: { IngredientMatchComponent, FoodListingsComponent },
   props: {
     // Data from the stored recipe
     recipe: {
@@ -152,18 +138,9 @@ div {
   margin-bottom: 0.5em;
 }
 
-.container-food {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5em;
-}
-
 .no-margin {
   margin-bottom: 0em;
-}
-
-h3 {
-  margin-top: 0.5em;
+  flex-shrink: 0;
 }
 
 img {

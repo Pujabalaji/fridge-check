@@ -89,6 +89,7 @@ button {
   display: flex;
   align-items: center;
   gap: 1em;
+  width: 100%;
 }
 
 .no-margin {
