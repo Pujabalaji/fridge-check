@@ -1,22 +1,13 @@
 <template>
   <div class="listings-component">
-    <!-- <BButton
-      v-if="!showingListings"
-      @click="fetchListings(ingredient)"
-      variant="info"
-      ><BIconClipboard /> <span>View Listings</span>
-    </BButton>
-    <BButton v-else @click="hideListings" variant="info">
-      <BIconClipboardMinus /> <span>Hide Listings</span>
-    </BButton> -->
-    <BContainer v-if="showingListings && listings.length">
+    <BContainer v-if="listings.length">
       <BRow cols="3">
         <BCol v-for="listing in listings" :key="listing._id" class="column">
           <ListingComponent :listing="listing" />
         </BCol>
       </BRow>
     </BContainer>
-    <p v-else-if="showingListings" class="no-margin">No listings found</p>
+    <p v-else class="no-margin">No listings found</p>
   </div>
 </template>
 
@@ -35,22 +26,13 @@ export default {
   data() {
     return {
       listings: [],
-      showingListings: true,
     };
   },
   mounted() {
     this.fetchListings(this.ingredient);
   },
   methods: {
-    hideListings() {
-      this.showingListings = false;
-    },
     async fetchListings(ingredient) {
-      if (this.listings.length) {
-        this.showingListings = true;
-        return;
-      }
-
       this.listings = [];
       let recipeIngredientNames =
         ingredient.name !== ingredient.nameClean && ingredient.nameClean
@@ -94,9 +76,14 @@ button {
 
 .no-margin {
   margin-bottom: 0em;
+  padding: 15px;
 }
 
 .column {
   padding: 0.5em;
+}
+
+.container {
+  margin: 0em;
 }
 </style>

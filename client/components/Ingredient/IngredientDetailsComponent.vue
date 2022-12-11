@@ -10,7 +10,9 @@
           This recipe uses {{ recipe.usedCount }} ingredients in your stockpile.
         </p>
         <p>{{ recipe.expiringCount }} of these items are expiring this week.</p>
-        <BButton @click="showDetails" variant="info">Show recipe details</BButton>
+        <BButton @click="showDetails" variant="info"
+          >Show recipe details</BButton
+        >
       </div>
     </div>
     <section>
@@ -30,15 +32,12 @@
         class="container-ingredient"
       >
         <details>
-          <summary>{{ ingredient.amount }} {{ ingredient.unit }} of
-          {{ ingredient.name[0] }}</summary>
-           <FoodListingsComponent :ingredient="ingredient"/>
+          <summary>
+            {{ ingredient.amount }} {{ ingredient.unit }} of
+            {{ ingredient.name[0] }}
+          </summary>
+          <FoodListingsComponent :ingredient="ingredient" />
         </details>
-        <!-- <p class="no-margin">
-          {{ ingredient.amount }} {{ ingredient.unit }} of
-          {{ ingredient.name[0] }}
-        </p>
-        <FoodListingsComponent :ingredient="ingredient"/> -->
       </div>
     </section>
   </BCard>
@@ -46,7 +45,7 @@
 
 <script>
 import IngredientMatchComponent from "@/components/Ingredient/IngredientMatchComponent.vue";
-import FoodListingsComponent from "@/components/Listings/FoodListingsComponent.vue"
+import FoodListingsComponent from "@/components/Listings/FoodListingsComponent.vue";
 
 export default {
   name: "IngredientDetailsComponent",
@@ -159,5 +158,9 @@ button {
   display: flex;
   gap: 0.25em;
   align-items: center;
+}
+
+details {
+  width: 100%;
 }
 </style>

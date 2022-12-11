@@ -7,7 +7,6 @@
       {{ ingredient.amount }} {{ ingredient.unit }} of
       {{ ingredient.name[0] }}
     </p>
-    <FoodListingsComponent :ingredient="ingredient" />
     </div>
     <FoodComponent
       v-if="
