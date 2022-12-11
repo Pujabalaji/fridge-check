@@ -7,10 +7,11 @@ export default {
   name: "GetRecipesForm",
   mixins: [InlineForm],
   data() {
-    return { value: "" };
+    return { value: ""};
   },
   methods: {
     async submit() {
+      this.$emit('loading', true);
       this.$store.commit("updateShowByName", true);
       this.$store.commit("updateShowSuggested", false);
       if (this.$store.state.lastSearched.length === 0) {
@@ -32,6 +33,7 @@ export default {
       }
       this.$store.commit("updateLastSearched", this.value);
       this.value = "";
+      this.$emit('loading', false);
     },
   },
 };

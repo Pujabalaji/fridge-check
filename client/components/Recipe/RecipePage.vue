@@ -23,6 +23,7 @@
             placeholder="Search"
             button="Get Recipes"
             label="Search Recipes by Name"
+            @loading="val => loadingNameSearch=val"
           />
         </div>
         <div class="recipes">
@@ -86,31 +87,6 @@ export default {
       if (this.$store.state.username) {
         await this.fetchSuggestedRecipes();
       }
-    },
-    async submit() {
-      this.loadingNameSearch = true;
-      this.$store.commit("updateShowByName", true);
-      this.$store.commit("updateShowSuggested", false);
-      if (this.$store.state.lastSearched.length === 0) {
-        this.$store.commit("updateLastSearched", this.searchText);
-      }
-
-      const url = `/api/recipes?recipeName=${this.searchText}`;
-      try {
-        const r = await fetch(url);
-        const res = await r.json();
-        if (!r.ok) {
-          throw new Error(res.error);
-        }
-
-        this.$store.commit("updateRecipes", res);
-      } catch (e) {
-        this.$set(this.alerts, e, "error");
-        setTimeout(() => this.$delete(this.alerts, e), 3000);
-      }
-      this.$store.commit("updateLastSearched", this.searchText);
-      this.searchText = "";
-      this.loadingNameSearch = false;
     },
     async fetchSuggestedRecipes() {
       this.loadingSuggested = true;
