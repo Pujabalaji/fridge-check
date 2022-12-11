@@ -2,11 +2,17 @@
 <!-- This is just an example; feel free to define any reusable components you want! -->
 
 <template>
-  <form @submit.prevent="submit">
-    <input v-model="value" type="text" :placeholder="placeholder" />
-    <button type="submit">
-      {{ button }}
-    </button>
+  <BForm @submit.prevent="submit">
+    <BFormGroup :label="label" label-for="search-input">
+      <BInputGroup>
+        <BFormInput id="search-input" v-model="value" type="text" :placeholder="placeholder" />
+        <BInputGroupAppend>
+          <BButton type="submit" variant="primary">
+            <BIconSearch /> <span>{{ button }} </span>
+          </BButton>
+        </BInputGroupAppend>
+      </BInputGroup>
+    </BFormGroup>
     <BAlert
       v-for="(status, alert, index) in alerts"
       :key="index"
@@ -15,36 +21,41 @@
     >
       {{ alert }}
     </BAlert>
-  </form>
+  </BForm>
 </template>
 
 <script>
 export default {
-  name: 'InlineForm',
+  name: "InlineForm",
   props: {
     placeholder: {
       type: String,
-      default: ''
+      default: "",
     },
     button: {
       type: String,
-      default: 'Submit'
+      default: "Submit",
+    },
+    label: {
+      type: String,
+      default: "",
     }
   },
   data() {
-    return {value: '', alerts: {}};
-  }
+    return { value: "", alerts: {} };
+  },
 };
 </script>
 
 <style scoped>
-form {
+button {
   display: flex;
-  position: relative;
+  gap: 0.25em;
+  align-items: center;
 }
 
-input {
-  padding: 0 5px;
-  min-width: 200px;
+form {
+  padding: 0.5em;
 }
+
 </style>

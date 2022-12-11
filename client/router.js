@@ -8,6 +8,7 @@ import RecipeDetailsPage from './components/Recipe/RecipeDetailsPage.vue';
 import StockpilePage from './components/Stockpile/StockpilePage.vue';
 import CommunityPage from './components/Community/CommunityPage.vue';
 import MyListingsPage from './components/Listings/MyListingsPage.vue';
+import AllListingsPage from './components/Listings/AllListingsPage.vue';
 import NotFound from './NotFound.vue';
 
 Vue.use(VueRouter);
@@ -21,6 +22,7 @@ const routes = [
   { path: '/recipe/ingredients', name: 'Ingredient Details', component: IngredientDetailsPage },
   { path: '/recipe/details', name: 'Recipe Details', component: RecipeDetailsPage },
   { path: '/listings', name: 'My Listings', component: MyListingsPage },
+  { path: '/alllistings', name: 'All Listings', component: AllListingsPage },
   { path: '*', name: 'Not Found', component: NotFound },
 ];
 
