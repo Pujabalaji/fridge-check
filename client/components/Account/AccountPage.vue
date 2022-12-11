@@ -19,7 +19,7 @@
         <h2>Account management</h2>
       </header>
       <LogoutForm />
-      <DeleteAccountForm />
+      <DeleteAcctForm />
     </section>
   </main>
 </template>
@@ -31,7 +31,7 @@ import ChangeContactInfoForm from '@/components/Account/ChangeContactInfoForm.vu
 import ChangeAllergiesForm from '@/components/Account/ChangeAllergiesForm.vue';
 import ChangeDietaryRestrictionsForm from '@/components/Account/ChangeDietaryRestrictionsForm.vue';
 import ChangeHomeCommunityForm from '@/components/Account/ChangeHomeCommunityForm.vue';
-import DeleteAccountForm from '@/components/Account/DeleteAccountForm.vue';
+import DeleteAcctForm from '@/components/Account/DeleteAcctForm.vue';
 import LogoutForm from '@/components/Account/LogoutForm.vue';
 
 export default {
@@ -43,7 +43,7 @@ export default {
     ChangeAllergiesForm,
     ChangeDietaryRestrictionsForm,
     ChangeHomeCommunityForm,
-    DeleteAccountForm,
+    DeleteAcctForm,
     LogoutForm
   }
 };
