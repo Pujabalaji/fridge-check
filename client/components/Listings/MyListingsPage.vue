@@ -9,8 +9,8 @@
       </header><br>
       <div v-if="$store.state.username">
         <section>
-          <GetMyListingsForm ref="GetMyListingsForm" value="foodName" placeholder="🔍 Filter by food name (optional)"
-            button="Get listings" />
+          <GetMyListingsForm ref="GetMyListingsForm" value="foodName" placeholder="Search"
+            button="Get listings" label="Filter Listings by Food Name"/>
         </section>
         <section v-if="$store.state.listings.length" class="listing-container">
           <ListingComponent v-for="listing in $store.state.listings" :key="listing._id" :listing="listing" />

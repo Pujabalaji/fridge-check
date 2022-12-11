@@ -50,7 +50,6 @@ router.get(
         res.status(200).json(response);
     },
     [
-        userValidator.isUserLoggedIn,
         foodValidator.isValidFoodQuery
     ],
     async (req: Request, res: Response) => {

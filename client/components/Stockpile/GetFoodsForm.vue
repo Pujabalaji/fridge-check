@@ -18,7 +18,6 @@ export default {
                 if (!r.ok) {
                     throw new Error(res.error);
                 }
-                console.log(res);
                 this.$store.commit('updateStockpileFilter', this.value);
                 this.$store.commit('updateStockpile', res);
             } catch (e) {

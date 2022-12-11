@@ -17,28 +17,13 @@
               </span>
             </BButton>
           </section>
-          <BForm @submit.prevent="submit">
-            <BFormGroup
-              id="search-recipe"
-              label="Search Recipes by Name"
-              label-for="search-recipe"
-            >
-              <BInputGroup>
-                <BFormInput
-                  id="search-recipe"
-                  v-model="searchText"
-                  type="text"
-                  placeholder="Search"
-                  required
-                />
-                <BInputGroupAppend>
-                  <BButton type="submit" variant="primary"
-                    ><BIconSearch /> <span>Search</span>
-                  </BButton>
-                </BInputGroupAppend>
-              </BInputGroup>
-            </BFormGroup>
-          </BForm>
+          <GetRecipesForm
+            ref="GetRecipesForm"
+            value=""
+            placeholder="Search"
+            button="Get Recipes"
+            label="Search Recipes by Name"
+          />
         </div>
         <div class="recipes">
           <section v-if="$store.state.displaySuggested">
@@ -79,11 +64,13 @@
 
 <script>
 import RecipeComponent from "@/components/Recipe/RecipeComponent.vue";
+import GetRecipesForm from "@/components/Recipe/GetRecipesForm.vue";
 
 export default {
   name: "RecipePage",
   components: {
     RecipeComponent,
+    GetRecipesForm,
   },
   data() {
     return {
@@ -116,7 +103,6 @@ export default {
           throw new Error(res.error);
         }
 
-        this.nameRecipes = res;
         this.$store.commit("updateRecipes", res);
       } catch (e) {
         this.$set(this.alerts, e, "error");

@@ -3,10 +3,22 @@
 
 <template>
   <BForm @submit.prevent="submit">
-    <BFormInput v-model="value" type="text" :placeholder="placeholder" />
-    <BButton type="submit" variant="primary"> {{ button }} </BButton>
-    <BAlert v-for="(status, alert, index) in alerts" :key="index" :variant="status === 'error' ? 'danger' : 'success'"
-      show>
+    <BFormGroup :label="label" label-for="search-input">
+      <BInputGroup>
+        <BFormInput id="search-input" v-model="value" type="text" :placeholder="placeholder" />
+        <BInputGroupAppend>
+          <BButton type="submit" variant="primary">
+            <BIconSearch /> <span>{{ button }} </span>
+          </BButton>
+        </BInputGroupAppend>
+      </BInputGroup>
+    </BFormGroup>
+    <BAlert
+      v-for="(status, alert, index) in alerts"
+      :key="index"
+      :variant="status === 'error' ? 'danger' : 'success'"
+      show
+    >
       {{ alert }}
     </BAlert>
   </BForm>
@@ -14,31 +26,36 @@
 
 <script>
 export default {
-  name: 'InlineForm',
+  name: "InlineForm",
   props: {
     placeholder: {
       type: String,
-      default: ''
+      default: "",
     },
     button: {
       type: String,
-      default: 'Submit'
+      default: "Submit",
+    },
+    label: {
+      type: String,
+      default: "",
     }
   },
   data() {
-    return { value: '', alerts: {} };
-  }
+    return { value: "", alerts: {} };
+  },
 };
 </script>
 
 <style scoped>
-form {
+button {
   display: flex;
-  position: relative;
+  gap: 0.25em;
+  align-items: center;
 }
 
-input {
-  padding: 0 5px;
-  min-width: 200px;
+form {
+  padding: 0.5em;
 }
+
 </style>

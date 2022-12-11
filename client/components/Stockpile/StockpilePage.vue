@@ -10,8 +10,8 @@
         </header><br>
         <div v-if="$store.state.username" class="container">
             <div>
-                <GetFoodsForm ref="GetFoodsForm" value="foodName" placeholder="🔍 Filter by food name (optional)"
-                    button="Get foods" />
+                <GetFoodsForm ref="GetFoodsForm" value="foodName" placeholder="Search"
+                    button="Get foods" label="Filter Stockpile by Food Name"/>
                 <h3>Expired</h3>
                 <section v-if="$store.state.expired.length" class="food-container">
                     <FoodComponent v-for="food in $store.state.expired" :key="food._id" :food="food" />

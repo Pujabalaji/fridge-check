@@ -12,7 +12,7 @@
         <section>
                 <section>
                     <GetListingsForm ref="GetListingsForm" value="foodName"
-                        placeholder="🔍 Filter by food name (optional)" button="Get listings" />
+                        placeholder="Search" button="Get listings" label="Filter Listings by Food Name"/>
                 </section>
             <section v-if="$store.state.allListings.length">
                 <ListingComponent v-for="listing in $store.state.allListings" :key="listing._id" :listing="listing" />

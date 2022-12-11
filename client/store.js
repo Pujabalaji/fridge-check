@@ -74,7 +74,6 @@ const store = new Vuex.Store({
       if (!state.stockpileFilter){
         state.foods = stockpile;
       }
-      console.log(state.foods);
       const date = new Date();
       date.setHours(0, 0, 0, 0);
       var week = new Date();
