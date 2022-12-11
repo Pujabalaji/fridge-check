@@ -54,8 +54,4 @@ button {
   align-items: center;
 }
 
-form {
-  padding: 0.5em;
-}
-
 </style>

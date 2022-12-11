@@ -29,11 +29,16 @@
         :key="ingredient._id"
         class="container-ingredient"
       >
-        <p class="no-margin">
+        <details>
+          <summary>{{ ingredient.amount }} {{ ingredient.unit }} of
+          {{ ingredient.name[0] }}</summary>
+           <FoodListingsComponent :ingredient="ingredient"/>
+        </details>
+        <!-- <p class="no-margin">
           {{ ingredient.amount }} {{ ingredient.unit }} of
           {{ ingredient.name[0] }}
         </p>
-        <FoodListingsComponent :ingredient="ingredient"/>
+        <FoodListingsComponent :ingredient="ingredient"/> -->
       </div>
     </section>
     <h3>Want to make this recipe?</h3>

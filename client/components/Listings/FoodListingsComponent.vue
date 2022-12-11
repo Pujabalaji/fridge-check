@@ -1,14 +1,14 @@
 <template>
   <div class="listings-component">
-    <BButton
+    <!-- <BButton
       v-if="!showingListings"
       @click="fetchListings(ingredient)"
       variant="info"
-      ><BIconClipboard /> <span>View Listings</span></BButton
-    >
+      ><BIconClipboard /> <span>View Listings</span>
+    </BButton>
     <BButton v-else @click="hideListings" variant="info">
       <BIconClipboardMinus /> <span>Hide Listings</span>
-    </BButton>
+    </BButton> -->
     <BContainer v-if="showingListings && listings.length">
       <BRow cols="3">
         <BCol v-for="listing in listings" :key="listing._id" class="column">
@@ -16,9 +16,7 @@
         </BCol>
       </BRow>
     </BContainer>
-    <p v-else-if="showingListings" class="no-margin">
-      No listings found
-    </p>
+    <p v-else-if="showingListings" class="no-margin">No listings found</p>
   </div>
 </template>
 
@@ -37,8 +35,11 @@ export default {
   data() {
     return {
       listings: [],
-      showingListings: false,
+      showingListings: true,
     };
+  },
+  mounted() {
+    this.fetchListings(this.ingredient);
   },
   methods: {
     hideListings() {
