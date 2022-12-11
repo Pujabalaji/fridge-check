@@ -4,7 +4,7 @@
   <BCard class="food">
     <header v-if="!editing">
       <h3 class="name">
-        {{ food.name }} ( x{{ food.quantity }} {{ food.unit }}) Expires on:
+        {{ food.name + quantityUnitText }} Expires on:
         {{ food.expiration }}
       </h3>
 
@@ -194,6 +194,9 @@ export default {
     },
   },
   computed: {
+    quantityUnitText() {
+      return " (x"+this.food.quantity+((this.food.unit) ? (" " + this.food.unit) : "")+")";
+    },
     enableCreateListing() {
       const foodsExpiredOrListingExists = [];
       for (const foodId of this.$store.state.foodIdsWithListings) {
