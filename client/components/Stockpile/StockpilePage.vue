@@ -27,6 +27,7 @@
           v-for="food in $store.state.expired"
           :key="food._id"
           :food="food"
+          @createListing="scrollToTop"
         />
       </section>
       <article v-else>
@@ -39,6 +40,7 @@
           v-for="food in $store.state.expiring"
           :key="food._id"
           :food="food"
+          @createListing="scrollToTop"
         />
       </section>
       <article v-else>
@@ -51,6 +53,7 @@
           v-for="food in $store.state.remainingFoods"
           :key="food._id"
           :food="food"
+          @createListing="scrollToTop"
         />
       </section>
       <article v-else>
@@ -97,6 +100,10 @@ export default {
     },
     hideForm() {
       this.showCreateFoodForm = false;
+    },
+    scrollToTop() {
+      console.log('here');
+      window.scrollTo(0, 0);
     }
   }
 };

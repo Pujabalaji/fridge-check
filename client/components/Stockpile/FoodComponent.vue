@@ -38,7 +38,7 @@
             <BButton @click="$bvModal.hide('bv-modal-throwaway')">No, cancel</BButton>
           </div>
         </BModal>
-        <BButton v-if="enableCreateListing" @click="createListing" variant="info">
+        <BButton v-if="enableCreateListing && showListingButton" @click="createListing" variant="info">
           <BIconClipboardPlus /> <span>Create Listing</span>
         </BButton>
         <BButton v-else-if="$store.state.foodIdsWithListings.includes(food._id) && showListingButton" @click="viewListing" variant="info">
@@ -65,7 +65,7 @@
         <BButton @click="callDeleteFood" variant="info">
           <img src="../../public/apple-core.svg" width="25" height="25" /> <span>Eaten</span>
         </BButton>
-        <BButton v-if="enableCreateListing" variant="info" @click="createListing">
+        <BButton v-if="enableCreateListing && showListingButton" variant="info" @click="createListing">
           <span>Create Listing</span>
         </BButton>
         <BButton v-else-if="$store.state.foodIdsWithListings.includes(food._id) && showListingButton"
@@ -155,6 +155,7 @@ export default {
       this.deleteFood();
     },
     async createListing() {
+      this.$emit('createListing');
       this.$store.commit("enableCreateListing", this.food);
     },
     viewListing() {
