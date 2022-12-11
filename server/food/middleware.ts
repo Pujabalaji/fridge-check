@@ -38,8 +38,8 @@ const isValidFoodExpiration = (req: Request, res: Response, next: NextFunction) 
     }
     const curDate = new Date();
     curDate.setTime(curDate.getTime()-300*60*1000);
-    const date = new Date(expiration);
-    if (date.toDateString() == curDate.toDateString()) {
+    const date = new Date(expiration+'T23:59:59Z');
+    if (date<=curDate) {
         res.status(413).json({
             error: 'Provided date is not valid.'
         });
