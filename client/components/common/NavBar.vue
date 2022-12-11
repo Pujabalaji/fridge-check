@@ -68,7 +68,7 @@ export default {
         },
         {
           to: "/recipe",
-          name: "Suggested Recipes",
+          name: "Find Recipes",
           visible: this.$store.state.username ? true : false,
         },
         {
