@@ -11,7 +11,7 @@
         <BFormCheckboxGroup id="other" v-model="selectedOtherRestrictions">
           <BFormCheckbox value="Vegetarian">Vegetarian</BFormCheckbox>
           <BFormCheckbox value="Vegan">Vegan</BFormCheckbox>
-          <BFormCheckbox value="Pescetarian">Pescatarian</BFormCheckbox>
+          <BFormCheckbox value="Pescetarian">Pescetarian</BFormCheckbox>
         </BFormCheckboxGroup>
       </BFormGroup>
     </article>
@@ -74,6 +74,9 @@ export default {
         }
         const res = await r.json();
         this.$store.commit("setUser", res.user ? res.user : null);
+        this.$store.commit("clearRecipes");
+        this.$store.commit("updateShowSuggested", false);
+        this.$store.commit("updateShowByName", false);
         options.callback();
       } catch (e) {
         this.$set(this.alerts, e, "error");

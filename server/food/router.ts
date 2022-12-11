@@ -21,11 +21,25 @@ const router = express.Router();
 router.get(
     '/',
     [
-      userValidator.isUserLoggedIn
+        userValidator.isUserLoggedIn
+    ],
+    async (req: Request, res: Response, next: NextFunction) => {
+        const userId = (req.session.userId as string) ?? '';
+        if (req.query.foodName !== undefined) {
+            next();
+            return
+        }
+        const stockpile = await FoodCollection.findAllByUser(userId);
+        const response = stockpile.map(util.constructFoodResponse);
+        res.status(200).json(response);
+    },
+    [
+        foodValidator.isValidFoodQuery
     ],
     async (req: Request, res: Response) => {
         const userId = (req.session.userId as string) ?? '';
-        const stockpile = await FoodCollection.findAllByUser(userId);
+        const food = (req.query.foodName as string) ?? '';
+        const stockpile = await FoodCollection.findAllByName(userId, food);
         const response = stockpile.map(util.constructFoodResponse);
         res.status(200).json(response);
     }
