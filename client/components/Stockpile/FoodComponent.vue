@@ -23,8 +23,8 @@
                 <BButton v-if="enableCreateListing && showListingButton" @click="createListing" variant="info">
                     <BIconClipboardPlus /> <span>Create Listing</span>
                 </BButton>
-                <BButton v-else-if="$store.state.foodIdsWithListings.includes(food._id) && showListingButton" @click="viewListing"
-                    variant="info">
+                <BButton v-else-if="$store.state.foodIdsWithListings.includes(food._id) && showListingButton"
+                    @click="viewListing" variant="info">
                     <BIconClipboard /> <span>View Listing</span>
                 </BButton>
             </div>
@@ -56,8 +56,8 @@
                 <BButton v-if="enableCreateListing && showListingButton" variant="info" @click="createListing">
                     <span>Create Listing</span>
                 </BButton>
-                <BButton v-else-if="$store.state.foodIdsWithListings.includes(food._id) && showListingButton" @click="viewListing"
-                    variant="info">
+                <BButton v-else-if="$store.state.foodIdsWithListings.includes(food._id) && showListingButton"
+                    @click="viewListing" variant="info">
                     <BIconClipboard /> <span>View Listing</span>
                 </BButton>
             </div>
@@ -77,11 +77,11 @@ export default {
             type: Object,
             required: true,
         },
+        showListingButton: {
+            type: Boolean,
+            default: true,
+        },
     },
-    showListingButton:  {
-      type: Boolean,
-      default: true,
-    }
     data() {
         return {
             editing: false, // Whether or not this object is in edit mode
@@ -224,6 +224,7 @@ export default {
 p {
     margin-bottom: 10px;
 }
+
 .actions {
     display: flex;
     gap: 1em;
