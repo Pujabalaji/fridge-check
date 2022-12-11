@@ -6,6 +6,7 @@
   <div>
     <BNavbar type="dark">
       <BNavbarBrand>
+      <router-link class="link" to="/">
         <img
           src="../../public/filled_fridge_logo.svg"
           width="40"
@@ -14,6 +15,7 @@
           alt="🗄️✅"
         />
         FridgeCheck
+      </router-link>
       </BNavbarBrand>
       <BNavbarToggle target="nav-collapse" />
       <BCollapse id="nav-collapse" is-nav>
@@ -134,5 +136,10 @@ export default {
 
 .navbar {
   background-color: #0b7285;
+}
+
+.link {
+  color: rgb(255, 255, 255);
+  text-decoration: none;
 }
 </style>
