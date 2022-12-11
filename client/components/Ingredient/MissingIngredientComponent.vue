@@ -15,7 +15,7 @@ import FoodComponent from "@/components/Stockpile/FoodComponent.vue";
 import FoodListingsComponent from "@/components/Listings/FoodListingsComponent.vue";
 
 export default {
-  name: "IngredientMatchComponent",
+  name: "MissingIngredientComponent",
   components: { FoodComponent, FoodListingsComponent },
   props: {
     ingredient: {
