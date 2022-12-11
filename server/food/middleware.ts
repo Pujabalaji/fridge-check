@@ -59,6 +59,17 @@ const isValidFoodName = async (req: Request, res: Response, next: NextFunction) 
     next();
 };
 
+const isValidFoodQuery = async (req: Request, res: Response, next: NextFunction) => {
+    const name = req.query.foodName as string;
+    if (!name.trim()) {
+        res.status(400).json({
+            error: 'Food name must be at least one character long.'
+        });
+        return;
+    }
+    next();
+};
+
 const isValidFoodUnit = (req: Request, res: Response, next: NextFunction) => {
     if ("unit" in req.body && !standardUnits.includes(req.body.unit)) {
         res.status(400).json({
@@ -88,4 +99,5 @@ export {
     isValidFoodQuantity,
     isValidFoodName,
     isValidFoodUnit,
+    isValidFoodQuery,
 };

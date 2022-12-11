@@ -29,7 +29,7 @@
         label="Quantity"
         label-for="listing-quantity"
         :invalid-feedback="isValidQuantity.display"
-        :state="isValidQuantity.valid"
+        :state="!showErrors || isValidQuantity.valid ? null : false"
       >
         <BInputGroup :append="$store.state.currentFood.unit">
           <BFormInput
@@ -40,7 +40,7 @@
             step="0.01"
             v-model="quantity"
             label-for="listing-quantity"
-            :state="isValidQuantity.valid"
+            :state="!showErrors || isValidQuantity.valid ? null : false"
           />
         </BInputGroup>
       </BFormGroup>
@@ -50,15 +50,15 @@
           v-model="price"
           type="text"
           placeholder="examples: $0, free, $2 for 1 or $4 for all, $3 each, $10 total"
-          :state="isValidPrice.valid"
+          :state="!showErrors || isValidPrice.valid  ? null : false"
         />
         <BFormInvalidFeedback>
           {{ isValidPrice.display }}
         </BFormInvalidFeedback>
       </BFormGroup>
     </article>
-    <div class="container-buttons">
-      <BButton type="submit" variant="primary" :disabled="!enableSubmit">
+    <div class="container">
+      <BButton type="submit" variant="primary">
         Create listing
       </BButton>
       <BButton type="reset" variant="danger">Cancel</BButton>
@@ -86,6 +86,7 @@ export default {
       alerts: {},
       callback: null,
       refreshFoods: true,
+      showErrors: false,
     };
   },
   computed: {
@@ -128,6 +129,12 @@ export default {
       /**
        * Submits a form with the specified options from data().
        */
+
+      if (!this.enableSubmit) {
+        this.showErrors = true;
+        return;
+      }
+
       const options = {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
@@ -165,6 +172,7 @@ export default {
         this.quantity = "";
         this.expiration = "";
         this.price = "";
+        this.showErrors = false;
       } catch (e) {
         this.$set(this.alerts, e, "error");
         setTimeout(() => this.$delete(this.alerts, e), 3000);

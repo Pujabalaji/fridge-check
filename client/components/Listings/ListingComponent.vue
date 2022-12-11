@@ -48,7 +48,7 @@
             :max="listing.foodId.quantity"
             step="0.01"
             v-model="draft.quantity"
-            :state="isValidQuantity"
+            :state="!showErrors || isValidQuantity ? null : false"
           />
           {{ listing.unit }}) Price:
           <BFormInput
@@ -56,13 +56,16 @@
             class="price"
             type="text"
             v-model="draft.price"
-            :state="isValidPrice"
+            :state="!showErrors || isValidPrice ? null : false"
           />
           Expires on: {{ listing.expiration }}
         </h3>
 
+        <p v-if="showErrors && !isValidQuantity" class="feedback">Quantity must be greater than 0 and less than what is in the stockpile. </p>
+        <p v-if="showErrors && !isValidPrice" class="feedback">Price must contain at least one character. </p>
+
         <div class="actions">
-          <BButton v-if="editing" @click="submitEdit" variant="info" :disabled="!shouldSubmit"
+          <BButton v-if="editing" @click="submitEdit" variant="info"
             ><BIconCheck2 /> <span>Save changes</span>
           </BButton>
           <BButton v-if="editing" @click="stopEditing" variant="info"
@@ -72,8 +75,6 @@
             ><BIconClipboardX /> <span>Delete Listing</span>
           </BButton>
         </div>
-        <p v-if="!isValidQuantity" class="feedback">Quantity must be greater than 0 and less than what is in the stockpile. </p>
-        <p v-if="!isValidPrice" class="feedback">Price must contain at least one character. </p>
       </header>
     </BCard>
     <BAlert
@@ -101,6 +102,7 @@ export default {
       editing: false, // Whether or not this object is in edit mode
       alerts: {}, // Displays success/error messages encountered during object modification
       draft: { quantity: this.listing.quantity, price: this.listing.price },
+      showErrors: false,
     };
   },
   computed: {
@@ -167,6 +169,11 @@ export default {
       /**
        * Updates object to have the submitted draft content.
        */
+      if (!this.shouldSubmit) {
+        this.showErrors = true;
+        return;
+      }
+
       const quantityRegex =
         /^(?=.*[1-9])\d*(?:\.\d{1,2})?$|^([1-9][0-9]*)\/[1-9][0-9]*|^[1-9][0-9]*$/;
       if (!quantityRegex.test(this.draft.quantity)) {
@@ -213,6 +220,7 @@ export default {
         }
         const res = await r.json();
         this.editing = false;
+        this.showErrors = false;
         this.$store.dispatch("refreshMyListings");
         params.callback();
       } catch (e) {

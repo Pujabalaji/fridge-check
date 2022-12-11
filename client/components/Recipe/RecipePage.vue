@@ -17,28 +17,14 @@
               </span>
             </BButton>
           </section>
-          <BForm @submit.prevent="submit">
-            <BFormGroup
-              id="search-recipe"
-              label="Search Recipes by Name"
-              label-for="search-recipe"
-            >
-              <BInputGroup>
-                <BFormInput
-                  id="search-recipe"
-                  v-model="searchText"
-                  type="text"
-                  placeholder="Search"
-                  required
-                />
-                <BInputGroupAppend>
-                  <BButton type="submit" variant="primary"
-                    ><BIconSearch /> <span>Search</span>
-                  </BButton>
-                </BInputGroupAppend>
-              </BInputGroup>
-            </BFormGroup>
-          </BForm>
+          <GetRecipesForm
+            ref="GetRecipesForm"
+            value=""
+            placeholder="Search"
+            button="Get Recipes"
+            label="Search Recipes by Name"
+            @loading="val => loadingNameSearch=val"
+          />
         </div>
         <div class="recipes">
           <section v-if="$store.state.displaySuggested">
@@ -79,11 +65,13 @@
 
 <script>
 import RecipeComponent from "@/components/Recipe/RecipeComponent.vue";
+import GetRecipesForm from "@/components/Recipe/GetRecipesForm.vue";
 
 export default {
   name: "RecipePage",
   components: {
     RecipeComponent,
+    GetRecipesForm,
   },
   data() {
     return {
@@ -99,32 +87,6 @@ export default {
       if (this.$store.state.username) {
         await this.fetchSuggestedRecipes();
       }
-    },
-    async submit() {
-      this.loadingNameSearch = true;
-      this.$store.commit("updateShowByName", true);
-      this.$store.commit("updateShowSuggested", false);
-      if (this.$store.state.lastSearched.length === 0) {
-        this.$store.commit("updateLastSearched", this.searchText);
-      }
-
-      const url = `/api/recipes?recipeName=${this.searchText}`;
-      try {
-        const r = await fetch(url);
-        const res = await r.json();
-        if (!r.ok) {
-          throw new Error(res.error);
-        }
-
-        this.nameRecipes = res;
-        this.$store.commit("updateRecipes", res);
-      } catch (e) {
-        this.$set(this.alerts, e, "error");
-        setTimeout(() => this.$delete(this.alerts, e), 3000);
-      }
-      this.$store.commit("updateLastSearched", this.searchText);
-      this.searchText = "";
-      this.loadingNameSearch = false;
     },
     async fetchSuggestedRecipes() {
       this.loadingSuggested = true;

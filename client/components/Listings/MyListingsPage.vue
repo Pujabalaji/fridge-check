@@ -4,15 +4,16 @@
   <main>
     <section>
       <header>
-        <h2>My Listings</h2>
+        <h2 v-if="$store.state.listingFilter">My Listings Filtered by "{{ $store.state.listingFilter }}"</h2>
+        <h2 v-else>My Listings</h2>
       </header><br>
       <div v-if="$store.state.username">
+        <section>
+          <GetMyListingsForm ref="GetMyListingsForm" value="foodName" placeholder="Search"
+            button="Get listings" label="Filter Listings by Food Name"/>
+        </section>
         <section v-if="$store.state.listings.length" class="listing-container">
-          <ListingComponent
-            v-for="listing in $store.state.listings"
-            :key="listing._id"
-            :listing="listing"
-          />
+          <ListingComponent v-for="listing in $store.state.listings" :key="listing._id" :listing="listing" />
         </section>
         <article v-else>
           <h3>No listings</h3>
@@ -30,12 +31,14 @@
   
 <script>
 import ListingComponent from "@/components/Listings/ListingComponent.vue";
+import GetMyListingsForm from '@/components/Listings/GetMyListingsForm.vue';
 
 export default {
   name: "MyListingsPage",
-  components: { ListingComponent },
+  components: { ListingComponent, GetMyListingsForm },
   created() {
     if (this.$store.state.username) {
+      this.$store.commit('updateListingFilter', null);
       this.$store.dispatch("refreshMyListings");
     }
   },

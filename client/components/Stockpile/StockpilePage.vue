@@ -2,11 +2,16 @@
 
 <template>
     <main>
-        <header>
+        <header v-if="$store.state.stockpileFilter">
+            <h2>My Stockpile Filtered by "{{ $store.state.stockpileFilter }}"</h2>
+        </header>
+        <header v-else>
             <h2>My Stockpile</h2>
         </header> <br>
         <div v-if="$store.state.username" class="container-page">
             <div>
+                <GetFoodsForm ref="GetFoodsForm" value="foodName" placeholder="Search"
+                    button="Get foods" label="Filter Stockpile by Food Name"/>
                 <h3>Expired</h3>
                 <section v-if="$store.state.expired.length" class="food-container">
                     <FoodComponent v-for="food in $store.state.expired" :key="food._id" :food="food" />
@@ -49,12 +54,14 @@
 import FoodComponent from "@/components/Stockpile/FoodComponent.vue";
 import CreateFoodForm from "@/components/Stockpile/CreateFoodForm.vue";
 import CreateListingForm from "@/components/Listings/CreateListingForm.vue";
+import GetFoodsForm from "@/components/Stockpile/GetFoodsForm.vue";
 
 export default {
     name: "StockpilePage",
-    components: { FoodComponent, CreateFoodForm, CreateListingForm },
+    components: { FoodComponent, CreateFoodForm, CreateListingForm, GetFoodsForm },
     created() {
         if (this.$store.state.username) {
+            this.$store.commit('updateStockpileFilter', null);
             this.$store.dispatch("refreshStockpile");
         }
     },
