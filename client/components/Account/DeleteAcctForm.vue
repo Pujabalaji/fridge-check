@@ -7,7 +7,7 @@
             </BFormGroup>
         </article>
         <BButton variant="primary" @click="callDelete" block>Delete account</BButton>
-        <BModal id="bv-modal-deleteacct" hide-header-close hide-footer>
+        <BModal id="bv-modal-deleteacct" hide-backdrop hide-header-close hide-footer>
             <p>
                 Are you sure you want to delete your account? Deleting your account is permanent and irreversible.
                 Proceed only if you understand these consequences.

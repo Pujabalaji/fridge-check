@@ -15,7 +15,7 @@
         <BButton @click="callDeleteFood" variant="info">
           <BIconTrash /> <span>Delete</span>
         </BButton>
-        <BModal id="bv-modal-deletefood" hide-header-close hide-footer>
+        <BModal id="bv-modal-deletefood" hide-backdrop hide-header-close hide-footer>
           <h4>
             Are you sure you want to delete this food?
           </h4>

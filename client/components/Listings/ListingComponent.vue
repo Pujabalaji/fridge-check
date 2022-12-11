@@ -29,7 +29,7 @@
           <BButton @click="callDeleteListing" variant="info">
             <BIconClipboardX /> <span>Delete Listing</span>
           </BButton>
-          <BModal id="bv-modal-deletelisting" hide-header-close hide-footer>
+          <BModal id="bv-modal-deletelisting" hide-backdrop hide-header-close hide-footer>
             <h4>
               Are you sure you want to delete this listing?
             </h4>
