@@ -2,7 +2,7 @@
 
 <template>
   <BCard class="ingredientDetails">
-    <div class="container">
+    <div class="container-details">
       <img :src="recipe.imageUrl" />
       <div class="column">
         <h4>{{ recipe.name }}</h4>
@@ -134,7 +134,7 @@ div {
   margin-right: 0em;
 }
 
-.container {
+.container-details {
   display: flex;
   align-items: flex-start;
   gap: 1em;

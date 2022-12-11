@@ -5,7 +5,7 @@
         <header>
             <h2>My Stockpile</h2>
         </header> <br>
-        <div v-if="$store.state.username" class="container">
+        <div v-if="$store.state.username" class="container-page">
             <div>
                 <h3>Expired</h3>
                 <section v-if="$store.state.expired.length" class="food-container">
@@ -62,13 +62,13 @@ export default {
 </script>
   
 <style scoped>
-.container {
+.container-page {
     display: flex;
     justify-content: space-between;
     gap: 1em;
 }
 
-.container>* {
+.container-page>* {
     flex: 1;
 }
 

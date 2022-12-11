@@ -1,7 +1,7 @@
 <!-- Reusable component representing recipe details -->
 <template>
   <BCard class="recipeDetails">
-    <div class="container">
+    <div class="container-recipe">
       <img :src="recipe.imageUrl" />
       <div class="column">
         <h4>{{ recipe.name }}</h4>
@@ -59,7 +59,7 @@ div {
   margin-right: 0em;
 }
 
-.container {
+.container-recipe {
   display: flex;
   align-items: flex-start;
   gap: 1em;
