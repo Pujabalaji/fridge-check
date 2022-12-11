@@ -95,7 +95,6 @@ export default {
       this.draft = this.food.quantity;
     },
     callDeleteFood() {
-      console.log("called correct func");
       this.$bvModal.show('bv-modal-deletefood');
     },
     async deleteFood() {
