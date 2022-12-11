@@ -15,7 +15,7 @@
           <BIconPencilFill /> <span>Edit Quantity</span>
         </BButton>
         <BButton @click="callThrowAway" variant="info">
-          <BIconTrash /> <span>Throw Away</span>
+          <BIconTrash /> <span>Thrown Away</span>
         </BButton>
         <BButton @click="callDeleteFood" variant="info">
           <img src="../../public/apple-core.svg" width="25" height="25" /> <span>Eaten</span>
@@ -60,7 +60,7 @@
           <BIconX /> <span>Discard changes</span>
         </BButton>
         <BButton @click="callThrowAway" variant="info">
-          <BIconTrash /> <span>Throw Away</span>
+          <BIconTrash /> <span>Thrown Away</span>
         </BButton>
         <BButton @click="callDeleteFood" variant="info">
           <img src="../../public/apple-core.svg" width="25" height="25" /> <span>Eaten</span>
