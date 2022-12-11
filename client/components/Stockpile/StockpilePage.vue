@@ -4,11 +4,11 @@
   <main>
     <header v-if="$store.state.stockpileFilter">
       <h2>My Stockpile Filtered by "{{ $store.state.stockpileFilter }}"</h2>
-      <BButton variant="info" @click="showCreateFood" v-if="!showCreateFoodForm">Add Food to Stockpile</BButton>
+      <BButton variant="info" @click="showCreateFood" v-if="!showCreateFoodForm && $store.state.username">Add Food to Stockpile</BButton>
     </header>
     <header v-else>
       <h2>My Stockpile</h2>
-      <BButton variant="info" @click="showCreateFood" v-if="!showCreateFoodForm">Add Food to Stockpile</BButton>
+      <BButton variant="info" @click="showCreateFood" v-if="!showCreateFoodForm && $store.state.username">Add Food to Stockpile</BButton>
     </header>
     <br />
     <div v-if="$store.state.username">

@@ -28,7 +28,7 @@ export default {
 <style scoped>
 main {
   display: flex;
-  gap: 5em;
+  gap: 1.5em;
 }
 
 .column {

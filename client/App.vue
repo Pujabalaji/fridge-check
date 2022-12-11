@@ -61,7 +61,7 @@ body {
 }
 
 main {
-  padding: 2em 20em;
+  padding: 2em 15em;
 }
 
 form {
