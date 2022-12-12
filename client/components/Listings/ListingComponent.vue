@@ -29,15 +29,6 @@
           <BButton @click="callDeleteListing" variant="info">
             <BIconClipboardX /> <span>Delete Listing</span>
           </BButton>
-          <BModal id="bv-modal-deletelisting" hide-backdrop hide-header-close hide-footer>
-            <h4>
-              Are you sure you want to delete this listing?
-            </h4>
-            <div class="buttons">
-              <BButton class="danger" @click="deleteListing">Yes, delete</BButton>
-              <BButton @click="$bvModal.hide('bv-modal-deletelisting')">No, cancel</BButton>
-            </div>
-          </BModal>
         </div>
       </div>
       <header v-else>
@@ -140,7 +131,25 @@ export default {
       };
     },
     callDeleteListing() {
-      this.$bvModal.show('bv-modal-deletelisting');
+      this.$bvModal.msgBoxConfirm('Please confirm that you want to delete this listing.', {
+          title: 'Please Confirm',
+          size: 'sm',
+          buttonSize: 'sm',
+          okVariant: 'danger',
+          okTitle: 'YES',
+          cancelTitle: 'NO',
+          footerClass: 'p-2',
+          hideHeaderClose: false,
+          centered: true
+        })
+          .then(value => {
+            if (value) {
+              this.deleteListing();
+            }
+          })
+          .catch(err => {
+            // An error occurred
+          })
     },
     deleteListing() {
       /**

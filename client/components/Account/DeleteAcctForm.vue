@@ -7,16 +7,6 @@
             </BFormGroup>
         </article>
         <BButton variant="primary" @click="callDelete" block>Delete account</BButton>
-        <BModal id="bv-modal-deleteacct" hide-backdrop hide-header-close hide-footer>
-            <p>
-                Are you sure you want to delete your account? Deleting your account is permanent and irreversible.
-                Proceed only if you understand these consequences.
-            </p>
-            <div class="buttons">
-                <BButton class="danger" @click="submit">Yes, delete</BButton>
-                <BButton @click="$bvModal.hide('bv-modal-deleteacct')">No, cancel</BButton>
-            </div>
-        </BModal>
         <BAlert v-for="(status, alert, index) in alerts" :key="index"
             :variant="status === 'error' ? 'danger' : 'success'" show>
             {{ alert }}
@@ -29,7 +19,25 @@ export default {
     name: "DeleteAcctForm",
     methods: {
         callDelete() {
-            this.$bvModal.show('bv-modal-deleteacct');
+            this.$bvModal.msgBoxConfirm('Are you sure you want to delete your account? Deleting your account is permanent and irreversible. Proceed only if you understand these consequences.', {
+            title: 'Please Confirm',
+            size: 'sm',
+            buttonSize: 'sm',
+            okVariant: 'danger',
+            okTitle: 'YES',
+            cancelTitle: 'NO',
+            footerClass: 'p-2',
+            hideHeaderClose: false,
+            centered: true
+            })
+            .then(value => {
+                if (value) {
+                this.submit();
+                }
+            })
+            .catch(err => {
+                // An error occurred
+            })
         },
         async submit() {
             this.$bvModal.hide('bv-modal-deleteacct');
