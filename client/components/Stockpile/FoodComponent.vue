@@ -20,24 +20,6 @@
         <BButton @click="callDeleteFood" variant="info">
           <img src="../../public/apple-core.svg" width="25" height="25" /> <span>Eaten</span>
         </BButton>
-        <BModal id="bv-modal-deletefood" hide-backdrop hide-header-close hide-footer>
-          <h4>
-            Are you sure you want to remove this food from your stockpile?
-          </h4>
-          <div class="buttons">
-            <BButton class="danger" @click="deleteFood">Yes, delete</BButton>
-            <BButton @click="$bvModal.hide('bv-modal-deletefood')">No, cancel</BButton>
-          </div>
-        </BModal>
-        <BModal id="bv-modal-throwaway" hide-backdrop hide-header-close hide-footer>
-          <h4>
-            Are you sure you want to remove this food from your stockpile?
-          </h4>
-          <div class="buttons">
-            <BButton class="danger" @click="throwAway">Yes, delete</BButton>
-            <BButton @click="$bvModal.hide('bv-modal-throwaway')">No, cancel</BButton>
-          </div>
-        </BModal>
         <BButton v-if="enableCreateListing && showListingButton" @click="createListing" variant="info">
           <BIconClipboardPlus /> <span>Create Listing</span>
         </BButton>
@@ -104,10 +86,52 @@ export default {
   },
   methods: {
     callDeleteFood() {
-      this.$bvModal.show('bv-modal-deletefood');
+      this.$bvModal.msgBoxConfirm('Please confirm that you want to delete food.', {
+          title: 'Please Confirm',
+          size: 'sm',
+          buttonSize: 'sm',
+          okVariant: 'danger',
+          okTitle: 'YES',
+          cancelTitle: 'NO',
+          footerClass: 'p-2',
+          hideHeaderClose: false,
+          centered: true
+        })
+          .then(value => {
+            if (value) {
+              this.thrownAway = false;
+              this.deleteFood();
+            }
+          })
+          .catch(err => {
+            // An error occurred
+          })
+
+      // this.deleteFood();
     },
     callThrowAway() {
-      this.$bvModal.show('bv-modal-throwaway');
+      this.$bvModal.msgBoxConfirm('Please confirm that you want to throw away food.', {
+          title: 'Please Confirm',
+          size: 'sm',
+          buttonSize: 'sm',
+          okVariant: 'danger',
+          okTitle: 'YES',
+          cancelTitle: 'NO',
+          footerClass: 'p-2',
+          hideHeaderClose: false,
+          centered: true
+        })
+          .then(value => {
+            if (value) {
+              this.thrownAway = true;
+              this.deleteFood();
+            }
+          })
+          .catch(err => {
+            // An error occurred
+          })
+
+      // this.deleteFood();
     },
     async deleteFood() {
       /**
@@ -145,14 +169,6 @@ export default {
        */
       this.editing = false;
       this.draft = this.food.quantity;
-    },
-    throwAway() {
-      /**
-       * Marks food as thrown away and deletes food 
-       */
-      this.thrownAway = true;
-      this.$bvModal.hide('bv-modal-throwaway');
-      this.deleteFood();
     },
     async createListing() {
       this.$emit('createListing');
