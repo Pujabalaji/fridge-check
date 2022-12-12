@@ -16,8 +16,7 @@ class FoodCollection {
   static async addOne(userId: Types.ObjectId | string, name: string, quantity: Number, expiration: string, unit: Unit, prepared: Boolean): Promise<HydratedDocument<Food>> {
     const date = new Date();
     const [year, month, day] = expiration.split('-');
-    const expirationDate = new Date(+year, +month - 1, +day);
-    expirationDate.setHours(0, 0, 0, 0);
+    const expirationDate = new Date(+year, +month - 1, +day, +23, +59, +59);
     const user = await UserCollection.findOneByUserId(userId);
     user.numFood+=1;
     await user.save();
