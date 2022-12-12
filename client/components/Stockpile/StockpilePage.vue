@@ -102,7 +102,6 @@ export default {
       this.showCreateFoodForm = false;
     },
     scrollToTop() {
-      console.log('here');
       window.scrollTo(0, 0);
     }
   }
