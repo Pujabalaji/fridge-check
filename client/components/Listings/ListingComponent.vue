@@ -74,6 +74,10 @@ export default {
       type: Object,
       required: true,
     },
+    myListings: {
+      type: Boolean,
+      default: true,
+    },
   },
   data() {
     return {
@@ -224,7 +228,11 @@ export default {
         const res = await r.json();
         this.editing = false;
         this.showErrors = false;
-        this.$store.dispatch("refreshMyListings");
+        if (this.myListings) {
+          this.$store.dispatch("refreshMyListings");
+        } else {
+          this.$store.dispatch("refreshAllListings");
+        }
         params.callback();
       } catch (e) {
         this.$set(this.alerts, e, "error");

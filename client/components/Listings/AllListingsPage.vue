@@ -15,7 +15,7 @@
                         placeholder="Search" button="Get listings" label="Filter Listings by Food Name"/>
                 </section>
             <section v-if="$store.state.allListings.length" class="listing-container">
-                <ListingComponent v-for="listing in $store.state.allListings" :key="listing._id" :listing="listing" />
+                <ListingComponent v-for="listing in $store.state.allListings" :key="listing._id" :listing="listing" :myListings="false"/>
             </section>
             <article v-else>
                 <h3>No listings found.</h3>
