@@ -199,7 +199,7 @@ export default {
         const res = await r.json();
         this.$store.dispatch("refreshStockpile");
         options.callback();
-        reset();
+        this.reset();
         this.$store.commit("clearRecipes");
         this.$store.commit("updateShowSuggested", false);
         this.$store.commit("updateShowByName", false);
