@@ -30,8 +30,9 @@
     </header>
     <header v-else>
       <h3 class="name">
-        {{ food.name }} ( x
-        <textarea v-if="editing" class="quantity" :value="draft" @input="draft = $event.target.value" />{{ food.unit }})
+        {{ food.name }} (x
+        <BFormInput v-if="editing" class="quantity" type="number" min="0" step="0.01"
+            v-model="draft" :state="!showErrors || isValidQuantity ? null : false" /> {{food.unit}})
         Expires on: {{ food.expiration }}
       </h3>
       <div class="actions">
@@ -170,6 +171,14 @@ export default {
       this.editing = false;
       this.draft = this.food.quantity;
     },
+    isValidQuantity() {
+      const quantityRegex =
+        /^(?=.*[1-9])\d*(?:\.\d{1,2})?$|^([1-9][0-9]*)\/[1-9][0-9]*|^[1-9][0-9]*$/;
+      if (!quantityRegex.test(this.draft)) {
+        return false;
+      }
+      return true;
+    },
     async createListing() {
       this.$emit('createListing');
       this.$store.commit("enableCreateListing", this.food);
@@ -282,6 +291,11 @@ button {
   display: flex;
   gap: 0.25em;
   align-items: center;
+}
+
+input {
+  display: inline;
+  width: 10em;
 }
 
 .danger {
